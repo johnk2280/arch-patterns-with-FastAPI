@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "arch-patterns"
+version = "0.1.0"
+description = "проект для изучения паттернов разработки Python по книге Г.Персиваля и Б.Грегори с использование FastAPI (тоже для изучения)"
+authors = ["Evgeny Kungurov <eakungur@mts.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
