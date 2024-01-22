@@ -9,6 +9,13 @@ def root():
     return 'Hello World'
 
 
+# Передача через url
+@app.get('/greet/{name}')
+def greet_1(name: str):
+    return Response(f'Hello {name}')
+
+
+# Передача через query params в query string
 @app.get('/greet')
-def root(name: str):
+def greet_2(name: str):
     return Response(f'Hello {name}')
