@@ -17,5 +17,5 @@ def greet_1(name: str):
 
 # Передача через query params в query string
 @app.get('/greet')
-def greet_2(name: str):
+def greet_2(name: str | None = None):
     return Response(f'Hello {name}')
