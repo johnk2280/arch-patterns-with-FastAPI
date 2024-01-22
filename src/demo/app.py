@@ -9,6 +9,6 @@ def root():
     return 'Hello World'
 
 
-@app.get('/example')
-def root():
-    return Response('Hello World')
+@app.get('/greet/{name}')
+def root(name: str):
+    return Response(f'Hello {name}')
