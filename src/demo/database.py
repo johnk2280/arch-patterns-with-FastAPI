@@ -37,4 +37,8 @@ class Account(Base):
     email = Column(String, nullable=False)
     username = Column(String, nullable=False, unique=True)
     password = Column(String, nullable=False)
+    first_name = Column(String)
+    last_name = Column(String)
+    avatar = Column(String)
+
 
