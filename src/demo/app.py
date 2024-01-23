@@ -5,6 +5,8 @@ from fastapi import FastAPI
 from fastapi import Request
 from fastapi import Response
 
+from demo.schemas import GreetingSchema
+
 app = FastAPI()
 
 
@@ -26,6 +28,13 @@ def greet_2(name: str = 'World'):
 
 
 # Доступ к объекту Request
-@app.post('/greet')
+@app.post('/greet_0')
 def greet_3(request: Request, name: str = Body(...), ):
-    return Response(f'Hello {name}. Request {request}')
+    return Response(f'Hello {name}. Request: {request}')
+
+
+# Десериализация (и очевидно валидация) входных данных,
+# поступающих в теле запроса в качестве JSON.
+@app.post('/greet')
+def greet_3(schema: GreetingSchema):
+    return Response(f'Hello {schema.name}')
