@@ -2,6 +2,7 @@ import json
 
 from fastapi import Body
 from fastapi import FastAPI
+from fastapi import Form
 from fastapi import Request
 from fastapi import Response
 
@@ -35,6 +36,14 @@ def greet_3(request: Request, name: str = Body(...), ):
 
 # Десериализация (и очевидно валидация) входных данных,
 # поступающих в теле запроса в качестве JSON.
-@app.post('/greet')
+@app.post('/greet_1')
 def greet_3(schema: GreetingSchema):
     return Response(f'Hello {schema.name}')
+
+
+# Работа с формами: form-data или x-www-form-urlencoded
+@app.post('/greet')
+def greet_3(name: str = Form(...)):
+    return Response(f'Hello {name}')
+
+
