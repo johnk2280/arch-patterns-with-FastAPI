@@ -8,6 +8,7 @@ from sqlalchemy.exc import IntegrityError
 
 from demo.database import Account
 from demo.database import Session
+from demo.schemas import AccountSerializer
 
 app = FastAPI()
 
@@ -34,9 +35,22 @@ def create_account(
     return Response('CREATED', status_code=status.HTTP_201_CREATED)
 
 
-@app.get('/accounts')
+@app.get('/accounts', response_model=list[AccountSerializer])
 def get_accounts():
     with Session() as session:
         accounts = session.query(Account).all()
 
     return accounts
+
+
+@app.get('/accounts/{account_id}', response_model=AccountSerializer)
+def get_accounts(account_id: int):
+    with Session() as session:
+        accounts = session.query(Account).filter_by(id=account_id).first()
+
+    if not accounts:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+
+    return accounts
+
+
