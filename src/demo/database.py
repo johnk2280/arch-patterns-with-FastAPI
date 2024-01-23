@@ -25,7 +25,6 @@ engine = create_engine(
     connect_args={'check_same_thread': False},  # только для SQLite
 )
 
-
 Session = sessionmaker(engine, future=True)
 Base = declarative_base()
 
@@ -41,4 +40,8 @@ class Account(Base):
     last_name = Column(String)
     avatar = Column(String)
 
-
+    def __repr__(self) -> str:
+        return (f'<Account '
+                f'id={self.id}, '
+                f'email={self.email}, '
+                f'username={self.username}>')
