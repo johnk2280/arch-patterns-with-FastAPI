@@ -1,5 +1,8 @@
+from pathlib import Path
 
 from dynaconf import Dynaconf
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 settings = Dynaconf(
     envvar_prefix="DYNACONF",

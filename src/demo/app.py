@@ -12,6 +12,7 @@ from fastapi.staticfiles import StaticFiles
 from passlib.hash import pbkdf2_sha256
 from sqlalchemy.exc import IntegrityError
 
+from demo.config import BASE_DIR
 from demo.config import settings
 from demo.database import Account
 from demo.database import Session
@@ -85,7 +86,7 @@ def edit_account(
         account.last_name = last_name or account.last_name
 
         if avatar:
-            filepath = Path.cwd() / settings.STATIC_DIR / avatar.filename
+            filepath = BASE_DIR / settings.STATIC_DIR / avatar.filename
             with filepath.open('wb') as file:
                 shutil.copyfileobj(avatar.file, file)
 
