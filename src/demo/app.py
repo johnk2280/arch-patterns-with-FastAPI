@@ -1,5 +1,8 @@
+import json
+
 from fastapi import Body
 from fastapi import FastAPI
+from fastapi import Request
 from fastapi import Response
 
 app = FastAPI()
@@ -22,6 +25,7 @@ def greet_2(name: str = 'World'):
     return Response(f'Hello {name}')
 
 
+# Доступ к объекту Request
 @app.post('/greet')
-def greet_3(name: str = Body(...)):
-    return Response(f'Hello {name}')
+def greet_3(request: Request, name: str = Body(...), ):
+    return Response(f'Hello {name}. Request {request}')
