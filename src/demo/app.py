@@ -1,5 +1,6 @@
 import shutil
 
+from fastapi import Depends
 from fastapi import FastAPI
 from fastapi import File
 from fastapi import Form
@@ -14,6 +15,7 @@ from sqlalchemy.exc import IntegrityError
 from demo.config import BASE_DIR
 from demo.config import settings
 from demo.database import Account
+from demo.database import get_session
 from demo.database import Session
 from demo.schemas import AccountSerializer
 
@@ -56,10 +58,11 @@ def get_accounts():
 
 
 @app.get('/accounts/{account_id}', response_model=AccountSerializer)
-def get_accounts(account_id: int):
-    with Session() as session:
-        accounts = session.query(Account).filter_by(id=account_id).first()
-
+def get_accounts(
+    account_id: int,
+    session: Session = Depends(get_session),
+):
+    accounts = session.query(Account).filter_by(id=account_id).first()
     if not accounts:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 

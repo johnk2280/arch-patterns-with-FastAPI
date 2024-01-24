@@ -2,6 +2,8 @@ from fastapi.testclient import TestClient
 
 from demo.app import app
 
+from tests.database import Session
+
 client = TestClient(app)
 
 

@@ -29,6 +29,11 @@ Session = sessionmaker(engine, future=True)
 Base = declarative_base()
 
 
+def get_session() -> Session:
+    with Session() as session:
+        yield session
+
+
 class Account(Base):
     __tablename__ = 'accounts'
 
