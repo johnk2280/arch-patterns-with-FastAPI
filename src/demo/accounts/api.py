@@ -14,6 +14,7 @@ from fastapi import UploadFile
 from demo.accounts.models import Account
 from demo.accounts.schemas import AccountDeserializer
 from demo.accounts.schemas import AccountSerializer
+from demo.accounts.services import AccountService
 from demo.config import BASE_DIR
 from demo.config import get_settings
 from demo.database import get_session
@@ -31,11 +32,8 @@ def create_account(
     email: str = Form(...),
     username: str = Form(...),
     password: str = Form(),
-    session: Session = Depends(get_session),
-    settings: Dynaconf = Depends(get_settings),
+    service: AccountService = Depends()
 ):
-    from demo.accounts.services import AccountService
-    service = AccountService(session, settings)
     service.create_account(
         AccountDeserializer(
             email=email,
@@ -47,14 +45,14 @@ def create_account(
 
 
 @router.get('/accounts', response_model=list[AccountSerializer])
-def get_accounts(session: Session = Depends(get_session)):
-    return session.query(Account).all()
+def get_accounts(service: AccountService = Depends()):
+    return service.get_accounts()
 
 
 @router.get('/accounts/{account_id}', response_model=AccountSerializer)
 def get_accounts(
     account_id: int,
-    session: Session = Depends(get_session),
+    service: AccountService = Depends(),
 ):
     accounts = session.query(Account).filter_by(id=account_id).first()
     if not accounts:
@@ -69,8 +67,7 @@ def edit_account(
     first_name: str | None = Form(None),
     last_name: str | None = Form(None),
     avatar: UploadFile | None = File(None),
-    session: Session = Depends(get_session),
-    settings: Dynaconf = Depends(get_settings),
+    service: AccountService = Depends(),
 ):
     account = session.query(Account).filter_by(id=account_id).first()
     if not account:
