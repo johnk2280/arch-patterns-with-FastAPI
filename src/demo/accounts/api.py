@@ -50,15 +50,11 @@ def get_accounts(service: AccountService = Depends()):
 
 
 @router.get('/accounts/{account_id}', response_model=AccountSerializer)
-def get_accounts(
+def get_account(
     account_id: int,
     service: AccountService = Depends(),
 ):
-    accounts = session.query(Account).filter_by(id=account_id).first()
-    if not accounts:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-
-    return accounts
+    return service.get_account(account_id)
 
 
 @router.patch('/accounts/{account_id}', response_model=AccountSerializer)

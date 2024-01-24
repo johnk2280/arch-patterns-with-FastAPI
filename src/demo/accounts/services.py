@@ -36,3 +36,15 @@ class AccountService:
 
     def get_accounts(self) -> list[Account]:
         return self.session.query(Account).all()
+
+    def _get_account(self, id_: int) -> Account:
+        account: Account | None = self.session.query(Account).filter_by(
+            id=id_,
+        ).first()
+        if not account:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+
+        return account
+
+    def get_account(self, id_: int) -> Account:
+        return self._get_account(id_)
