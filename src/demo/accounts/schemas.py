@@ -1,3 +1,5 @@
+from fastapi import File
+from fastapi import UploadFile
 from pydantic import BaseModel
 
 
@@ -15,3 +17,17 @@ class AccountSerializer(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class AccountCreate(BaseModel):
+    email: str
+    username: str
+    password: str
+
+
+class AccountUpdate(BaseModel):
+    first_name: str | None
+    last_name: str | None
+    avatar: UploadFile | None
+
+
