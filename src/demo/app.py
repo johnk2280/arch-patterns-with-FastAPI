@@ -12,9 +12,9 @@ from fastapi.staticfiles import StaticFiles
 from passlib.hash import pbkdf2_sha256
 from sqlalchemy.exc import IntegrityError
 
+from demo.accounts.models import Account
 from demo.config import BASE_DIR
 from demo.config import settings
-from demo.database import Account
 from demo.database import get_session
 from demo.database import Session
 from demo.schemas import AccountSerializer

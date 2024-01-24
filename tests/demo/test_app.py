@@ -1,12 +1,10 @@
 from fastapi.testclient import TestClient
 
 from demo.app import app
-from demo.database import Account
 from demo.database import Base
 from demo.database import get_session
 from tests.database import engine
 from tests.database import get_session as get_test_session
-from tests.database import Session
 
 client = TestClient(app)
 
