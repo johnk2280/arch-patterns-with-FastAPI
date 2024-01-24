@@ -15,3 +15,9 @@ class AccountSerializer(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class AccountDeserializer(BaseModel):
+    email: str
+    username: str
+    password: str

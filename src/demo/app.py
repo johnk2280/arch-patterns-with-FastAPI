@@ -12,4 +12,3 @@ app.mount(
 )
 
 accounts_api.initialize_app(app)
-

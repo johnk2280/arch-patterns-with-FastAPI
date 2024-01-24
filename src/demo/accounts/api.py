@@ -10,10 +10,9 @@ from fastapi import HTTPException
 from fastapi import Response
 from fastapi import status
 from fastapi import UploadFile
-from passlib.handlers.pbkdf2 import pbkdf2_sha256
-from sqlalchemy.exc import IntegrityError
 
 from demo.accounts.models import Account
+from demo.accounts.schemas import AccountDeserializer
 from demo.accounts.schemas import AccountSerializer
 from demo.config import BASE_DIR
 from demo.config import get_settings
@@ -33,19 +32,17 @@ def create_account(
     username: str = Form(...),
     password: str = Form(),
     session: Session = Depends(get_session),
+    settings: Dynaconf = Depends(get_settings),
 ):
-    session.add(
-        Account(
+    from demo.accounts.services import AccountService
+    service = AccountService(session, settings)
+    service.create_account(
+        AccountDeserializer(
             email=email,
             username=username,
-            password=pbkdf2_sha256.hash(password),
+            password=password,
         )
     )
-    try:
-        session.commit()
-    except IntegrityError:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT)
-
     return Response('CREATED', status_code=status.HTTP_201_CREATED)
 
 
