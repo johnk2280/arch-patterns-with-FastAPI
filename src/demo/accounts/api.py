@@ -3,6 +3,7 @@ import shutil
 from dynaconf import Dynaconf
 from fastapi import APIRouter
 from fastapi import Depends
+from fastapi import FastAPI
 from fastapi import File
 from fastapi import Form
 from fastapi import HTTPException
@@ -20,6 +21,10 @@ from demo.database import get_session
 from demo.database import Session
 
 router = APIRouter()
+
+
+def initialize_app(app: FastAPI) -> None:
+    app.include_router(router)
 
 
 @router.post('/account')
