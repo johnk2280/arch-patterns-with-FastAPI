@@ -23,5 +23,9 @@ engine = create_engine(
     connect_args={'check_same_thread': False},  # только для SQLite
 )
 
-
 Session = sessionmaker(engine, future=True)
+
+
+def get_session() -> Session:
+    with Session() as session:
+        yield session
