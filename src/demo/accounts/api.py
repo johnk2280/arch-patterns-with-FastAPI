@@ -1,24 +1,15 @@
-import shutil
-
-from dynaconf import Dynaconf
 from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import FastAPI
 from fastapi import File
 from fastapi import Form
-from fastapi import HTTPException
 from fastapi import Response
 from fastapi import status
 from fastapi import UploadFile
 
-from demo.accounts.models import Account
-from demo.accounts.schemas import AccountDeserializer
+from demo.accounts.schemas import AccountCreate
 from demo.accounts.schemas import AccountSerializer
 from demo.accounts.services import AccountService
-from demo.config import BASE_DIR
-from demo.config import get_settings
-from demo.database import get_session
-from demo.database import Session
 
 router = APIRouter()
 
@@ -35,7 +26,7 @@ def create_account(
     service: AccountService = Depends()
 ):
     service.create_account(
-        AccountDeserializer(
+        AccountCreate(
             email=email,
             username=username,
             password=password,
@@ -50,10 +41,7 @@ def get_accounts(service: AccountService = Depends()):
 
 
 @router.get('/accounts/{account_id}', response_model=AccountSerializer)
-def get_account(
-    account_id: int,
-    service: AccountService = Depends(),
-):
+def get_account( account_id: int, service: AccountService = Depends()):
     return service.get_account(account_id)
 
 
@@ -65,23 +53,13 @@ def edit_account(
     avatar: UploadFile | None = File(None),
     service: AccountService = Depends(),
 ):
-    account = session.query(Account).filter_by(id=account_id).first()
-    if not account:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-
-    if not first_name and not last_name and not avatar:
-        return account
-
-    account.first_name = first_name or account.first_name
-    account.last_name = last_name or account.last_name
-
-    if avatar:
-        filepath = BASE_DIR / settings.STATIC_DIR / avatar.filename
-        with filepath.open('wb') as file:
-            shutil.copyfileobj(avatar.file, file)
-
-        file_url = f'{settings.STATIC_URL}/{avatar.filename}'
-        account.avatar = file_url
-
-    session.commit()
+    from demo.accounts.schemas import AccountUpdate
+    service.update_account(
+        id_=account_id,
+        account_update=AccountUpdate(
+            first_name=first_name,
+            last_name=last_name,
+            avatar=avatar,
+        )
+    )
     return Response(status_code=status.HTTP_202_ACCEPTED)
