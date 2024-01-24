@@ -1,5 +1,6 @@
 import shutil
 
+from dynaconf import Dynaconf
 from fastapi import Depends
 from fastapi import FastAPI
 from fastapi import File
@@ -13,11 +14,12 @@ from passlib.hash import pbkdf2_sha256
 from sqlalchemy.exc import IntegrityError
 
 from demo.accounts.models import Account
+from demo.accounts.schemas import AccountSerializer
 from demo.config import BASE_DIR
+from demo.config import get_settings
 from demo.config import settings
 from demo.database import get_session
 from demo.database import Session
-from demo.schemas import AccountSerializer
 
 app = FastAPI()
 app.mount(
@@ -73,6 +75,7 @@ def edit_account(
     last_name: str | None = Form(None),
     avatar: UploadFile | None = File(None),
     session: Session = Depends(get_session),
+    settings: Dynaconf = Depends(get_settings),
 ):
     account = session.query(Account).filter_by(id=account_id).first()
     if not account:

@@ -30,3 +30,5 @@ def get_session() -> Session:
     with Session() as session:
         yield session
 
+
+# from demo.accounts.models import Account  # noqa
