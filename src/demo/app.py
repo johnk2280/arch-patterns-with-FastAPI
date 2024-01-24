@@ -32,29 +32,26 @@ def create_account(
     email: str = Form(...),
     username: str = Form(...),
     password: str = Form(),
+    session: Session = Depends(get_session),
 ):
-    with Session() as session:
-        account = Account(
+    session.add(
+        Account(
             email=email,
             username=username,
             password=pbkdf2_sha256.hash(password),
         )
-        session.add(account)
-
-        try:
-            session.commit()
-        except IntegrityError:
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT)
+    )
+    try:
+        session.commit()
+    except IntegrityError:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT)
 
     return Response('CREATED', status_code=status.HTTP_201_CREATED)
 
 
 @app.get('/accounts', response_model=list[AccountSerializer])
-def get_accounts():
-    with Session() as session:
-        accounts = session.query(Account).all()
-
-    return accounts
+def get_accounts(session: Session = Depends(get_session)):
+    return session.query(Account).all()
 
 
 @app.get('/accounts/{account_id}', response_model=AccountSerializer)
@@ -75,25 +72,25 @@ def edit_account(
     first_name: str | None = Form(None),
     last_name: str | None = Form(None),
     avatar: UploadFile | None = File(None),
+    session: Session = Depends(get_session),
 ):
-    with Session() as session:
-        account = session.query(Account).filter_by(id=account_id).first()
-        if not account:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    account = session.query(Account).filter_by(id=account_id).first()
+    if not account:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
-        if not first_name and not last_name and not avatar:
-            return account
+    if not first_name and not last_name and not avatar:
+        return account
 
-        account.first_name = first_name or account.first_name
-        account.last_name = last_name or account.last_name
+    account.first_name = first_name or account.first_name
+    account.last_name = last_name or account.last_name
 
-        if avatar:
-            filepath = BASE_DIR / settings.STATIC_DIR / avatar.filename
-            with filepath.open('wb') as file:
-                shutil.copyfileobj(avatar.file, file)
+    if avatar:
+        filepath = BASE_DIR / settings.STATIC_DIR / avatar.filename
+        with filepath.open('wb') as file:
+            shutil.copyfileobj(avatar.file, file)
 
-            file_url = f'{settings.STATIC_URL}/{avatar.filename}'
-            account.avatar = file_url
+        file_url = f'{settings.STATIC_URL}/{avatar.filename}'
+        account.avatar = file_url
 
-        session.commit()
-        return Response(status_code=status.HTTP_202_ACCEPTED)
+    session.commit()
+    return Response(status_code=status.HTTP_202_ACCEPTED)
