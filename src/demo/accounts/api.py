@@ -7,59 +7,50 @@ from fastapi import Response
 from fastapi import status
 from fastapi import UploadFile
 
+from demo.accounts.models import Account
 from demo.accounts.schemas import AccountCreate
 from demo.accounts.schemas import AccountSerializer
+from demo.accounts.schemas import AccountUpdate
 from demo.accounts.services import AccountService
 
-router = APIRouter()
+router = APIRouter(prefix='/accounts')
 
 
 def initialize_app(app: FastAPI) -> None:
     app.include_router(router)
 
 
-@router.post('/account')
+@router.post('', response_model=AccountSerializer, status_code=status.HTTP_201_CREATED)
 def create_account(
-    email: str = Form(...),
-    username: str = Form(...),
-    password: str = Form(),
+    account_create: AccountCreate,
     service: AccountService = Depends()
-):
-    service.create_account(
-        AccountCreate(
-            email=email,
-            username=username,
-            password=password,
-        )
-    )
-    return Response('CREATED', status_code=status.HTTP_201_CREATED)
+) -> Account:
+    return service.create_account(account_create)
 
 
-@router.get('/accounts', response_model=list[AccountSerializer])
-def get_accounts(service: AccountService = Depends()):
+@router.get('', response_model=list[AccountSerializer])
+def get_accounts(service: AccountService = Depends()) -> list[Account]:
     return service.get_accounts()
 
 
-@router.get('/accounts/{account_id}', response_model=AccountSerializer)
-def get_account( account_id: int, service: AccountService = Depends()):
+@router.get('/{account_id}', response_model=AccountSerializer)
+def get_account(account_id: int, service: AccountService = Depends()) -> Account:
     return service.get_account(account_id)
 
 
-@router.patch('/accounts/{account_id}', response_model=AccountSerializer)
+@router.patch('/{account_id}', response_model=AccountSerializer)
 def edit_account(
     account_id: int,
-    first_name: str | None = Form(None),
-    last_name: str | None = Form(None),
-    avatar: UploadFile | None = File(None),
+    account_update: AccountUpdate,
     service: AccountService = Depends(),
+) -> Account:
+    return service.update_account(account_id, account_update)
+
+
+@router.put('/{account_id}/avatar', response_model=AccountSerializer, status_code=status.HTTP_202_ACCEPTED)
+def update_account_avatar(
+    account_id: int,
+    avatar: UploadFile = File(),
+    service: AccountService = Depends()
 ):
-    from demo.accounts.schemas import AccountUpdate
-    service.update_account(
-        id_=account_id,
-        account_update=AccountUpdate(
-            first_name=first_name,
-            last_name=last_name,
-            avatar=avatar,
-        )
-    )
-    return Response(status_code=status.HTTP_202_ACCEPTED)
+    return service.update_account_avatar(account_id, avatar)
