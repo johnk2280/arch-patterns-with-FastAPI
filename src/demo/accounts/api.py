@@ -20,7 +20,7 @@ def initialize_app(app: FastAPI) -> None:
     app.include_router(router)
 
 
-@router.post('', response_model=AccountSerializer)
+@router.post('', response_model=AccountSerializer, status_code=status.HTTP_201_CREATED)
 def create_account(
     account_create: AccountCreate,
     service: AccountService = Depends()
@@ -48,11 +48,10 @@ def edit_account(
     return service.update_account(account_id, account_update)
 
 
-@router.put('/{account_id}/avatar')
+@router.put('/{account_id}/avatar', response_model=AccountSerializer, status_code=status.HTTP_202_ACCEPTED)
 def update_account_avatar(
     account_id: int,
     avatar: UploadFile = File(),
     service: AccountService = Depends()
 ):
-    service.update_account_avatar(account_id, avatar)
-    return Response(status_code=status.HTTP_202_ACCEPTED)
+    return service.update_account_avatar(account_id, avatar)
