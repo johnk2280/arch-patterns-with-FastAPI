@@ -29,6 +29,6 @@ class AccountCreate(BaseModel):
 class AccountUpdate(BaseModel):
     first_name: str | None
     last_name: str | None
-    avatar: UploadFile | None
+    # avatar: UploadFile | None
 
 

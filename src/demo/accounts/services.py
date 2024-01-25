@@ -4,6 +4,7 @@ from dynaconf import Dynaconf
 from fastapi import Depends
 from fastapi import HTTPException
 from fastapi import status
+from fastapi import UploadFile
 from passlib.hash import pbkdf2_sha256
 from sqlalchemy.exc import IntegrityError
 
@@ -81,3 +82,6 @@ class AccountService:
             account.avatar = file_url
 
         self.session.commit()
+
+    def update_account_avatar(self, id_: int, avatar_url: UploadFile) -> None:
+        pass

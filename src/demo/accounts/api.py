@@ -38,6 +38,7 @@ def get_account(account_id: int, service: AccountService = Depends()):
     return service.get_account(account_id)
 
 
+# TODO: разобраться и доработать
 @router.patch('/{account_id}', response_model=AccountSerializer)
 def edit_account(
     account_id: int,
@@ -56,4 +57,14 @@ def edit_account(
         )
     )
     # service.update_account(account_id, account_update)
+    return Response(status_code=status.HTTP_202_ACCEPTED)
+
+
+@router.put('/{account_id}/avatar')
+def update_account_avatar(
+    account_id: int,
+    avatar: UploadFile = File(),
+    service: AccountService = Depends()
+):
+    service.update_account_avatar(account_id, avatar)
     return Response(status_code=status.HTTP_202_ACCEPTED)
