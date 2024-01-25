@@ -38,7 +38,6 @@ def get_account(account_id: int, service: AccountService = Depends()) -> Account
     return service.get_account(account_id)
 
 
-# TODO: разобраться и доработать
 @router.patch('/{account_id}', response_model=AccountSerializer)
 def edit_account(
     account_id: int,
