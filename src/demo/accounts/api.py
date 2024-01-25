@@ -9,6 +9,7 @@ from fastapi import UploadFile
 
 from demo.accounts.schemas import AccountCreate
 from demo.accounts.schemas import AccountSerializer
+from demo.accounts.schemas import AccountUpdate
 from demo.accounts.services import AccountService
 
 router = APIRouter(prefix='/accounts')
@@ -20,18 +21,10 @@ def initialize_app(app: FastAPI) -> None:
 
 @router.post('')
 def create_account(
-    email: str = Form(...),
-    username: str = Form(...),
-    password: str = Form(),
+    account_create: AccountCreate,
     service: AccountService = Depends()
 ):
-    service.create_account(
-        AccountCreate(
-            email=email,
-            username=username,
-            password=password,
-        )
-    )
+    service.create_account(account_create)
     return Response('CREATED', status_code=status.HTTP_201_CREATED)
 
 
@@ -41,19 +34,19 @@ def get_accounts(service: AccountService = Depends()):
 
 
 @router.get('/{account_id}', response_model=AccountSerializer)
-def get_account( account_id: int, service: AccountService = Depends()):
+def get_account(account_id: int, service: AccountService = Depends()):
     return service.get_account(account_id)
 
 
 @router.patch('/{account_id}', response_model=AccountSerializer)
 def edit_account(
     account_id: int,
+    # account_update: AccountUpdate,
     first_name: str | None = Form(None),
     last_name: str | None = Form(None),
     avatar: UploadFile | None = File(None),
     service: AccountService = Depends(),
 ):
-    from demo.accounts.schemas import AccountUpdate
     service.update_account(
         id_=account_id,
         account_update=AccountUpdate(
@@ -62,4 +55,5 @@ def edit_account(
             avatar=avatar,
         )
     )
+    # service.update_account(account_id, account_update)
     return Response(status_code=status.HTTP_202_ACCEPTED)
