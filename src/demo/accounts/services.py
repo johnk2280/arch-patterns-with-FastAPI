@@ -55,7 +55,7 @@ class AccountService:
     def get_account(self, id_: int) -> Account:
         return self._get_account(id_)
 
-    def update_account(self, id_: int, account_update: AccountUpdate) -> None:
+    def update_account(self, id_: int, account_update: AccountUpdate) -> Account | Never:
         account = self._get_account(id_)
         if not account:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
@@ -65,24 +65,25 @@ class AccountService:
                 and not account_update.last_name
                 and not account_update.avatar
         ):
-            return
+            return account
 
         account.first_name = account_update.first_name or account.first_name
         account.last_name = account_update.last_name or account.last_name
 
-        if account_update.avatar:
-            filepath = BASE_DIR.joinpath(
-                self.settings.STATIC_DIR,
-                account_update.avatar.filename,
-            )
-            with filepath.open('wb') as file:
-                shutil.copyfileobj(account_update.avatar.file, file)
-
-            file_url = (f'{self.settings.STATIC_URL}/'
-                        f'{account_update.avatar.filename}')
-            account.avatar = file_url
+        # if account_update.avatar:
+        #     filepath = BASE_DIR.joinpath(
+        #         self.settings.STATIC_DIR,
+        #         account_update.avatar.filename,
+        #     )
+        #     with filepath.open('wb') as file:
+        #         shutil.copyfileobj(account_update.avatar.file, file)
+        #
+        #     file_url = (f'{self.settings.STATIC_URL}/'
+        #                 f'{account_update.avatar.filename}')
+        #     account.avatar = file_url
 
         self.session.commit()
+        return account
 
     def update_account_avatar(self, id_: int, avatar_url: UploadFile) -> None:
         pass
