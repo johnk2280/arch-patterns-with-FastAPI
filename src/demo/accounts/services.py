@@ -1,4 +1,5 @@
 import shutil
+from typing import Never
 
 from dynaconf import Dynaconf
 from fastapi import Depends
@@ -26,16 +27,16 @@ class AccountService:
         self.session = session
         self.settings = settings
 
-    def create_account(self, account: AccountCreate) -> None:
-        self.session.add(
-            Account(
-                email=account.email,
-                username=account.username,
-                password=pbkdf2_sha256.hash(account.password),
-            )
+    def create_account(self, account: AccountCreate) -> Account | Never:
+        new_account = Account(
+            email=account.email,
+            username=account.username,
+            password=pbkdf2_sha256.hash(account.password),
         )
+        self.session.add(new_account)
         try:
             self.session.commit()
+            return new_account
         except IntegrityError:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT)
 

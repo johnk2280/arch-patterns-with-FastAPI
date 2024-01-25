@@ -19,13 +19,13 @@ def initialize_app(app: FastAPI) -> None:
     app.include_router(router)
 
 
-@router.post('')
+@router.post('', response_model=AccountSerializer)
 def create_account(
     account_create: AccountCreate,
     service: AccountService = Depends()
 ):
-    service.create_account(account_create)
-    return Response('CREATED', status_code=status.HTTP_201_CREATED)
+    account = service.create_account(account_create)
+    return account
 
 
 @router.get('', response_model=list[AccountSerializer])
@@ -42,21 +42,21 @@ def get_account(account_id: int, service: AccountService = Depends()):
 @router.patch('/{account_id}', response_model=AccountSerializer)
 def edit_account(
     account_id: int,
-    # account_update: AccountUpdate,
-    first_name: str | None = Form(None),
-    last_name: str | None = Form(None),
-    avatar: UploadFile | None = File(None),
+    account_update: AccountUpdate,
+    # first_name: str | None = Form(None),
+    # last_name: str | None = Form(None),
+    # avatar: UploadFile | None = File(None),
     service: AccountService = Depends(),
 ):
-    service.update_account(
-        id_=account_id,
-        account_update=AccountUpdate(
-            first_name=first_name,
-            last_name=last_name,
-            avatar=avatar,
-        )
-    )
-    # service.update_account(account_id, account_update)
+    # service.update_account(
+    #     id_=account_id,
+    #     account_update=AccountUpdate(
+    #         first_name=first_name,
+    #         last_name=last_name,
+    #         avatar=avatar,
+    #     )
+    # )
+    service.update_account(account_id, account_update)
     return Response(status_code=status.HTTP_202_ACCEPTED)
 
 
