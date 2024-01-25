@@ -11,14 +11,14 @@ from demo.accounts.schemas import AccountCreate
 from demo.accounts.schemas import AccountSerializer
 from demo.accounts.services import AccountService
 
-router = APIRouter()
+router = APIRouter(prefix='/accounts')
 
 
 def initialize_app(app: FastAPI) -> None:
     app.include_router(router)
 
 
-@router.post('/account')
+@router.post('')
 def create_account(
     email: str = Form(...),
     username: str = Form(...),
@@ -35,17 +35,17 @@ def create_account(
     return Response('CREATED', status_code=status.HTTP_201_CREATED)
 
 
-@router.get('/accounts', response_model=list[AccountSerializer])
+@router.get('', response_model=list[AccountSerializer])
 def get_accounts(service: AccountService = Depends()):
     return service.get_accounts()
 
 
-@router.get('/accounts/{account_id}', response_model=AccountSerializer)
+@router.get('/{account_id}', response_model=AccountSerializer)
 def get_account( account_id: int, service: AccountService = Depends()):
     return service.get_account(account_id)
 
 
-@router.patch('/accounts/{account_id}', response_model=AccountSerializer)
+@router.patch('/{account_id}', response_model=AccountSerializer)
 def edit_account(
     account_id: int,
     first_name: str | None = Form(None),
