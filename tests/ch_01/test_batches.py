@@ -1,8 +1,8 @@
 from datetime import date
 
-from ch_01.model import Batch
-from ch_01.model import make_batch_and_line
-from ch_01.model import OrderLine
+from ch_02.model import Batch
+from ch_02.model import make_batch_and_line
+from ch_02.model import OrderLine
 
 
 def test_allocate_to_a_batch_reduces_the_available_quantity():
