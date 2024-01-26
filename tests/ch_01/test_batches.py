@@ -37,3 +37,10 @@ def test_cannot_allocate_if_skus_do_not_match():
     batch = Batch('batch-001', 'UNCOMFORTABLE-CHAIR', 100)
     line = OrderLine('order-123', 'ELEGANT_LAMP', 20)
     assert batch.can_allocate(line) is False
+
+
+def test_can_only_deallocate_allocated_lines():
+    batch, line = make_batch_and_line('DECORATIVE-TRINKET', 20, 2)
+    batch.deallocate(line)
+    assert batch.available_quantity == 20
+
