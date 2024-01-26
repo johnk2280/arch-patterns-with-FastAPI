@@ -36,4 +36,4 @@ def test_can_allocate_if_available_equal_then_required():
 def test_cannot_allocate_if_skus_do_not_match():
     batch = Batch('batch-001', 'UNCOMFORTABLE-CHAIR', 100)
     line = OrderLine('order-123', 'ELEGANT_LAMP', 20)
-    assert batch.can_allocate(line) is True
+    assert batch.can_allocate(line) is False
