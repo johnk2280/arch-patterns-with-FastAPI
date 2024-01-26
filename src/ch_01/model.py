@@ -40,6 +40,15 @@ class Batch:
     def __hash__(self) -> int:
         return hash(self.reference)
 
+    def __gt__(self, other: 'Batch') -> bool:
+        if self.eta is None:
+            return False
+
+        if other.eta is None:
+            return True
+
+        return self.eta > other.eta
+
     def allocate(self, line: OrderLine) -> None:
         if self.can_allocate(line):
             self._allocations.add(line)
@@ -73,4 +82,6 @@ def make_batch_and_line(
 
 # Служба модели предметной области (бизнес-процесс)
 def allocate(line: OrderLine, batches: list[Batch]) -> str:
-    pass
+    batch = next(batch for batch in sorted(batches) if batch.can_allocate(line))
+    batch.allocate(line)
+    return batch.reference
