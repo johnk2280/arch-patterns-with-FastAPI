@@ -1,5 +1,6 @@
 import datetime
 from dataclasses import dataclass
+from typing import Any
 
 
 @dataclass(frozen=True, slots=True)
@@ -29,6 +30,15 @@ class Batch:
                 f' sku={self.sku!r},'
                 f' eta={self.eta!r}'
                 f')')
+
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, Batch):
+            return self.reference == other.reference
+
+        return False
+
+    def __hash__(self) -> int:
+        return hash(self.reference)
 
     def allocate(self, line: OrderLine) -> None:
         if self.can_allocate(line):
