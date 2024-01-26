@@ -3,6 +3,10 @@ from dataclasses import dataclass
 from typing import Any
 
 
+class OutOfStockError(Exception):
+    pass
+
+
 @dataclass(frozen=True, slots=True)
 class OrderLine:
     order_id: str
@@ -82,6 +86,11 @@ def make_batch_and_line(
 
 # Служба модели предметной области (бизнес-процесс)
 def allocate(line: OrderLine, batches: list[Batch]) -> str:
-    batch = next(batch for batch in sorted(batches) if batch.can_allocate(line))
-    batch.allocate(line)
-    return batch.reference
+    try:
+        batch = next(
+            batch for batch in sorted(batches) if batch.can_allocate(line)
+        )
+        batch.allocate(line)
+        return batch.reference
+    except StopIteration:
+        raise OutOfStockError(f'Артикула {line.sku} нет в наличии')
