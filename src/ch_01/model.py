@@ -69,3 +69,8 @@ def make_batch_and_line(
         Batch('batch-001', sku, batch_qty, eta=datetime.date.today()),
         OrderLine('order-123', sku, line_qty)
     )
+
+
+# Служба модели предметной области (бизнес-процесс)
+def allocate(line: OrderLine, batches: list[Batch]) -> str:
+    pass
