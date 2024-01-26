@@ -23,6 +23,13 @@ class Batch:
         self._purchased_quantity = qty
         self._allocations = set[OrderLine]()
 
+    def __repr__(self) -> str:
+        return (f'{self.__class__.__name__}('
+                f'ref={self.reference!r},'
+                f' sku={self.sku!r},'
+                f' eta={self.eta!r}'
+                f')')
+
     def allocate(self, line: OrderLine) -> None:
         if self.can_allocate(line):
             self._allocations.add(line)
@@ -52,4 +59,3 @@ def make_batch_and_line(
         Batch('batch-001', sku, batch_qty, eta=datetime.date.today()),
         OrderLine('order-123', sku, line_qty)
     )
-
