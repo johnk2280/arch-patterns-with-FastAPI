@@ -1,6 +1,7 @@
 from datetime import date
 
 from ch_01.model import Batch
+from ch_01.model import make_batch_and_line
 from ch_01.model import OrderLine
 
 
@@ -16,3 +17,23 @@ def test_allocate_to_a_batch_reduces_the_available_quantity():
 
     assert batch.available_quantity == 18
 
+
+def test_can_allocate_if_available_greater_then_required():
+    large_batch, small_line = make_batch_and_line('ELEGANT_LAMP', 20, 2)
+    assert large_batch.can_allocate(small_line) is True
+
+
+def test_cannot_allocate_if_available_smaller_then_required():
+    large_batch, small_line = make_batch_and_line('ELEGANT_LAMP', 2, 20)
+    assert large_batch.can_allocate(small_line) is False
+
+
+def test_can_allocate_if_available_equal_then_required():
+    large_batch, small_line = make_batch_and_line('ELEGANT_LAMP', 20, 20)
+    assert large_batch.can_allocate(small_line) is True
+
+
+def test_cannot_allocate_if_skus_do_not_match():
+    batch = Batch('batch-001', 'UNCOMFORTABLE-CHAIR', 100)
+    line = OrderLine('order-123', 'ELEGANT_LAMP', 20)
+    assert batch.can_allocate(line) is True
