@@ -29,6 +29,3 @@ def start_mappers() -> None:
     lines_mapper: Mapper = mapper_registry.map_imperatively(OrderLine, order_lines)
     print(lines_mapper)
 
-
-if __name__ == '__main__':
-    start_mappers()
