@@ -13,7 +13,7 @@ def test_order_line_mapper_can_load_lines(session: Session):
             '("order-3", "BLUE-LIPSTICK", 14) '
         ),
     )
-
+    # TODO: TypeError: cannot create weak reference to 'OrderLine' object
     expected = [
         OrderLine('order-1', 'RED-CHAIR', 12),
         OrderLine('order-2', 'RED-TABLE', 13),
