@@ -26,6 +26,6 @@ def start_mappers() -> None:
     see more about 'classical mapping':
     https://docs.sqlalchemy.org/en/20/orm/mapping_styles.html#classical-mappings
     """
+
     lines_mapper: Mapper = mapper_registry.map_imperatively(OrderLine, order_lines)
-    print(lines_mapper)
 
