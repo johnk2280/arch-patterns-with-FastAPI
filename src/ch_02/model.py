@@ -7,7 +7,7 @@ class OutOfStockError(Exception):
     pass
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(unsafe_hash=True)
 class OrderLine:
     order_id: str
     sku: str

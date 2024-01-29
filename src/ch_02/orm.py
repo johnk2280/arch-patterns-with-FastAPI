@@ -9,6 +9,8 @@ from sqlalchemy.orm import registry
 from ch_02.model import OrderLine
 
 metadata = MetaData()
+
+# mapper_registry = registry(metadata=metadata)
 mapper_registry = registry()
 
 order_lines = Table(
