@@ -21,7 +21,7 @@ class SQLAlchemyRepository(AbstractRepository):
         self.session = session
 
     def add(self, batch: Batch) -> None:
-        pass
+        self.session.add(batch)
 
     def get(self, reference) -> Batch:
         pass
