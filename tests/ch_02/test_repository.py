@@ -33,3 +33,21 @@ def insert_order_line(session: Session) -> str:
         dict(orderid="order1", sku="GENERIC-SOFA"),
     )
     return order_line_id
+
+
+def insert_batch(session: Session, batch_id: str) -> str:
+    session.execute(
+        text(
+            "INSERT INTO batches (reference, sku, _purchased_quantity, eta)"
+            ' VALUES (:batch_id, "GENERIC-SOFA", 100, null)',
+        ),
+        dict(batch_id=batch_id),
+    )
+    [[batch_id]] = session.execute(
+        text(
+            'SELECT id FROM batches WHERE reference=:batch_id AND '
+            'sku="GENERIC-SOFA"',
+        ),
+        dict(batch_id=batch_id),
+    )
+    return batch_id
