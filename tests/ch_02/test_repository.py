@@ -1,7 +1,7 @@
-from sqlalchemy import insert
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
+from ch_02.model import Batch
 from ch_02.model import OrderLine
 from ch_02.repository import SQLAlchemyRepository
 
@@ -22,15 +22,15 @@ def test_repository_can_save_a_batch(session: Session):
 def insert_order_line(session: Session) -> str:
     session.execute(
         text(
-            'INSERT INTO order_lines (orderid, sku, qty)'
+            'INSERT INTO order_lines (order_id, sku, qty)'
             ' VALUES ("order1", "GENERIC-SOFA", 12)',
         ),
     )
     [[order_line_id]] = session.execute(
         text(
-            "SELECT id FROM order_lines WHERE orderid=:orderid AND sku=:sku",
+            "SELECT id FROM order_lines WHERE order_id=:order_id AND sku=:sku",
         ),
-        dict(orderid="order1", sku="GENERIC-SOFA"),
+        dict(order_id="order1", sku="GENERIC-SOFA"),
     )
     return order_line_id
 
@@ -65,3 +65,22 @@ def insert_allocation(
         ),
         dict(orderline_id=order_line_id, batch_id=batch_id),
     )
+
+
+def test_repository_can_retrieve_a_batch_with_allocations(session: Session):
+    order_line_id = insert_order_line(session)
+    batch_id_1 = insert_batch(session, 'batch-1')
+    insert_batch(session, 'batch-2')
+    insert_allocation(session, order_line_id, batch_id_1)
+
+    repo = SQLAlchemyRepository(session)
+    retrieved = repo.get('batch-1')
+
+    expected = Batch(batch_id_1, 'GENERIC-SOFA', 100)
+
+    assert retrieved == expected
+    assert retrieved.sku == expected.sku
+    assert retrieved._purchased_quantity == expected._purchased_quantity
+    assert retrieved._allocations == [
+        OrderLine('order1', 'GENERIC-SOFA', 12)
+    ]
