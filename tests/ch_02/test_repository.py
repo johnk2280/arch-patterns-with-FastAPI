@@ -51,3 +51,17 @@ def insert_batch(session: Session, batch_id: str) -> str:
         dict(batch_id=batch_id),
     )
     return batch_id
+
+
+def insert_allocation(
+    session: Session,
+    order_line_id: str,
+    batch_id: str,
+) -> None:
+    session.execute(
+        text(
+            "INSERT INTO allocations (orderline_id, batch_id)"
+            " VALUES (:orderline_id, :batch_id)",
+        ),
+        dict(orderline_id=order_line_id, batch_id=batch_id),
+    )
