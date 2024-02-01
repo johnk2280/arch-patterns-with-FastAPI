@@ -15,7 +15,6 @@ class OrderLine:
 
 
 class Batch:
-
     def __init__(
         self,
         ref: str,
