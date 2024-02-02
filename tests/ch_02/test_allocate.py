@@ -3,10 +3,10 @@ from datetime import timedelta
 
 import pytest
 
-from ch_02.model import allocate
-from ch_02.model import Batch
-from ch_02.model import OrderLine
-from ch_02.model import OutOfStockError
+from ch_03.model import allocate
+from ch_03.model import Batch
+from ch_03.model import OrderLine
+from ch_03.model import OutOfStockError
 
 TODAY = date.today()
 TOMORROW = TODAY + timedelta(days=1)
@@ -49,11 +49,3 @@ def test_raises_out_of_stock_exception_if_cannot_allocate():
     with pytest.raises(OutOfStockError, match='SMALL_FORK'):
         line_2 = OrderLine('order-02', 'SMALL_FORK', 25)
         allocate(line_2, [batch])
-
-
-
-
-
-
-
-

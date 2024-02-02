@@ -1,9 +1,9 @@
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
-from ch_02.model import Batch
-from ch_02.model import OrderLine
-from ch_02.repository import SQLAlchemyRepository
+from ch_03.model import Batch
+from ch_03.model import OrderLine
+from ch_03.repository import SQLAlchemyRepository
 
 
 def test_repository_can_save_a_batch(session: Session):
