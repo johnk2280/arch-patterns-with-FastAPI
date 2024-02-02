@@ -5,7 +5,7 @@ from typing import TypeVar
 
 from sqlalchemy.orm import Session
 
-from ch_02.model import Batch
+from ch_03.model import Batch
 
 T = TypeVar('T')
 

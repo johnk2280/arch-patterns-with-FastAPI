@@ -9,8 +9,8 @@ from sqlalchemy.orm import Mapper
 from sqlalchemy.orm import registry
 from sqlalchemy.orm import relationship
 
-from ch_02.model import Batch
-from ch_02.model import OrderLine
+from ch_03.model import Batch
+from ch_03.model import OrderLine
 
 metadata = MetaData()
 
