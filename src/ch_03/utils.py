@@ -1,6 +1,5 @@
 import hashlib
 import os
-import shutil
 from collections.abc import Callable
 from collections.abc import Generator
 from pathlib import Path
@@ -157,6 +156,10 @@ class FakeFileSystem(FileSystemProtocol):
     def delete(self, dest: Path) -> None:
         self._commands.append(('DELETE', dest, Path('')))
 
+    @property
+    def commands(self) -> list[tuple[CommandTypes, Path, Path]]:
+        return self._commands
+
 
 def sync(
     reader: Callable[[str], dict[str, str]],
@@ -175,15 +178,15 @@ def sync(
         if sha not in dest_hashes:
             source_path = Path(source) / filename
             dest_path = Path(dest) / filename
-            yield 'COPY', source_path, dest_path
+            filesystem.copy(source_path, dest_path)
 
         # Если в целевой папке имеется файл, который имеет другой путь
         elif dest_hashes[sha] != filename:
             old_dest_path = Path(dest) / dest_hashes[sha]
             new_dest_path = Path(dest) / filename
-            yield 'MOVE', old_dest_path, new_dest_path
+            filesystem.move(old_dest_path, new_dest_path)
 
     # Если в целевой папке имеется файл, который отсутствует в источнике
     for sha, filename in dest_hashes.items():
         if sha not in source_hashes:
-            yield 'DELETE', dest / filename, ''
+            filesystem.delete(Path(dest) / filename)
