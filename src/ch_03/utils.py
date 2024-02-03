@@ -17,9 +17,13 @@ def hash_file(path: Path) -> str:
     return hasher.hexdigest()
 
 
-# TODO: реализовать
-def read_path_and_hashes(dest: str) -> dict[str, str]:
-    pass
+def read_path_and_hashes(root: str) -> dict[str, str]:
+    hashes = {}
+    for folder, _, files in os.walk(root):
+        for file in files:
+            hashes[hash_file(Path(folder, file))] = file
+
+    return hashes
 
 
 # TODO: реализовать
