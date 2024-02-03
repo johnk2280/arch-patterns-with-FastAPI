@@ -4,6 +4,7 @@ import shutil
 from collections.abc import Callable
 from collections.abc import Generator
 from pathlib import Path
+from typing import Literal
 from typing import Protocol
 
 BLOCK_SIZE = 65536
@@ -133,14 +134,29 @@ class HasMove(Protocol):
 
 
 class HasDelete(Protocol):
-    def delete(self, src: Path, dest: Path) -> None: ...
+    def delete(self, dest: Path) -> None: ...
 
 
 class FileSystemProtocol(HasCopy, HasMove, HasDelete, Protocol):
     ...
 
 
-class FakeFileSystem(FileSystemProtocol): ...
+CommandTypes = Literal['COPY', 'MOVE', 'DELETE']
+
+
+class FakeFileSystem(FileSystemProtocol):
+    def __init__(self) -> None:
+        self._commands: list[tuple[CommandTypes, Path, Path]] = []
+
+    def copy(self, src: Path, dest: Path) -> None:
+        self._commands.append(('COPY', src, dest))
+
+    def move(self, src: Path, dest: Path) -> None:
+        self._commands.append(('MOVE', src, dest))
+
+    def delete(self, dest: Path) -> None:
+        self._commands.append(('DELETE', dest, Path('')))
+
 
 def sync(
     reader: Callable[[str], dict[str, str]],
@@ -171,4 +187,3 @@ def sync(
     for sha, filename in dest_hashes.items():
         if sha not in source_hashes:
             yield 'DELETE', dest / filename, ''
-
