@@ -17,6 +17,7 @@ passlib = "^1.7.4"
 alembic = "^1.13.1"
 mypy = "^1.8.0"
 ruff = "^0.1.14"
+pydantic-settings = "^2.1.0"
 
 [tool.poetry.dev-dependencies]
 
