@@ -9,7 +9,7 @@ from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import Mapper
 from sqlalchemy.orm import relationship
 
-from ch_03.database import Base
+from .database import Base
 
 IntPK = Annotated[int, mapped_column(primary_key=True)]
 AllocationsFK = Annotated[int, mapped_column(

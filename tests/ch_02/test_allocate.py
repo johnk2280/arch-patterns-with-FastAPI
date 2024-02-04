@@ -3,10 +3,10 @@ from datetime import timedelta
 
 import pytest
 
-from ch_03.model import allocate
-from ch_03.model import Batch
-from ch_03.model import OrderLine
-from ch_03.model import OutOfStockError
+from domain.model import allocate
+from domain.model import Batch
+from domain.model import OrderLine
+from domain.model import OutOfStockError
 
 TODAY = date.today()
 TOMORROW = TODAY + timedelta(days=1)

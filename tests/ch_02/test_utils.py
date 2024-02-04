@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from ch_03.utils import FakeFileSystem
-from ch_03.utils import sync
+from src.utils import FakeFileSystem
+from src.utils import sync
 
 
 def test_when_a_file_exists_int_the_source_but_not_in_destination():
