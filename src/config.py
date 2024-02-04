@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from pydantic import Field
 from pydantic_settings import BaseSettings
 
@@ -18,3 +20,12 @@ class DatabaseSettings(BaseSettings):
 
     def __repr__(self) -> str:
         return f'<{self.__class__.__name__}(db_name={self.DB_NAME})>'
+
+
+class Settings(BaseSettings):
+    BASE_DIR: Path = Path(__file__).resolve().parent.parent
+    database: DatabaseSettings = DatabaseSettings()
+
+
+settings = Settings()
+
