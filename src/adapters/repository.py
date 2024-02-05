@@ -11,6 +11,7 @@ T = TypeVar('T')
 
 
 class AbstractRepository(ABC, Generic[T]):
+
     @abstractmethod
     def add(self, item: T) -> None:
         pass
@@ -25,6 +26,7 @@ class AbstractRepository(ABC, Generic[T]):
 
 
 class SQLAlchemyRepository(AbstractRepository[Batch]):
+
     def __init__(self, session: Session) -> None:
         self.session = session
 
@@ -39,6 +41,7 @@ class SQLAlchemyRepository(AbstractRepository[Batch]):
 
 
 class FakeRepository(AbstractRepository[Batch]):
+
     def __init__(self, batches: list[Batch]) -> None:
         self._batches = set(batches)
 
