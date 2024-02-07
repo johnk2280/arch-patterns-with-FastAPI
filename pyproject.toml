@@ -15,9 +15,9 @@ dynaconf = "^3.2.4"
 aiofiles = "^23.2.1"
 passlib = "^1.7.4"
 alembic = "^1.13.1"
-mypy = "^1.8.0"
-ruff = "^0.1.14"
 pydantic-settings = "^2.1.0"
+asyncpg = "^0.29.0"
+greenlet = "^3.0.3"
 
 [tool.poetry.dev-dependencies]
 
@@ -25,6 +25,8 @@ pydantic-settings = "^2.1.0"
 pytest = "^7.4.4"
 requests = "^2.31.0"
 httpx = "^0.26.0"
+ruff = "^0.2.1"
+mypy = "^1.8.0"
 
 [build-system]
 requires = ["poetry-core"]

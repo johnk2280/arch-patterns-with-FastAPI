@@ -3,7 +3,7 @@ from collections.abc import Iterable
 from fastapi import APIRouter
 from fastapi import FastAPI
 
-from infrastructure.rest_api import router as batch_router
+from infrastructure.rest_api import batch_router
 
 
 def create(routers: Iterable[APIRouter]) -> FastAPI:
