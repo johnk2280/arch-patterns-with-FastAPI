@@ -3,6 +3,8 @@ from collections.abc import Iterable
 from fastapi import APIRouter
 from fastapi import FastAPI
 
+from infrastructure.rest_api import router as batch_router
+
 
 def create(routers: Iterable[APIRouter]) -> FastAPI:
     """FastAPI application factory."""
@@ -14,4 +16,4 @@ def create(routers: Iterable[APIRouter]) -> FastAPI:
     return application
 
 
-app = create([APIRouter()])
+app = create([batch_router])

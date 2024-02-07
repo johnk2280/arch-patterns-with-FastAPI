@@ -14,9 +14,9 @@ class DatabaseSettings(BaseSettings):
     @property
     def url(self) -> str:
         return (f'postgresql+asyncpg://'
-                f'{self.user}:{self.password}@'
-                f'{self.host}:{self.port}/'
-                f'{self.name}')
+                f'{self.DB_USER}:{self.DB_PASS}@'
+                f'{self.DB_HOST}:{self.DB_PORT}/'
+                f'{self.DB_NAME}')
 
     def __repr__(self) -> str:
         return f'<{self.__class__.__name__}(db_name={self.DB_NAME})>'
