@@ -5,8 +5,8 @@ from sqlalchemy import Column
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
 from sqlalchemy import Table
+from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
-from sqlalchemy.orm import Mapper
 from sqlalchemy.orm import relationship
 
 from .database import Base
@@ -28,11 +28,11 @@ allocations = Table(
 class OrderLine(Base):
     __tablename__ = 'order_lines'
 
-    id: Mapper[IntPK]
-    sku: Mapper[str]
-    qty: Mapper[int]
-    order_id: Mapper[str]
-    batches: Mapper[list['Batch']] = relationship(
+    id: Mapped[IntPK]
+    sku: Mapped[str]
+    qty: Mapped[int]
+    order_id: Mapped[str]
+    batches: Mapped[list['Batch']] = relationship(
         secondary=allocations,
         back_populates='_allocations',
     )
@@ -41,12 +41,12 @@ class OrderLine(Base):
 class Batch(Base):
     __tablename__ = 'batches'
 
-    id: Mapper[IntPK]
-    reference: Mapper[str]
-    sku: Mapper[str]
-    eta: Mapper[datetime.date | None]
-    _purchased_quantity: Mapper[int]
-    _allocations: Mapper[set[int]] = relationship(
+    id: Mapped[IntPK]
+    reference: Mapped[str]
+    sku: Mapped[str]
+    eta: Mapped[datetime.date | None]
+    _purchased_quantity: Mapped[int]
+    _allocations: Mapped[set[int]] = relationship(
         secondary=allocations,
         collection_class=set,
         back_populates='batches',

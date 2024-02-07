@@ -9,11 +9,10 @@ from config import settings
 
 engine = create_async_engine(
     settings.database.url,
-    # future=True,
+    future=True,
+    echo=True,
     # pool_pre_ping=True,
-    # echo=False,
 )
-
 Session = async_sessionmaker(
     engine,
     expire_on_commit=False,
