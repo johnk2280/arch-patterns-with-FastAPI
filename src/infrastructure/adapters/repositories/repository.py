@@ -1,3 +1,5 @@
+from typing import Any
+
 from sqlalchemy.orm import Session
 
 from domain.model import Batch
@@ -5,6 +7,7 @@ from service_layer.ports import AbstractRepository
 
 
 class BatchRepository(AbstractRepository[Batch, Session]):
+    model_class = Batch
 
     def __init__(self, session: Session) -> None:
         super().__init__(session)
@@ -19,7 +22,7 @@ class BatchRepository(AbstractRepository[Batch, Session]):
         return self.session.query(Batch).all()
 
 
-class FakeRepository(AbstractRepository[Batch]):
+class FakeRepository(AbstractRepository[Batch, Any]):
 
     def __init__(self, batches: list[Batch]) -> None:
         super().__init__('')
