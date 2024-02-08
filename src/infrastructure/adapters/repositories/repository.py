@@ -1,17 +1,13 @@
-from abc import ABC
-from abc import abstractmethod
-from typing import Generic
-from typing import TypeVar
-
 from sqlalchemy.orm import Session
 
 from domain.model import Batch
+from service_layer.ports import AbstractRepository
 
 
-class SQLAlchemyRepository(AbstractRepository[Batch]):
+class BatchRepository(AbstractRepository[Batch, Session]):
 
     def __init__(self, session: Session) -> None:
-        self.session = session
+        super().__init__(session)
 
     def add(self, batch: Batch) -> None:
         self.session.add(batch)
@@ -26,6 +22,7 @@ class SQLAlchemyRepository(AbstractRepository[Batch]):
 class FakeRepository(AbstractRepository[Batch]):
 
     def __init__(self, batches: list[Batch]) -> None:
+        super().__init__('')
         self._batches = set(batches)
 
     def add(self, item: Batch) -> None:

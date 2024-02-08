@@ -1,4 +1,4 @@
-from service_layer.ports.repository import AbstractRepository
+from .repository import AbstractRepository
 
 __all__ = [
     'AbstractRepository',
