@@ -7,23 +7,6 @@ from sqlalchemy.orm import Session
 
 from domain.model import Batch
 
-T = TypeVar('T')
-
-
-class AbstractRepository(ABC, Generic[T]):
-
-    @abstractmethod
-    def add(self, item: T) -> None:
-        pass
-
-    @abstractmethod
-    def get(self, reference: str) -> T:
-        pass
-
-    @abstractmethod
-    def list(self) -> list[T]:
-        pass
-
 
 class SQLAlchemyRepository(AbstractRepository[Batch]):
 
