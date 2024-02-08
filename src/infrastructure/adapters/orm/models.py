@@ -25,6 +25,7 @@ allocations = Table(
 )
 
 
+# TODO: Разобраться с моделями, куда их перевести и где и какие модели оставить.
 class OrderLine(Base):
     __tablename__ = 'order_lines'
 
