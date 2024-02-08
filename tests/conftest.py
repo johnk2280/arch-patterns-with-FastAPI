@@ -3,8 +3,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import clear_mappers
 from sqlalchemy.orm import sessionmaker
 
-from infrastructure.orm.orm import mapper_registry
-from infrastructure.orm.orm import start_mappers
+from infrastructure.adapters.orm.orm import mapper_registry
+from infrastructure.adapters.orm.orm import start_mappers
 
 
 @pytest.fixture
