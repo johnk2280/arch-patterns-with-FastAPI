@@ -10,9 +10,9 @@ from alembic import context
 
 from config import settings
 from infrastructure.adapters.orm import Base
-from infrastructure.adapters.orm import allocations  # noqa
-from infrastructure.adapters.orm import Batch  # noqa
-from infrastructure.adapters.orm import OrderLine  # noqa
+# from infrastructure.adapters.orm import allocations  # noqa
+# from infrastructure.adapters.orm import Batch  # noqa
+# from infrastructure.adapters.orm import OrderLine  # noqa
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

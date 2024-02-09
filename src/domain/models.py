@@ -5,13 +5,16 @@ from sqlalchemy import Column
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
 from sqlalchemy import Table
+from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 
-from .database import Base
-
 IntPK = Annotated[int, mapped_column(primary_key=True)]
+
+
+class Base(DeclarativeBase):
+    """Base class for SQLAlchemy models."""
 
 
 allocations = Table(

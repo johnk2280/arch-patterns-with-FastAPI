@@ -3,7 +3,6 @@ from collections.abc import AsyncGenerator
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine
-from sqlalchemy.orm import DeclarativeBase
 
 from config import settings
 
@@ -23,7 +22,3 @@ Session = async_sessionmaker(
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
     async with Session() as session:
         yield session
-
-
-class Base(DeclarativeBase):
-    """Base class for SQLAlchemy models."""
