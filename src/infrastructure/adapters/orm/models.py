@@ -12,9 +12,7 @@ from sqlalchemy.orm import relationship
 from .database import Base
 
 IntPK = Annotated[int, mapped_column(primary_key=True)]
-AllocationsFK = Annotated[int, mapped_column(
-    ForeignKey('allocations.id', ondelete='CASCADE'),
-)]
+
 
 allocations = Table(
     'allocations',
@@ -47,8 +45,7 @@ class Batch(Base):
     sku: Mapped[str]
     eta: Mapped[datetime.date | None]
     _purchased_quantity: Mapped[int]
-    _allocations: Mapped[set[int]] = relationship(
+    _allocations: Mapped[set['OrderLine']] = relationship(
         secondary=allocations,
-        collection_class=set,
         back_populates='batches',
     )
