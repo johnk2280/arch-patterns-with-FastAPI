@@ -1,5 +1,6 @@
 import datetime
 from typing import Annotated
+from typing import Any
 
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
@@ -26,7 +27,6 @@ allocations = Table(
 )
 
 
-# TODO: Разобраться с моделями, куда их перевести и где и какие модели оставить.
 class OrderLine(Base):
     __tablename__ = 'order_lines'
 
@@ -47,6 +47,7 @@ class OrderLine(Base):
                 f'order_id={self.order_id})>')
 
 
+# TODO: заменить модель Batch на эту модель и прогнать тесты
 class Batch(Base):
     __tablename__ = 'batches'
 
@@ -67,3 +68,40 @@ class Batch(Base):
                 f'sku={self.sku}, '
                 f'eta={self.eta}, '
                 f'_purchased_quantity={self._purchased_quantity})>')
+
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, Batch):
+            return self.reference == other.reference
+
+        return False
+
+    def __hash__(self) -> int:
+        return hash(self.reference)
+
+    def __gt__(self, other: 'Batch') -> bool:
+        if self.eta is None:
+            return False
+
+        if other.eta is None:
+            return True
+
+        return self.eta > other.eta
+
+    def allocate(self, line: OrderLine) -> None:
+        if self.can_allocate(line):
+            self._allocations.add(line)
+
+    def deallocate(self, line: OrderLine) -> None:
+        if line in self._allocations:
+            self._allocations.remove(line)
+
+    @property
+    def allocated_quantity(self) -> int:
+        return sum(line.qty for line in self._allocations)
+
+    @property
+    def available_quantity(self) -> int:
+        return self._purchased_quantity - self.allocated_quantity
+
+    def can_allocate(self, line: OrderLine) -> bool:
+        return self.sku == line.sku and self.available_quantity >= line.qty
