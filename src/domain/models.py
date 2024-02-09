@@ -36,6 +36,13 @@ class OrderLine(Base):
         back_populates='_allocations',
     )
 
+    def __repr__(self) -> str:
+        return (f'<OrderLine('
+                f'id={self.id}, '
+                f'sku={self.sku}, '
+                f'qty={self.qty}, '
+                f'order_id={self.order_id})>')
+
 
 class Batch(Base):
     __tablename__ = 'batches'
@@ -49,3 +56,11 @@ class Batch(Base):
         secondary=allocations,
         back_populates='batches',
     )
+
+    def __repr__(self) -> str:
+        return (f'<Batch('
+                f'id={self.id}, '
+                f'reference={self.reference}, '
+                f'sku={self.sku}, '
+                f'eta={self.eta}, '
+                f'_purchased_quantity={self._purchased_quantity})>')
