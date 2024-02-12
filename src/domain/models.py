@@ -49,6 +49,7 @@ class OrderLine(Base):
 
 # TODO: заменить модель Batch на эту модель и прогнать тесты
 class Batch(Base):
+
     __tablename__ = 'batches'
 
     id: Mapped[IntPK]
