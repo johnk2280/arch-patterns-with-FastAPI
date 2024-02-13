@@ -28,6 +28,7 @@ allocations = Table(
 
 
 class OrderLine(Base):
+
     __tablename__ = 'order_lines'
 
     id: Mapped[IntPK]
