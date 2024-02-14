@@ -11,7 +11,9 @@ router = APIRouter(prefix='', tags=['batches'])
 
 
 @router.get('/batches')
-async def get_batches(session: AsyncSession = Depends(get_async_session)):
+async def get_batches(
+    session: AsyncSession = Depends(get_async_session),
+):
     stmt = select(Batch)
     result = await session.execute(stmt)
     return result.mappings().all()
