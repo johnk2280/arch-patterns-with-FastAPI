@@ -8,6 +8,7 @@ from infrastructure.rest_api import batch_router
 
 def create(routers: Iterable[APIRouter]) -> FastAPI:
     """FastAPI application factory."""
+
     application = FastAPI()
 
     for router in routers:
