@@ -63,6 +63,20 @@ class Batch(Base):
         back_populates='batches',
     )
 
+    # TODO: пересмотреть
+    def __init__(
+        self,
+        ref: str,
+        sku: str,
+        qty: int,
+        eta: datetime.date | None = None
+    ) -> None:
+        self.reference = ref
+        self.sku = sku
+        self.eta = eta
+        self._purchased_quantity = qty
+        self._allocations = set[OrderLine]()
+
     def __repr__(self) -> str:
         return (f'<Batch('
                 f'id={self.id}, '
