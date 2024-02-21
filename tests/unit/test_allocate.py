@@ -4,12 +4,10 @@ from datetime import timedelta
 import pytest
 
 from domain.model import allocate
-from domain.models import Batch
-from domain.models import OrderLine
 
-# from domain.model import Batch
-# from domain.model import OrderLine
-# from domain.model import OutOfStockError
+from domain.model import Batch
+from domain.model import OrderLine
+from domain.model import OutOfStockError
 
 TODAY = date.today()
 TOMORROW = TODAY + timedelta(days=1)
@@ -17,7 +15,6 @@ LATER = TOMORROW + timedelta(days=10)
 
 
 def test_prefers_current_stock_batches_to_shipments():
-    batch = Batch()
 
     in_stock_batch = Batch('in-stock-batch', 'RETRO-CLOCK', 100)
     shipment_batch = Batch('shipment-batch', 'RETRO-CLOCK', 100, TOMORROW)
