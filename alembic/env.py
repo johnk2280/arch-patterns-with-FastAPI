@@ -9,7 +9,7 @@ from alembic import context
 
 
 from config import settings
-from infrastructure.adapters.orm import Base
+from infrastructure.adapters.orm import mapper_registry
 # from infrastructure.adapters.orm import allocations  # noqa
 # from infrastructure.adapters.orm import Batch  # noqa
 # from infrastructure.adapters.orm import OrderLine  # noqa
@@ -28,7 +28,7 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 
-target_metadata = Base.metadata
+target_metadata = mapper_registry.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
