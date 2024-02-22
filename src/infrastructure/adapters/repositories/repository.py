@@ -8,6 +8,7 @@ from service_layer.ports import AbstractRepository
 
 # TODO: Доработать репозиторий
 class BatchRepository(AbstractRepository[Batch, Session]):
+
     model_class = Batch
 
     def __init__(self, session: Session) -> None:
