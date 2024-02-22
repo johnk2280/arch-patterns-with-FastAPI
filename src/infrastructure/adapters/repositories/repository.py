@@ -24,7 +24,10 @@ class BatchRepository(AbstractRepository[Batch, Session]):
         return self.session.execute(stmt).scalar()
 
     def list(self) -> list[Batch]:
-        return self.session.query(Batch).all()
+        stmt = select(Batch)
+        # TODO: проверить
+        # return self.session.query(Batch).all()
+        return self.session.execute(stmt).all()
 
 
 class FakeRepository(AbstractRepository[Batch, Any]):
