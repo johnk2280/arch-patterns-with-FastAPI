@@ -1,5 +1,6 @@
 from typing import Any
 
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from domain.model import Batch
@@ -18,7 +19,9 @@ class BatchRepository(AbstractRepository[Batch, Session]):
         self.session.add(batch)
 
     def get(self, reference: str) -> Batch:
-        return self.session.query(Batch).filter_by(reference=reference).one()
+        stmt = select(Batch).filter_by(reference=reference)
+        # return self.session.query(Batch).filter_by(reference=reference).one()
+        return self.session.execute(stmt).scalar()
 
     def list(self) -> list[Batch]:
         return self.session.query(Batch).all()
