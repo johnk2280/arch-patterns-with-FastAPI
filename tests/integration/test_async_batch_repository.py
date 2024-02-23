@@ -10,6 +10,8 @@ from domain.model import OrderLine
 from infrastructure.adapters.repositories import AsyncBatchRepository
 
 
+# TODO: Настроить асинхронные тесты
+
 @pytest.mark.asyncio
 async def test_async_batch_repository_can_save_a_batch(session: AsyncSession):
     batch = Batch('batch-1', 'RUSTY-SOAPDISH', 100)
