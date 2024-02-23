@@ -24,6 +24,7 @@ class AsyncBatchRepository(AbstractAsyncRepository[Batch, AsyncSession]):
         return result.scalar()
 
     async def alist(self) -> list[Batch]:
+        # TODO: покрыть тестами
         stmt = select(Batch)
         result = await self.session.execute(stmt)
         return result.scalars().all()
@@ -45,8 +46,8 @@ class BatchRepository(AbstractRepository[Batch, Session]):
         return self.session.execute(stmt).scalar()
 
     def list(self) -> list[Batch]:
+        # TODO: покрыть тестами
         stmt = select(Batch)
-        # TODO: проверить
         # return self.session.query(Batch).all()
         return self.session.execute(stmt).all()
 
