@@ -14,8 +14,8 @@ from domain.model import OrderLine
 
 metadata = MetaData()
 
-# mapper_registry = registry(metadata=metadata)
-mapper_registry = registry()
+mapper_registry = registry(metadata=metadata)
+# mapper_registry = registry()
 
 order_lines = Table(
     'order_lines',
