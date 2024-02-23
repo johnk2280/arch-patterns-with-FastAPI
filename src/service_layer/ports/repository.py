@@ -6,7 +6,7 @@ from typing import TypeVar
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
 
-M = TypeVar('M')  # subtype of DeclarativeBase
+M = TypeVar('M')
 S = TypeVar('S', bound=Session)
 AS = TypeVar('AS', bound=AsyncSession)
 

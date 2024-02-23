@@ -2,27 +2,47 @@ from typing import Any
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
 
 from domain.model import Batch
 from service_layer.ports import AbstractRepository
+from service_layer.ports.repository import AbstractAsyncRepository
 
 
-# TODO: Доработать репозиторий
-class BatchRepository(AbstractRepository[Batch, AsyncSession]):
-
+class AsyncBatchRepository(AbstractAsyncRepository[Batch, AsyncSession]):
     model_class = Batch
 
     def __init__(self, session: AsyncSession) -> None:
         super().__init__(session)
 
+    async def aadd(self, item: Batch) -> None:
+        self.session.add(item)
+
+    async def aget(self, reference: str) -> Batch:
+        stmt = select(Batch).filter_by(reference=reference)
+        result = await self.session.execute(stmt)
+        return result.scalar()
+
+    async def alist(self) -> list[Batch]:
+        stmt = select(Batch)
+        result = await self.session.execute(stmt)
+        return result.scalars().all()
+
+
+class BatchRepository(AbstractRepository[Batch, Session]):
+
+    model_class = Batch
+
+    def __init__(self, session: Session) -> None:
+        super().__init__(session)
+
     def add(self, batch: Batch) -> None:
         self.session.add(batch)
 
-    async def get(self, reference: str) -> Batch:
+    def get(self, reference: str) -> Batch:
         stmt = select(Batch).filter_by(reference=reference)
         # return self.session.query(Batch).filter_by(reference=reference).one()
-        result = await self.session.execute(stmt)
-        return result.scalar()
+        return self.session.execute(stmt).scalar()
 
     def list(self) -> list[Batch]:
         stmt = select(Batch)
@@ -34,7 +54,7 @@ class BatchRepository(AbstractRepository[Batch, AsyncSession]):
 class FakeRepository(AbstractRepository[Batch, Any]):
 
     def __init__(self, batches: list[Batch]) -> None:
-        super().__init__('')
+        super().__init__([])
         self._batches = set(batches)
 
     def add(self, item: Batch) -> None:
