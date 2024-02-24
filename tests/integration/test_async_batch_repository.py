@@ -2,11 +2,9 @@ import asyncio  # noqa
 
 import pytest
 from sqlalchemy import select
-from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from domain.model import Batch
-from domain.model import OrderLine
 from infrastructure.adapters.repositories import AsyncBatchRepository
 
 
