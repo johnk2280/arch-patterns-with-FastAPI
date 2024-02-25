@@ -10,8 +10,8 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.orm import clear_mappers
 from sqlalchemy.orm import sessionmaker
 
-from infrastructure.adapters.orm.orm import mapper_registry
-from infrastructure.adapters.orm.orm import start_mappers
+from src.infrastructure.adapters.orm import mapper_registry
+from src.infrastructure.adapters.orm import start_mappers
 
 
 @pytest.fixture
@@ -23,7 +23,7 @@ def in_memory_db():
 
 @pytest.fixture
 def async_in_memory_db():
-    engine = create_async_engine('sqlite:///:memory:')
+    engine = create_async_engine('sqlite+aiosqlite:///:memory:')
     mapper_registry.metadata.create_all(engine)
     return engine
 
