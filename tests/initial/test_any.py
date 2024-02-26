@@ -13,7 +13,7 @@ def test_environ():
     assert settings.ENVIRONMENT == 'test'
     assert (settings.database_url ==
             'postgresql+asyncpg://postgres:postgres@localhost:5432'
-            '/test_sphr_karma')
+            '/test_arch_patterns')
 
 
 async def test_some_asyncio_code():
