@@ -45,4 +45,6 @@ class Settings(BaseSettings):
         return f'<{self.__class__.__name__}(db_name={self.DB_NAME})>'
 
 
-settings = Settings()
+def get_settings() -> Settings:
+    return Settings()
+
