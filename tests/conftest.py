@@ -1,14 +1,19 @@
 import os
+from collections.abc import AsyncGenerator
 
 import pytest
+from httpx import AsyncClient
 from sqlalchemy import create_engine
 from sqlalchemy import NullPool
+from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.ext.asyncio import AsyncEngine
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.orm import clear_mappers
 from sqlalchemy.orm import sessionmaker
 
 from config import get_settings
+from entrypoints.fastapi_app import app
 from infrastructure.adapters.orm import mapper_registry
 from infrastructure.adapters.orm import start_mappers
 
@@ -40,3 +45,37 @@ async def async_engine() -> AsyncEngine:
     )
     engine = create_async_engine(settings.database_url, **DATABASE_PARAMS)
     return engine
+
+
+@pytest.fixture(scope='session', autouse=True)
+async def async_db_engine(
+    async_engine: AsyncEngine,
+) -> AsyncGenerator[AsyncEngine, None]:
+    async with async_engine.begin() as conn:
+        await conn.run_sync(mapper_registry.metadata.create_all)
+
+    yield async_engine
+
+    async with async_engine.begin() as conn:
+        await conn.run_sync(mapper_registry.metadata.drop_all)
+
+
+@pytest.fixture(scope='function', autouse=True)
+async def async_session(
+    async_db_engine: AsyncEngine,
+) -> AsyncGenerator[AsyncSession]:
+    async_session = async_sessionmaker(
+        bind=async_db_engine,
+        expire_on_commit=False,
+        class_=AsyncSession,
+    )
+    async with async_session() as session:
+        yield session
+
+
+@pytest.fixture(scope='function')
+async def async_client() -> AsyncGenerator[AsyncClient, None]:
+    async with AsyncClient(app=app, base_url='http://testserver') as ac:
+        yield ac
+
+
