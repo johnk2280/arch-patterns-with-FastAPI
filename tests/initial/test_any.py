@@ -1,5 +1,7 @@
 import asyncio
 
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from config import get_settings
 
 settings = get_settings()
@@ -19,3 +21,7 @@ def test_environ():
 async def test_some_asyncio_code():
     res = await asyncio.sleep(1)
     assert res is None
+
+
+async def test_some_async_session(async_session):
+    assert isinstance(async_session, AsyncSession)

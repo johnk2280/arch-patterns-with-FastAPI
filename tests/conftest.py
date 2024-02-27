@@ -1,4 +1,5 @@
 import os
+from collections.abc import AsyncGenerator
 
 import pytest
 from sqlalchemy import create_engine
@@ -40,3 +41,16 @@ async def async_engine() -> AsyncEngine:
     )
     engine = create_async_engine(settings.database_url, **DATABASE_PARAMS)
     return engine
+
+
+@pytest.fixture(scope='session', autouse=True)
+async def async_db_engine(
+    async_engine: AsyncEngine,
+) -> AsyncGenerator[AsyncEngine, None]:
+    async with async_engine.begin() as conn:
+        await conn.run_sync(mapper_registry.metadata.create_all)
+
+    yield async_engine
+
+    async with async_engine.begin() as conn:
+        await conn.run_sync(mapper_registry.metadata.drop_all)
