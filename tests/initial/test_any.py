@@ -1,5 +1,6 @@
 import asyncio
 
+from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from config import get_settings
@@ -25,3 +26,9 @@ async def test_some_asyncio_code():
 
 async def test_some_async_session(async_session):
     assert isinstance(async_session, AsyncSession)
+
+
+async def test_some_async_client(async_client):
+    assert isinstance(async_client, AsyncClient)
+    assert async_client.base_url == 'http://testserver'
+

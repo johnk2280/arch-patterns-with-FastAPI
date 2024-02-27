@@ -2,6 +2,7 @@ import os
 from collections.abc import AsyncGenerator
 
 import pytest
+from httpx import AsyncClient
 from sqlalchemy import create_engine
 from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import async_sessionmaker
@@ -12,6 +13,7 @@ from sqlalchemy.orm import clear_mappers
 from sqlalchemy.orm import sessionmaker
 
 from config import get_settings
+from entrypoints.fastapi_app import app
 from infrastructure.adapters.orm import mapper_registry
 from infrastructure.adapters.orm import start_mappers
 
@@ -69,5 +71,11 @@ async def async_session(
     )
     async with async_session() as session:
         yield session
+
+
+@pytest.fixture(scope='function')
+async def async_client() -> AsyncGenerator[AsyncClient, None]:
+    async with AsyncClient(app=app, base_url='http://testserver') as ac:
+        yield ac
 
 
