@@ -51,11 +51,13 @@ async def async_engine() -> AsyncEngine:
 async def async_db_engine(
     async_engine: AsyncEngine,
 ) -> AsyncGenerator[AsyncEngine, None]:
+    start_mappers()
     async with async_engine.begin() as conn:
         await conn.run_sync(mapper_registry.metadata.create_all)
 
     yield async_engine
 
+    clear_mappers()
     async with async_engine.begin() as conn:
         await conn.run_sync(mapper_registry.metadata.drop_all)
 
@@ -77,5 +79,3 @@ async def async_session(
 async def async_client() -> AsyncGenerator[AsyncClient, None]:
     async with AsyncClient(app=app, base_url='http://testserver') as ac:
         yield ac
-
-

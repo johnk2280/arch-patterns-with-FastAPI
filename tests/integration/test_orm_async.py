@@ -3,13 +3,14 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from domain.model import OrderLine
+from infrastructure.adapters.orm import order_lines
 
 
 async def test_order_line_mapper_can_load_lines_async(
     async_session: AsyncSession,
 ):
     await async_session.execute(
-        insert(order_lines)
+        insert(OrderLine)
         .values(
             [
                 {
@@ -38,21 +39,21 @@ async def test_order_line_mapper_can_load_lines_async(
         OrderLine('order-3', 'BLUE-LIPSTICK', 14),
     ]
 
-    order_lines = (
+    rows = (
         await async_session.execute(select(OrderLine))
-    ).scalars().all(
+    ).scalars().all()
 
-    )
-
-    assert order_lines == expected
+    assert rows == expected
 
 
-# def test_order_line_mapper_can_save_lines(session: Session):
-#     new_line = OrderLine('order-1', 'RED-CHAIR', 12)
-#     session.add(new_line)
-#     session.commit()
-#
-#     rows = session.query(OrderLine).all()
-#
-#     assert len(rows) == 1
-#     assert rows[0] == new_line
+async def test_order_line_mapper_can_save_lines(
+    async_session: AsyncSession,
+):
+    new_line = OrderLine('order-1', 'RED-CHAIR', 12)
+    async_session.add(new_line)
+    await async_session.commit()
+
+    rows = (await async_session.execute(select(OrderLine))).scalars().all()
+
+    assert len(rows) == 1
+    assert rows[0] == new_line
