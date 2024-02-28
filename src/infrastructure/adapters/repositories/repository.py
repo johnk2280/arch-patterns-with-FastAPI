@@ -15,15 +15,15 @@ class AsyncBatchRepository(AbstractAsyncRepository[Batch, AsyncSession]):
     def __init__(self, session: AsyncSession) -> None:
         super().__init__(session)
 
-    async def aadd(self, item: Batch) -> None:
+    async def add(self, item: Batch) -> None:
         self.session.add(item)
 
-    async def aget(self, reference: str) -> Batch:
+    async def get(self, reference: str) -> Batch:
         stmt = select(Batch).filter_by(reference=reference)
         result = await self.session.execute(stmt)
         return result.scalar()
 
-    async def alist(self) -> list[Batch]:
+    async def list(self) -> list[Batch]:
         # TODO: покрыть тестами
         stmt = select(Batch)
         result = await self.session.execute(stmt)
