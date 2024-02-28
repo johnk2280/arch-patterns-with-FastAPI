@@ -49,13 +49,13 @@ class AbstractAsyncRepository(ABC, Generic[M, AS]):
         self.session = session
 
     @abstractmethod
-    async def aadd(self, item: M) -> None:
+    async def add(self, item: M) -> None:
         pass
 
     @abstractmethod
-    async def aget(self, reference: str) -> M:
+    async def get(self, reference: str) -> M:
         pass
 
     @abstractmethod
-    async def alist(self) -> list[M]:
+    async def list(self) -> list[M]:
         pass
