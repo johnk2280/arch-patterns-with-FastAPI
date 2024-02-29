@@ -62,6 +62,9 @@ async def test_async_batch_repository_can_retrieve_a_batch_with_allocation(
             ],
         )
     )
+    print(batch)
+    print(batch.id)
+    print(order_line)
 
     repo = AsyncBatchRepository(async_session)
     retrieved = await repo.get('batch-1')
