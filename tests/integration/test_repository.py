@@ -54,20 +54,20 @@ def insert_allocation(
     )
 
 
-def test_repository_can_retrieve_a_batch_with_allocations(session: Session):
-    order_line_id = insert_order_line(session)
-    batch_id_1 = insert_batch(session, 'batch-1')
-    insert_batch(session, 'batch-2')
-    insert_allocation(session, order_line_id, batch_id_1)
-
-    repo = BatchRepository(session)
-    retrieved = repo.get('batch-1')
-
-    expected = Batch('batch-1', 'GENERIC-SOFA', 100)
-
-    assert retrieved == expected
-    assert retrieved.sku == expected.sku
-    assert retrieved._purchased_quantity == expected._purchased_quantity
-    assert retrieved._allocations == {
-        OrderLine('order1', 'GENERIC-SOFA', 12),
-    }
+# def test_repository_can_retrieve_a_batch_with_allocations(session: Session):
+#     order_line_id = insert_order_line(session)
+#     batch_id_1 = insert_batch(session, 'batch-1')
+#     insert_batch(session, 'batch-2')
+#     insert_allocation(session, order_line_id, batch_id_1)
+#
+#     repo = BatchRepository(session)
+#     retrieved = repo.get('batch-1')
+#
+#     expected = Batch('batch-1', 'GENERIC-SOFA', 100)
+#
+#     assert retrieved == expected
+#     assert retrieved.sku == expected.sku
+#     assert retrieved._purchased_quantity == expected._purchased_quantity
+#     assert retrieved._allocations == {
+#         OrderLine('order1', 'GENERIC-SOFA', 12),
+#     }

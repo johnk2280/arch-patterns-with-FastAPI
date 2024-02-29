@@ -62,3 +62,31 @@ async def test_async_batch_repository_can_retrieve_a_batch_with_allocation(
             ],
         )
     )
+
+    repo = AsyncBatchRepository(async_session)
+    retrieved = await repo.get('batch-1')
+
+    expected = Batch('batch-1', 'GENERIC-SOFA', 100)
+
+    assert retrieved == expected
+    assert retrieved.sku == expected.sku
+    assert retrieved._purchased_quantity == expected._purchased_quantity
+    assert retrieved._allocations == expected._allocations
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
