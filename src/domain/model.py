@@ -9,10 +9,10 @@ class OutOfStockError(Exception):
 
 @dataclass(unsafe_hash=True)
 class OrderLine:
-
     order_id: str
     sku: str
     qty: int
+    id: int | None = None
 
 
 class Batch:
@@ -22,8 +22,10 @@ class Batch:
         ref: str,
         sku: str,
         qty: int,
-        eta: datetime.date | None = None
+        eta: datetime.date | None = None,
+        id_: int | None = None,
     ) -> None:
+        self.id = id_
         self.reference = ref
         self.sku = sku
         self.eta = eta

@@ -2,6 +2,7 @@ from typing import Any
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 from sqlalchemy.orm import Session
 
 from domain.model import Batch
@@ -19,9 +20,13 @@ class AsyncBatchRepository(AbstractAsyncRepository[Batch, AsyncSession]):
         self.session.add(item)
 
     async def get(self, reference: str) -> Batch:
-        stmt = select(Batch).filter_by(reference=reference)
-        result = await self.session.execute(stmt)
-        return result.scalar()
+        return (
+            await self.session.execute(
+                select(Batch)
+                .filter_by(reference=reference)
+                .options(selectinload(Batch._allocations))
+            )
+        ).scalar()
 
     async def list(self) -> list[Batch]:
         # TODO: покрыть тестами
