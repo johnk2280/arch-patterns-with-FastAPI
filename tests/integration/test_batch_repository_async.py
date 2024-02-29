@@ -1,7 +1,10 @@
+from sqlalchemy import insert
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from domain.model import Batch
+from domain.model import OrderLine
+from infrastructure.adapters.orm import allocations
 from infrastructure.adapters.repositories import AsyncBatchRepository
 
 
@@ -16,3 +19,46 @@ async def test_async_batch_repository_can_save_a_batch(
 
     assert len(rows) == 1
     assert rows == [batch]
+
+
+async def test_async_batch_repository_can_retrieve_a_batch_with_allocation(
+    async_session: AsyncSession,
+):
+    order_line = (await async_session.execute(
+        insert(OrderLine)
+        .values(
+            [
+                {
+                    'order_id': 'order-1',
+                    'sku': 'RED-CHAIR',
+                    'qty': 12,
+                },
+            ]
+        )
+        .returning(OrderLine),
+    )).scalar()
+
+    batch = (await async_session.execute(
+        insert(Batch)
+        .values(
+            [
+                {
+                    'reference': 'batch-1',
+                    'sku': 'GENERIC-SOFA',
+                    '_purchased_quantity': 100,
+                },
+            ],
+        )
+        .returning(Batch),
+    )).scalar()
+    await async_session.execute(
+        insert(allocations)
+        .values(
+            [
+                {
+                    'order_line_id': order_line.id,
+                    'batch_id': batch.id,
+                },
+            ],
+        )
+    )

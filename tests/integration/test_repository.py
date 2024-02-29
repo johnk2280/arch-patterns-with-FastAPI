@@ -6,18 +6,6 @@ from domain.model import OrderLine
 from infrastructure.adapters.repositories import BatchRepository
 
 
-def test_repository_can_save_a_batch(session: Session):
-    batch = Batch('batch-1', 'RUSTY-SOAPDISH', 100)
-    repo = BatchRepository(session)
-    repo.add(batch)
-    session.commit()
-
-    rows = session.query(Batch).all()
-
-    assert len(rows) == 1
-    assert rows == [batch]
-
-
 def insert_order_line(session: Session) -> int:
     session.execute(
         text(

@@ -22,18 +22,18 @@ os.environ['ENVIRONMENT'] = 'test'
 settings = get_settings()
 
 
-@pytest.fixture
-def in_memory_db():
-    engine = create_engine('sqlite:///:memory:')
-    mapper_registry.metadata.create_all(engine)
-    return engine
-
-
-@pytest.fixture
-def session(in_memory_db):
-    start_mappers()
-    yield sessionmaker(bind=in_memory_db, future=True)()
-    clear_mappers()
+# @pytest.fixture
+# def in_memory_db():
+#     engine = create_engine('sqlite:///:memory:')
+#     mapper_registry.metadata.create_all(engine)
+#     return engine
+#
+#
+# @pytest.fixture
+# def session(in_memory_db):
+#     start_mappers()
+#     yield sessionmaker(bind=in_memory_db, future=True)()
+#     clear_mappers()
 
 
 @pytest.fixture(scope='session', autouse=True)
