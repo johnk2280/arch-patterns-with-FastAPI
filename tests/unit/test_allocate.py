@@ -14,6 +14,7 @@ TOMORROW = TODAY + timedelta(days=1)
 LATER = TOMORROW + timedelta(days=10)
 
 
+# TODO: сделать асинхронными
 def test_prefers_current_stock_batches_to_shipments():
 
     in_stock_batch = Batch('in-stock-batch', 'RETRO-CLOCK', 100)
