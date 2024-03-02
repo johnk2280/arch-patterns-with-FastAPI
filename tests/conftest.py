@@ -3,14 +3,12 @@ from collections.abc import AsyncGenerator
 
 import pytest
 from httpx import AsyncClient
-from sqlalchemy import create_engine
 from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.ext.asyncio import AsyncEngine
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.orm import clear_mappers
-from sqlalchemy.orm import sessionmaker
 
 from config import get_settings
 from entrypoints.fastapi_app import app
