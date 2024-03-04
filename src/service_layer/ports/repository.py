@@ -1,5 +1,6 @@
 from abc import ABC
 from abc import abstractmethod
+from collections.abc import Sequence
 from typing import Generic
 from typing import TypeVar
 
@@ -57,5 +58,5 @@ class AbstractAsyncRepository(ABC, Generic[M, AS]):
         pass
 
     @abstractmethod
-    async def list(self) -> list[M]:
+    async def get_all(self) -> Sequence[M]:
         pass
