@@ -29,7 +29,7 @@ class AsyncBatchRepository(AbstractAsyncRepository[Batch, AsyncSession]):
             )
         ).scalar()
 
-    async def list(self) -> Sequence[Batch]:
+    async def get_all(self) -> Sequence[Batch]:
         return (await self.session.execute(
             select(Batch)
             .options(selectinload(Batch._allocations))

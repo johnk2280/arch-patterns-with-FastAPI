@@ -15,6 +15,22 @@ class OrderLine:
     qty: int
     id: int | None = None
 
+    def __repr__(self) -> str:
+        return (f'OrderLine('
+                f'order_id={self.order_id}, '
+                f'sku={self.sku}, '
+                f'qty={self.qty}, '
+                f'id={self.id})')
+
+    def __str__(self) -> str:
+        return (f'OrderLine('
+                f'order_id={self.order_id}, '
+                f'sku={self.sku}, '
+                f'qty={self.qty}, '
+                f'id={self.id})')
+
+
+
 
 class Batch:
 
