@@ -1,3 +1,4 @@
+from collections.abc import Sequence
 from typing import Any
 
 from sqlalchemy import select
@@ -28,11 +29,11 @@ class AsyncBatchRepository(AbstractAsyncRepository[Batch, AsyncSession]):
             )
         ).scalar()
 
-    async def list(self) -> list[Batch]:
-        # TODO: покрыть тестами
-        stmt = select(Batch)
-        result = await self.session.execute(stmt)
-        return result.scalars().all()
+    async def list(self) -> Sequence[Batch]:
+        return (await self.session.execute(
+            select(Batch)
+            .options(selectinload(Batch._allocations))
+        )).scalars().all()
 
 
 class BatchRepository(AbstractRepository[Batch, Session]):
