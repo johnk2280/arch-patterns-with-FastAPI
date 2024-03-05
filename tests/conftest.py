@@ -36,6 +36,7 @@ settings = get_settings()
 
 @pytest.fixture(scope='session', autouse=True)
 async def async_engine() -> AsyncEngine:
+
     assert settings.ENVIRONMENT == 'test'
 
     DATABASE_PARAMS = dict(
