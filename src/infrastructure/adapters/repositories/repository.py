@@ -12,6 +12,7 @@ from service_layer.ports.repository import AbstractAsyncRepository
 
 
 class AsyncBatchRepository(AbstractAsyncRepository[Batch, AsyncSession]):
+
     model_class = Batch
 
     def __init__(self, session: AsyncSession) -> None:
