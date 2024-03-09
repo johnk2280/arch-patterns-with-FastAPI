@@ -20,7 +20,9 @@ def test_prefers_current_stock_batches_to_shipments():
     in_stock_batch = Batch('in-stock-batch', 'RETRO-CLOCK', 100)
     shipment_batch = Batch('shipment-batch', 'RETRO-CLOCK', 100, TOMORROW)
     line = OrderLine('oref', 'RETRO-CLOCK', 10)
+
     allocate(line, [in_stock_batch, shipment_batch])
+
     assert in_stock_batch.available_quantity == 90
     assert shipment_batch.available_quantity == 100
 
