@@ -13,7 +13,6 @@ async def test_order_line_mapper_can_load_lines_async(
         OrderLine('order-2', 'RED-TABLE', 13),
         OrderLine('order-3', 'BLUE-LIPSTICK', 14),
     ]
-
     async_session.add_all(expected)
     await async_session.commit()
 
