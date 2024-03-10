@@ -32,7 +32,9 @@ def test_prefers_earlier_batches():
     medium = Batch('shipment-batch', 'RETRO-CLOCK', 100, TOMORROW)
     latest = Batch('shipment-batch', 'RETRO-CLOCK', 100, LATER)
     line = OrderLine('oref', 'RETRO-CLOCK', 10)
+
     allocate(line, [earliest, medium, latest])
+
     assert earliest.available_quantity == 90
     assert medium.available_quantity == 100
     assert latest.available_quantity == 100
