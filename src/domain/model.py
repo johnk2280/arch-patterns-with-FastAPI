@@ -30,8 +30,6 @@ class OrderLine:
                 f'id={self.id})')
 
 
-
-
 class Batch:
 
     def __init__(
