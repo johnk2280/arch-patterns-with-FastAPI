@@ -11,9 +11,9 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.orm import clear_mappers
 
 from config import get_settings
-from entrypoints.fastapi_app import app
 from infrastructure.adapters.orm import mapper_registry
 from infrastructure.adapters.orm import start_mappers
+from infrastructure.entrypoints.rest_api.app import app
 
 os.environ['ENVIRONMENT'] = 'test'
 
