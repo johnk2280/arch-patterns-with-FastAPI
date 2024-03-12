@@ -15,6 +15,7 @@ async def test_api_returns_allocation(add_stock):
         (early_batch, sku, 100, '2011-01-01'),
         (other_batch, other_sku, 100, None),
     ])
+
     data = {'order_id': random_order_id(), 'sku': sku, 'qty': 3}
     url = config.get_api_url()
 
