@@ -30,5 +30,7 @@ async def allocate(
     # sqlalchemy.exc.ArgumentError: Column expression,
     # FROM clause, or other columns clause element expected,
     # got <class 'domain.model.Batch'>.
+    # TODO: при старте приложения не запущен маппер моделей и таблиц.
+    #  Если его запусти в фабрике приложения, то ошибка исчезнет.
     batches = await repo.get_all()
     return batches
