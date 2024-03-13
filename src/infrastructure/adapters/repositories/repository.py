@@ -1,12 +1,14 @@
 from collections.abc import Sequence
 from typing import Any
 
+from fastapi import Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from sqlalchemy.orm import Session
 
 from domain.model import Batch
+from infrastructure.adapters.orm import get_async_session
 from service_layer.ports import AbstractRepository
 from service_layer.ports.repository import AbstractAsyncRepository
 
@@ -15,7 +17,10 @@ class AsyncBatchRepository(AbstractAsyncRepository[Batch, AsyncSession]):
 
     model_class = Batch
 
-    def __init__(self, session: AsyncSession) -> None:
+    def __init__(
+        self,
+        session: AsyncSession = Depends(get_async_session),
+    ) -> None:
         super().__init__(session)
 
     async def add(self, item: Batch) -> None:
