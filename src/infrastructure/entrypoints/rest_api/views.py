@@ -1,12 +1,12 @@
 from fastapi import APIRouter
 from fastapi import Depends
-from fastapi import Request
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from infrastructure.adapters.orm import batches
 from infrastructure.adapters.orm import get_async_session
 from infrastructure.adapters.repositories import AsyncBatchRepository
+from infrastructure.entrypoints.rest_api.schema import OrderLineCreateSchema
 
 router = APIRouter(prefix='', tags=['batches'])
 
@@ -22,8 +22,13 @@ async def get_batches(
 
 @router.post('/allocate')
 async def allocate(
-    request: Request,
-    repo: AsyncBatchRepository = Depends(),
+    order_line: OrderLineCreateSchema,
+    session: AsyncSession = Depends(get_async_session),
+    # repo: AsyncBatchRepository = Depends(),
 ):
+    repo = AsyncBatchRepository(session)
+    # sqlalchemy.exc.ArgumentError: Column expression,
+    # FROM clause, or other columns clause element expected,
+    # got <class 'domain.model.Batch'>.
     batches = await repo.get_all()
-    line
+    return batches
