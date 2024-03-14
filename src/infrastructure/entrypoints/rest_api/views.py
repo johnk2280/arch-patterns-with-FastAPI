@@ -3,6 +3,7 @@ from fastapi import Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from domain.model import Batch
 from infrastructure.adapters.orm import batches
 from infrastructure.adapters.orm import get_async_session
 from infrastructure.adapters.repositories import AsyncBatchRepository
@@ -15,7 +16,7 @@ router = APIRouter(prefix='', tags=['batches'])
 async def get_batches(
     session: AsyncSession = Depends(get_async_session),
 ):
-    stmt = select(batches)
+    stmt = select(Batchg)
     result = await session.execute(stmt)
     return result.mappings().all()
 
