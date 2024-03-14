@@ -4,6 +4,7 @@ from fastapi import APIRouter
 from fastapi import FastAPI
 
 from .views import router as batch_router
+from ...adapters.orm import start_mappers
 
 
 def create(routers: Iterable[APIRouter]) -> FastAPI:
@@ -13,6 +14,8 @@ def create(routers: Iterable[APIRouter]) -> FastAPI:
 
     for router in routers:
         application.include_router(router)
+
+    start_mappers()
 
     return application
 
