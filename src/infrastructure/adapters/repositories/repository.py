@@ -54,7 +54,6 @@ class BatchRepository(AbstractRepository[Batch, Session]):
 
     def get(self, reference: str) -> Batch:
         stmt = select(Batch).filter_by(reference=reference)
-        # return self.session.query(Batch).filter_by(reference=reference).one()
         return self.session.execute(stmt).scalar()
 
     def list(self) -> list[Batch]:
