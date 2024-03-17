@@ -6,13 +6,26 @@ from typing import Any
 class AbstractRepository(ABC):
 
     @abstractmethod
-    def add(self, *args, **kwargs) -> Any:
+    def _create(self, *args, **kwargs) -> Any:
         pass
 
     @abstractmethod
+    def _read(self, *args, **kwargs) -> Any:
+        pass
+
+    @abstractmethod
+    def _update(self, *args, **kwargs) -> Any:
+        pass
+
+    @abstractmethod
+    def _delete(self, *args, **kwargs) -> Any:
+        pass
+
     def get(self, *args, **kwargs) -> Any:
-        pass
+        raise NotImplementedError
 
-    @abstractmethod
+    def add(self, *args, **kwargs) -> Any:
+        raise NotImplementedError
+
     def list(self) -> Any:
-        pass
+        raise NotImplementedError
