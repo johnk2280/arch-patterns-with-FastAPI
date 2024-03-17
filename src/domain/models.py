@@ -7,8 +7,12 @@ class OutOfStockError(Exception):
     pass
 
 
+class DomainModel:
+    pass
+
+
 @dataclass(unsafe_hash=True)
-class OrderLine:
+class OrderLine(DomainModel):
 
     order_id: str
     sku: str
@@ -30,7 +34,7 @@ class OrderLine:
                 f'id={self.id})')
 
 
-class Batch:
+class Batch(DomainModel):
 
     def __init__(
         self,

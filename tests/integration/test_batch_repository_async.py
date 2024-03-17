@@ -2,8 +2,8 @@ from sqlalchemy import insert
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from domain.model import Batch
-from domain.model import OrderLine
+from domain.models import Batch
+from domain.models import OrderLine
 from infrastructure.adapters.orm import allocations
 from infrastructure.adapters.repositories import AsyncBatchRepository
 
