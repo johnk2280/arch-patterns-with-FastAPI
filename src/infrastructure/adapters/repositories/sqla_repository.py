@@ -2,22 +2,29 @@ from typing import Any
 from typing import Generic
 from typing import TypeVar
 
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from domain.model import DomainModel
 from service_layer.ports import AbstractRepository
 
-M = TypeVar("M", bound=AbstractRepository)
-
-class SQLARepository(AbstractRepository, Generic[M]):
+M = TypeVar("M", bound=DomainModel)
 
 
+class AsyncSQLARepository(AbstractRepository, Generic[M]):
 
-    def _create(self, *args, **kwargs) -> Any:
+    model_class: type[M]
+
+    def __init__(self, session: AsyncSession) -> None:
+        self.session = session
+
+    async def _create(self, *args, **kwargs) -> Any:
         pass
 
-    def _read(self, *args, **kwargs) -> Any:
+    async def _read(self, *args, **kwargs) -> Any:
         pass
 
-    def _update(self, *args, **kwargs) -> Any:
+    async def _update(self, *args, **kwargs) -> Any:
         pass
 
-    def _delete(self, *args, **kwargs) -> Any:
+    async def _delete(self, *args, **kwargs) -> Any:
         pass
