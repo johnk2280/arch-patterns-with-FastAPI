@@ -3,7 +3,7 @@ from fastapi import Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from domain.model import Batch
+from domain.models import Batch
 from infrastructure.adapters.orm import get_async_session
 from infrastructure.adapters.repositories import AsyncBatchRepository
 from infrastructure.entrypoints.rest_api.schema import OrderLineCreateSchema

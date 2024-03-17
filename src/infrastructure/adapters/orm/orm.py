@@ -9,13 +9,12 @@ from sqlalchemy.orm import Mapper
 from sqlalchemy.orm import registry
 from sqlalchemy.orm import relationship
 
-from domain.model import Batch
-from domain.model import OrderLine
+from domain import Batch
+from domain import OrderLine
 
 metadata = MetaData()
 
 mapper_registry = registry(metadata=metadata)
-# mapper_registry = registry()
 
 order_lines = Table(
     'order_lines',

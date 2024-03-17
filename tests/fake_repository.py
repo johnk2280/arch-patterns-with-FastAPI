@@ -2,8 +2,8 @@ from typing import Any
 from typing import Generic
 from typing import TypeVar
 
-from domain.model import Batch
-from domain.model import DomainModel
+from domain.models import Batch
+from domain.models import DomainModel
 from service_layer.ports import AbstractRepository
 
 T = TypeVar('T', bound=DomainModel)

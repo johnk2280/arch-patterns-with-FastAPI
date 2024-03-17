@@ -4,8 +4,8 @@ from typing import TypeVar
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from domain.model import Batch
-from domain.model import DomainModel
+from domain.models import Batch
+from domain.models import DomainModel
 from service_layer.ports import AbstractRepository
 
 M = TypeVar("M", bound=DomainModel)
