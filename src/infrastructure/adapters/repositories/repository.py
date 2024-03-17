@@ -63,17 +63,4 @@ class BatchRepository(AbstractRepository[Batch, Session]):
         return self.session.execute(stmt).all()
 
 
-class FakeRepository(AbstractRepository[Batch, Any]):
 
-    def __init__(self, batches: list[Batch]) -> None:
-        super().__init__([])
-        self._batches = set(batches)
-
-    def add(self, item: Batch) -> None:
-        self._batches.add(item)
-
-    def get(self, reference: str) -> Batch:
-        return next(b for b in self._batches if b.reference == reference)
-
-    def list(self) -> list[Batch]:
-        return list(self._batches)
