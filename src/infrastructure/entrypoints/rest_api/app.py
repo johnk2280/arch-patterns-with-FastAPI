@@ -3,8 +3,8 @@ from collections.abc import Iterable
 from fastapi import APIRouter
 from fastapi import FastAPI
 
+from infrastructure.adapters.orm import start_mappers
 from .views import router as batch_router
-from ...adapters.orm import start_mappers
 
 
 def create(routers: Iterable[APIRouter]) -> FastAPI:
