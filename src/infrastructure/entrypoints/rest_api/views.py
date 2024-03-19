@@ -24,5 +24,6 @@ async def allocate(
     order_line: OrderLineCreateSchema,
     repo: AsyncBatchRepo = Depends(),
 ):
+
     batches = await repo.get_all()
     return batches
