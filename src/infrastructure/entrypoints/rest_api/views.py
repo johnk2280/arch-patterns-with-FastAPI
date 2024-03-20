@@ -22,8 +22,7 @@ async def get_batches(
 @router.post('/allocate')
 async def allocate(
     order_line: OrderLineCreateSchema,
-    repo: AsyncBatchRepo = Depends(),
 ):
-
+    repo = AsyncBatchRepo(await anext(get_async_session())),
     batches = await repo.get_all()
     return batches
