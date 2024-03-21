@@ -23,6 +23,6 @@ async def get_batches(
 async def allocate(
     order_line: OrderLineCreateSchema,
 ):
-    repo = AsyncBatchRepo(await anext(get_async_session())),
-    batches = await repo.get_all()
+    repo = AsyncBatchRepo(await anext(get_async_session()))
+    batches = await repo.get_many()
     return batches

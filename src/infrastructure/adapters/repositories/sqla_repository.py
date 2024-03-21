@@ -30,6 +30,9 @@ class AsyncSQLARepository(AbstractRepository, Generic[M]):
     async def _delete(self, *args, **kwargs) -> Any:
         pass
 
+    async def get_many(self, *args, **kwargs) -> list[M]:
+        pass
+
 
 class AsyncBatchRepo(AsyncSQLARepository[Batch]):
     model_class = Batch
