@@ -29,6 +29,7 @@ async def test_some_async_session(async_session):
 
 
 async def test_some_async_client(async_client):
+
     assert isinstance(async_client, AsyncClient)
     assert async_client.base_url == 'http://testserver'
 
