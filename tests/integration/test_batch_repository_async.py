@@ -5,15 +5,19 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from domain.models import Batch
 from domain.models import OrderLine
 from infrastructure.adapters.orm import allocations
-from infrastructure.adapters.repositories import AsyncBatchRepository
+from infrastructure.adapters.repositories import AsyncBatchRepo
 
 
 async def test_async_batch_repository_can_save_a_batch(
     async_session: AsyncSession,
 ):
     batch = Batch('batch-1', 'RUSTY-SOAPDISH', 100)
-    repo = AsyncBatchRepository(async_session)
-    await repo.add(batch)
+    repo = AsyncBatchRepo(async_session)
+    await repo.add({
+        'reference': 'batch-1',
+        'sku': 'RUSTY-SOAPDISH',
+        '_purchased_quantity': 100,
+    })
 
     rows = (await async_session.execute(select(Batch))).scalars().all()
 
@@ -63,8 +67,8 @@ async def test_async_batch_repository_can_retrieve_a_batch_with_allocation(
         )
     )
 
-    repo = AsyncBatchRepository(async_session)
-    retrieved = await repo.get('batch-1')
+    repo = AsyncBatchRepo(async_session)
+    retrieved = await repo.get({'reference': 'batch-1'})
 
     expected = Batch('batch-1', 'GENERIC-SOFA', 100)
 
@@ -118,8 +122,8 @@ async def test_async_batch_repository_can_retrieve_batches_with_allocations(
         )
     )
 
-    repo = AsyncBatchRepository(async_session)
-    batches = await repo.get_all()
+    repo = AsyncBatchRepo(async_session)
+    batches = await repo.get_many()
 
     expected = Batch('batch-1', 'GENERIC-SOFA', 100)
     expected._allocations.add(order_line)
