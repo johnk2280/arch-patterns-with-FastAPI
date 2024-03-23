@@ -14,7 +14,7 @@ class AbstractRepository(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
-    async def _create(self, *args: Any, **kwargs: Any) -> T:
+    async def _create(self, *args: Any, **kwargs: Any) -> Any:
         pass
 
     async def get(self, *args: Any, **kwargs: Any) -> T:

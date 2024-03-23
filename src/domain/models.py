@@ -36,6 +36,8 @@ class OrderLine(DomainModel):
 
 class Batch(DomainModel):
 
+    _allocations: set[OrderLine]
+
     def __init__(
         self,
         reference: str,
