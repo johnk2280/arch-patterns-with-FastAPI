@@ -45,6 +45,7 @@ class AsyncSQLARepository(AbstractRepository[M], Generic[M]):
         return (await self._read(filters)).scalars().all()
 
     async def _read(self, filters: dict[str, Any]) -> Result[tuple[M]]:
+        # TODO: реализовать загрузку связанных отношений
         return await self.session.execute(
             select(self.model_class)
             .filter_by(**filters)
