@@ -11,18 +11,18 @@ from infrastructure.adapters.repositories import AsyncBatchRepo
 async def test_async_batch_repository_can_save_a_batch(
     async_session: AsyncSession,
 ):
-    batch = Batch('batch-1', 'RUSTY-SOAPDISH', 100)
-    repo = AsyncBatchRepo(async_session)
-    await repo.add({
+    batch_data = {
         'reference': 'batch-1',
         'sku': 'RUSTY-SOAPDISH',
         '_purchased_quantity': 100,
-    })
+    }
+    repo = AsyncBatchRepo(async_session)
+
+    await repo.add(batch_data)
 
     rows = (await async_session.execute(select(Batch))).scalars().all()
-
     assert len(rows) == 1
-    assert rows == [batch]
+    assert rows == [Batch(**batch_data)]
 
 
 async def test_async_batch_repository_can_retrieve_a_batch_with_allocation(
@@ -66,11 +66,10 @@ async def test_async_batch_repository_can_retrieve_a_batch_with_allocation(
             ],
         )
     )
-
-    repo = AsyncBatchRepo(async_session)
-    retrieved = await repo.get({'reference': 'batch-1'})
-
     expected = Batch('batch-1', 'GENERIC-SOFA', 100)
+    repo = AsyncBatchRepo(async_session)
+
+    retrieved = await repo.get({'reference': 'batch-1'})
 
     assert retrieved == expected
     assert retrieved.sku == expected.sku

@@ -1,7 +1,10 @@
+from collections.abc import Sequence
 from typing import Any
 from typing import Generic
 from typing import TypeVar
 
+from sqlalchemy import insert
+from sqlalchemy import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from domain import Batch
@@ -19,15 +22,25 @@ class AsyncSQLARepository(AbstractRepository[M], Generic[M]):
         self.session = session
 
     async def add(self, data: dict[str, Any]) -> M:
-        raise NotImplementedError
+        return (await self._create(data)).scalar_one()
 
-    async def _create(self, data: dict[str, Any]) -> M:
-        raise NotImplementedError
+    async def _create(self, data: dict[str, Any]) -> Result[tuple[M]]:
+        return await self.session.execute(
+            insert(self.model_class)
+            .values(**data)
+            .returning(self.model_class)
+        )
 
     async def get(self, filters: dict[str, Any]) -> M:
         raise NotImplementedError
 
-    async def get_many(self, filters: dict[str, Any]) -> list[M]:
+    async def get_many(
+        self,
+        filters: dict[str, Any] | None = None,
+    ) -> Sequence[M]:
+        if filters is None:
+            filters = {}
+
         raise NotImplementedError
 
     async def _read(self, filters: dict[str, Any]) -> Any:

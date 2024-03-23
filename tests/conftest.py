@@ -43,7 +43,7 @@ async def async_db_engine(
     clear_mappers()
     async with async_engine.begin() as conn:
         await conn.run_sync(mapper_registry.metadata.drop_all)
-f
+
 
 @pytest.fixture(scope='function', autouse=True)
 async def async_session(
