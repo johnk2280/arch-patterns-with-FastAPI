@@ -5,6 +5,7 @@ from typing import TypeVar
 
 from sqlalchemy import insert
 from sqlalchemy import Result
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from domain import Batch
@@ -32,7 +33,7 @@ class AsyncSQLARepository(AbstractRepository[M], Generic[M]):
         )
 
     async def get(self, filters: dict[str, Any]) -> M:
-        raise NotImplementedError
+        return (await self._read(filters)).scalar_one()
 
     async def get_many(
         self,
@@ -43,8 +44,11 @@ class AsyncSQLARepository(AbstractRepository[M], Generic[M]):
 
         raise NotImplementedError
 
-    async def _read(self, filters: dict[str, Any]) -> Any:
-        raise NotImplementedError
+    async def _read(self, filters: dict[str, Any]) -> Result[tuple[M]]:
+        return await self.session.execute(
+            select(self.model_class)
+            .filter_by(**filters)
+        )
 
     async def _update(self, *args: Any, **kwargs: Any) -> Any:
         raise NotImplementedError
