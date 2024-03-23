@@ -27,6 +27,33 @@ async def test_async_batch_repository_can_save_a_batch(
     assert rows == [Batch(**batch_data)]
 
 
+async def test_async_batch_repository_can_save_a_batch_collecton(
+    async_session: AsyncSession,
+):
+    batch_data = [
+        {
+            'reference': 'batch-1',
+            'sku': 'RUSTY-SOAPDISH',
+            '_purchased_quantity': 100,
+        },
+        {
+            'reference': 'batch-2',
+            'sku': 'RED-CHAIR',
+            '_purchased_quantity': 20,
+        },
+    ]
+    repo = AsyncBatchRepo(async_session)
+
+    res = await repo.add_many(batch_data)
+
+    rows = (await async_session.execute(select(Batch))).scalars().all()
+
+    assert len(res) == 2
+    assert len(rows) == 2
+    assert res == rows
+    assert rows == [Batch(**data) for data in batch_data]
+
+
 async def test_async_batch_repository_can_retrieve_a_batch_with_allocation(
     async_session: AsyncSession,
 ):
