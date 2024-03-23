@@ -28,6 +28,9 @@ class AsyncSQLARepository(AbstractRepository[M], Generic[M]):
     async def add(self, data: dict[str, Any]) -> M:
         return (await self._create([data])).scalar_one()
 
+    async def add_many(self, data: Sequence[dict[str, Any]]) -> Sequence[M]:
+        return (await self._create(data)).scalars().all()
+
     async def _create(self, data: Sequence[dict[str, Any]]) -> Result[tuple[M]]:
         return await self.session.execute(
             insert(self.model_class).returning(self.model_class),
