@@ -42,7 +42,7 @@ class AsyncSQLARepository(AbstractRepository[M], Generic[M]):
         if filters is None:
             filters = {}
 
-        raise NotImplementedError
+        return (await self._read(filters)).scalars().all()
 
     async def _read(self, filters: dict[str, Any]) -> Result[tuple[M]]:
         return await self.session.execute(
