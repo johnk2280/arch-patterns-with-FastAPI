@@ -38,17 +38,17 @@ class Batch(DomainModel):
 
     def __init__(
         self,
-        ref: str,
+        reference: str,
         sku: str,
-        qty: int,
+        _purchased_quantity: int,
         eta: datetime.date | None = None,
         id_: int | None = None,
     ) -> None:
         self.id = id_
-        self.reference = ref
+        self.reference = reference
         self.sku = sku
         self.eta = eta
-        self._purchased_quantity = qty
+        self._purchased_quantity = _purchased_quantity
         self._allocations = set[OrderLine]()
 
     def __repr__(self) -> str:
