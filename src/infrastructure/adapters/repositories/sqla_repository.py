@@ -51,6 +51,7 @@ class AsyncSQLARepository(AbstractRepository[M], Generic[M]):
         return (await self._read(filters)).scalars().all()
 
     async def _read(self, filters: dict[str, Any]) -> Result[tuple[M]]:
+        # TODO: пофиксить подсказки типов
         stmt = select(self.model_class).filter_by(**filters)
         return await self.session.execute(self._add_relationships(stmt))
 
@@ -74,21 +75,7 @@ class AsyncSQLARepository(AbstractRepository[M], Generic[M]):
 
 
 class AsyncBatchRepo(AsyncSQLARepository[Batch]):
-    model_class = Batch
-    relationships: Sequence[str] = ('_allocations',)
 
-    # def _add_relationships(
-    #     self,
-    #     expression: Select[tuple[Batch]],
-    # ) -> Select[tuple[Batch]]:
-    #     return reduce(
-    #         lambda stmt, rel_name: stmt.options(
-    #             selectinload(getattr(self.model_class, rel_name)),
-    #         ),
-    #         self.relationships,
-    #         expression,
-    #     )
-    #
-    # async def _read(self, filters: dict[str, Any]) -> Result[tuple[Batch]]:
-    #     stmt = select(self.model_class).filter_by(**filters)
-    #     return await self.session.execute(self._add_relationships(stmt))
+    model_class = Batch
+    relationships = ('_allocations',)
+
