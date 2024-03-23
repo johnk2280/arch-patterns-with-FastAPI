@@ -10,27 +10,27 @@ T = TypeVar('T')
 
 class AbstractRepository(ABC, Generic[T]):
 
-    def add(self, *args, **kwargs) -> T:
+    async def add(self, *args: Any, **kwargs: Any) -> T:
         raise NotImplementedError
 
     @abstractmethod
-    def _create(self, *args, **kwargs) -> T:
+    async def _create(self, *args: Any, **kwargs: Any) -> T:
         pass
 
-    def get(self, *args, **kwargs) -> T:
+    async def get(self, *args: Any, **kwargs: Any) -> T:
         raise NotImplementedError
 
-    def get_many(self, *args, **kwargs) -> Sequence[T]:
+    async def get_many(self, *args: Any, **kwargs: Any) -> Sequence[T]:
         raise NotImplementedError
 
     @abstractmethod
-    def _read(self, *args, **kwargs) -> Any:
+    async def _read(self, *args: Any, **kwargs: Any) -> Any:
         pass
 
     @abstractmethod
-    def _update(self, *args, **kwargs) -> T:
+    async def _update(self, *args: Any, **kwargs: Any) -> T:
         pass
 
     @abstractmethod
-    def _delete(self, *args, **kwargs) -> Any:
+    async def _delete(self, *args: Any, **kwargs: Any) -> Any:
         pass

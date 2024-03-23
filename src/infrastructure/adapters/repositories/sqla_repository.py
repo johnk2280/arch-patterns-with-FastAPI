@@ -33,10 +33,10 @@ class AsyncSQLARepository(AbstractRepository[M], Generic[M]):
     async def _read(self, filters: dict[str, Any]) -> Any:
         raise NotImplementedError
 
-    async def _update(self, *args, **kwargs) -> Any:
+    async def _update(self, *args: Any, **kwargs: Any) -> Any:
         raise NotImplementedError
 
-    async def _delete(self, *args, **kwargs) -> Any:
+    async def _delete(self, *args: Any, **kwargs: Any) -> Any:
         raise NotImplementedError
 
 
