@@ -27,7 +27,7 @@ async def test_async_batch_repository_can_save_a_batch(
     assert rows == [Batch(**batch_data)]
 
 
-async def test_async_batch_repository_can_save_a_batch_collecton(
+async def test_async_batch_repository_can_save_a_batch_collection(
     async_session: AsyncSession,
 ):
     batch_data = [
