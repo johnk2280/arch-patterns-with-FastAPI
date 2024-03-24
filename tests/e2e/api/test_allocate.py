@@ -2,6 +2,9 @@ import uuid
 
 import httpx
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from infrastructure.adapters.repositories import AsyncBatchRepo
 
 
 def random_suffix():
@@ -16,21 +19,37 @@ def random_batchref(name=""):
     return f"batch-{name}-{random_suffix()}"
 
 
-def random_orderid(name=""):
+def random_order_id(name=""):
     return f"order-{name}-{random_suffix()}"
 
 
-@pytest.mark.usefixtures('restart_api')
-async def test_api_returns_allocation(add_stock):
+async def test_api_returns_allocation(async_session: AsyncSession):
     sku, other_sku = random_sku(), random_sku('other')
     early_batch = random_batchref('1')
     later_batch = random_batchref('2')
     other_batch = random_batchref('3')
-    add_stock(
+
+    repo = AsyncBatchRepo(async_session)
+    rows = await repo.add_many(
         [
-            (later_batch, sku, 100, '2011-01-02'),
-            (early_batch, sku, 100, '2011-01-01'),
-            (other_batch, other_sku, 100, None),
+            {
+                'reference': later_batch,
+                'sku': sku,
+                '_purchased_quantity': 100,
+                'eta': '2011-01-02',
+            },
+            {
+                'reference': early_batch,
+                'sku': sku,
+                '_purchased_quantity': 100,
+                'eta': '2011-01-01',
+            },
+            {
+                'reference': other_batch,
+                'sku': other_sku,
+                '_purchased_quantity': 100,
+                'eta': None,
+            },
         ]
     )
 
