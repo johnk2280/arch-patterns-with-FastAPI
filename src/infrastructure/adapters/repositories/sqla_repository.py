@@ -51,7 +51,6 @@ class AsyncSQLARepository(AbstractRepository[M], Generic[M]):
         return (await self._read(filters)).scalars().all()
 
     async def _read(self, filters: dict[str, Any]) -> Result[tuple[M]]:
-        # TODO: пофиксить подсказки типов
         stmt = select(self.model_class).filter_by(**filters)
         return await self.session.execute(self._add_relationships(stmt))
 
