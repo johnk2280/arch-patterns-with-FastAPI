@@ -57,8 +57,8 @@ class AsyncSQLARepository(AbstractRepository[M], Generic[M]):
 
     def _add_relationships(
         self,
-        expression: Select[tuple[Batch]],
-    ) -> Select[tuple[Batch]]:
+        expression: Select[tuple[M]],
+    ) -> Select[tuple[M]]:
         return reduce(
             lambda stmt, rel_name: stmt.options(
                 selectinload(getattr(self.model_class, rel_name)),
