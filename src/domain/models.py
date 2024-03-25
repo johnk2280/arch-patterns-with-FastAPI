@@ -1,4 +1,5 @@
 import datetime
+from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Any
 
@@ -110,7 +111,7 @@ def make_batch_and_line(
 
 
 # Служба модели предметной области (бизнес-процесс)
-def allocate(line: OrderLine, batches: list[Batch]) -> str:
+def allocate(line: OrderLine, batches: Sequence[Batch]) -> str:
     try:
         batch = next(
             batch for batch in sorted(batches) if batch.can_allocate(line)

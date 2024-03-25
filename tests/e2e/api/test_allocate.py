@@ -35,7 +35,7 @@ async def test_api_returns_allocation(
     other_batch = random_batchref('3')
 
     repo = AsyncBatchRepo(async_session)
-    rows = await repo.add_many(
+    await repo.add_many(
         [
             {
                 'reference': later_batch,
@@ -64,4 +64,4 @@ async def test_api_returns_allocation(
     response = await async_client.post('/allocate', json=data)
 
     assert response.status_code == 200
-    # assert response.json()['batch_ref'] == early_batch
+    assert response.json() == early_batch
