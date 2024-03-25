@@ -32,5 +32,5 @@ async def test_order_line_mapper_can_save_lines(
 
     rows = (await async_session.execute(select(OrderLine))).scalars().all()
 
-    assert len(rows) == 4
+    assert len(rows) == 1
     assert rows[-1] == new_line

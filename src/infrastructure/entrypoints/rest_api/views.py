@@ -3,6 +3,8 @@ from fastapi import Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from domain import OrderLine
+from domain.models import allocate
 from domain.models import Batch
 from infrastructure.adapters.orm import get_async_session
 from infrastructure.adapters.repositories import AsyncBatchRepo
@@ -20,9 +22,10 @@ async def get_batches(
 
 
 @router.post('/allocate')
-async def allocate(
+async def allocate_order_line(
     order_line: OrderLineCreateSchema,
+    async_session: AsyncSession = Depends(get_async_session)
 ):
-    repo = AsyncBatchRepo(await anext(get_async_session()))
+    repo = AsyncBatchRepo(async_session)
     batches = await repo.get_many()
-    return batches
+    return allocate(OrderLine(**order_line.model_dump()), batches)

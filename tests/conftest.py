@@ -1,9 +1,9 @@
-import os
 from collections.abc import AsyncGenerator
 
 import pytest
 from httpx import AsyncClient
 from sqlalchemy import NullPool
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.ext.asyncio import AsyncEngine
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -13,8 +13,6 @@ from sqlalchemy.orm import clear_mappers
 from config import get_settings
 from infrastructure.adapters.orm import mapper_registry
 from infrastructure.entrypoints.rest_api.app import app
-
-os.environ['ENVIRONMENT'] = 'test'
 
 settings = get_settings()
 
@@ -56,6 +54,12 @@ async def async_session(
     )
     async with async_session() as session:
         yield session
+
+        for table in mapper_registry.metadata.sorted_tables:
+            await session.execute(
+                text(f'TRUNCATE {table.name} CASCADE;'),
+            )
+            await session.commit()
 
 
 @pytest.fixture(scope='function')
