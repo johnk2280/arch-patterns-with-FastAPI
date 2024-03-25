@@ -14,7 +14,7 @@ from config import get_settings
 from infrastructure.adapters.orm import mapper_registry
 from infrastructure.entrypoints.rest_api.app import app
 
-os.environ['ENVIRONMENT'] = 'test'
+
 
 settings = get_settings()
 

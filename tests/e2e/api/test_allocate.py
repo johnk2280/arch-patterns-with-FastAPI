@@ -57,6 +57,7 @@ async def test_api_returns_allocation(
             },
         ]
     )
+    await async_session.commit()
 
     data = {'order_id': random_order_id(), 'sku': sku, 'qty': 3}
 
