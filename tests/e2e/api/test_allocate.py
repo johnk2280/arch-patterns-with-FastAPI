@@ -97,4 +97,4 @@ async def test_allocations_are_persisted(
     response = await async_client.post('/allocate', json=data)
 
     assert response.status_code == 201
-    assert response.json() == early_batch
+    assert response.json() == {'reference': early_batch}
