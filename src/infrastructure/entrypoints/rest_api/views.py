@@ -9,6 +9,7 @@ from domain.models import allocate
 from domain.models import Batch
 from infrastructure.adapters.orm import get_async_session
 from infrastructure.adapters.repositories import AsyncBatchRepo
+from infrastructure.entrypoints.rest_api.schema import BatchSchema
 from infrastructure.entrypoints.rest_api.schema import OrderLineCreateSchema
 
 router = APIRouter(prefix='', tags=['batches'])
@@ -22,11 +23,15 @@ async def get_batches(
     return result.mappings().all()
 
 
-@router.post('/allocate', status_code=status.HTTP_201_CREATED)
+@router.post(
+    '/allocate',
+    status_code=status.HTTP_201_CREATED,
+    response_model=BatchSchema,
+)
 async def allocate_order_line(
     order_line: OrderLineCreateSchema,
     async_session: AsyncSession = Depends(get_async_session)
-):
+) -> Batch:
     repo = AsyncBatchRepo(async_session)
     batches = await repo.get_many()
     return allocate(OrderLine(**order_line.model_dump()), batches)

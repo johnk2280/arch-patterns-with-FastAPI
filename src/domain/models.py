@@ -111,12 +111,12 @@ def make_batch_and_line(
 
 
 # Служба модели предметной области (бизнес-процесс)
-def allocate(line: OrderLine, batches: Sequence[Batch]) -> str:
+def allocate(line: OrderLine, batches: Sequence[Batch]) -> Batch:
     try:
         batch = next(
             batch for batch in sorted(batches) if batch.can_allocate(line)
         )
         batch.allocate(line)
-        return batch.reference
+        return batch
     except StopIteration:
         raise OutOfStockError(f'Артикула {line.sku} нет в наличии')
