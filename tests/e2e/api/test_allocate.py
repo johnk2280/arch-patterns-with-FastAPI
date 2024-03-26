@@ -62,5 +62,46 @@ async def test_api_returns_allocation(
     data = {'order_id': random_order_id(), 'sku': sku, 'qty': 3}
     response = await async_client.post('/allocate', json=data)
 
-    assert response.status_code == 200
-    assert response.json() == early_batch
+    assert response.status_code == 201
+    assert response.json() == {'reference': early_batch}
+
+
+async def test_allocations_are_persisted(
+    async_session: AsyncSession,
+    async_client: AsyncClient,
+):
+    sku, other_sku = random_sku(), random_sku('other')
+    early_batch = random_batchref('1')
+    later_batch = random_batchref('2')
+
+    repo = AsyncBatchRepo(async_session)
+    await repo.add_many(
+        [
+            {
+                'reference': later_batch,
+                'sku': sku,
+                '_purchased_quantity': 100,
+                'eta': datetime.strptime('2011-01-02', '%Y-%m-%d')
+            },
+            {
+                'reference': early_batch,
+                'sku': sku,
+                '_purchased_quantity': 100,
+                'eta': datetime.strptime('2011-01-01', '%Y-%m-%d')
+            },
+        ]
+    )
+    await async_session.commit()
+
+    data = {'order_id': random_order_id(), 'sku': sku, 'qty': 100}
+    response = await async_client.post('/allocate', json=data)
+
+    assert response.status_code == 201
+    assert response.json() == {'reference': early_batch}
+
+    data_2 = {'order_id': random_order_id(), 'sku': sku, 'qty': 10}
+    response_2 = await async_client.post('/allocate', json=data_2)
+
+    assert response_2.status_code == 201
+    assert response_2.json() == {'reference': later_batch}
+

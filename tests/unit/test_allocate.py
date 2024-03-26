@@ -47,7 +47,7 @@ def test_returns_allocated_batch_ref():
 
     allocation = allocate(line, [in_stock_batch, shipment_batch])
 
-    assert allocation == in_stock_batch.reference
+    assert allocation.reference == in_stock_batch.reference
 
 
 def test_raises_out_of_stock_exception_if_cannot_allocate():
