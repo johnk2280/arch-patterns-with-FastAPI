@@ -1,6 +1,8 @@
+import asyncio
 from collections.abc import AsyncGenerator
 
 import pytest
+import pytest_asyncio
 from httpx import AsyncClient
 from sqlalchemy import NullPool
 from sqlalchemy import text
@@ -15,6 +17,14 @@ from infrastructure.adapters.orm import mapper_registry
 from infrastructure.entrypoints.rest_api.app import app
 
 settings = get_settings()
+
+
+@pytest_asyncio.fixture(scope='session', autouse=True)
+def event_loop(request):
+    """Create an instance of the default event loop for each test case."""
+    loop = asyncio.get_event_loop_policy().new_event_loop()
+    yield loop
+    loop.close()
 
 
 @pytest.fixture(scope='session', autouse=True)
