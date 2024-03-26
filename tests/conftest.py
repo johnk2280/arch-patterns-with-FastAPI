@@ -13,7 +13,7 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.orm import clear_mappers
 
 from config import get_settings
-from infrastructure.adapters.orm import mapper_registry
+from infrastructure.storage.orm import mapper_registry
 from infrastructure.entrypoints.rest_api.app import app
 
 settings = get_settings()

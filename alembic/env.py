@@ -9,7 +9,7 @@ from alembic import context
 
 
 from config import settings
-from infrastructure.adapters.orm import mapper_registry
+from infrastructure.storage.orm import mapper_registry
 # from infrastructure.adapters.orm import allocations  # noqa
 # from infrastructure.adapters.orm import Batch  # noqa
 # from infrastructure.adapters.orm import OrderLine  # noqa
