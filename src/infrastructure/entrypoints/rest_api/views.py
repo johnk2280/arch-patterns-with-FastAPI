@@ -7,10 +7,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from domain import OrderLine
 from domain.models import allocate
 from domain.models import Batch
-from infrastructure.adapters.orm import get_async_session
-from infrastructure.adapters.repositories import AsyncBatchRepo
-from infrastructure.entrypoints.rest_api.schema import BatchSchema
-from infrastructure.entrypoints.rest_api.schema import OrderLineCreateSchema
+from infrastructure.storage.orm import get_async_session
+from infrastructure.storage.repositories import AsyncBatchRepo
+from .schema import BatchSchema
+from .schema import OrderLineCreateSchema
 
 router = APIRouter(prefix='', tags=['batches'])
 

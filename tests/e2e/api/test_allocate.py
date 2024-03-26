@@ -1,12 +1,10 @@
 import uuid
 from datetime import datetime
 
-import httpx
-import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from infrastructure.adapters.repositories import AsyncBatchRepo
+from infrastructure.storage.repositories import AsyncBatchRepo
 
 
 def random_suffix():

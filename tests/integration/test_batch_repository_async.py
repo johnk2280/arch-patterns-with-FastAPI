@@ -4,8 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from domain.models import Batch
 from domain.models import OrderLine
-from infrastructure.adapters.orm import allocations
-from infrastructure.adapters.repositories import AsyncBatchRepo
+from infrastructure.storage.orm import allocations
+from infrastructure.storage.repositories import AsyncBatchRepo
 
 
 async def test_async_batch_repository_can_save_a_batch(
