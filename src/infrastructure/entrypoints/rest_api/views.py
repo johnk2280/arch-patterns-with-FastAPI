@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from fastapi import Depends
+from fastapi import status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -21,7 +22,7 @@ async def get_batches(
     return result.mappings().all()
 
 
-@router.post('/allocate')
+@router.post('/allocate', status_code=status.HTTP_201_CREATED)
 async def allocate_order_line(
     order_line: OrderLineCreateSchema,
     async_session: AsyncSession = Depends(get_async_session)
