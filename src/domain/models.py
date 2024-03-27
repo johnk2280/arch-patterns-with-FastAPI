@@ -3,9 +3,7 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Any
 
-
-class OutOfStockError(Exception):
-    pass
+from .exeptions import OutOfStockError
 
 
 class DomainModel:
