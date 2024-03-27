@@ -103,3 +103,11 @@ async def test_allocations_are_persisted(
     assert response_2.status_code == 201
     assert response_2.json() == {'reference': later_batch}
 
+
+async def test_400_message_for_out_of_stock(
+    async_session: AsyncSession,
+    async_client: AsyncClient,
+):
+    pass
+
+
