@@ -34,7 +34,6 @@ async def allocate_order_line(
 ) -> Batch:
     repo = AsyncBatchRepo(async_session)
     batches = await repo.get_many()
-    # TODO: добавить обработчик ошибок
     batch = allocate(OrderLine(**order_line.model_dump()), batches)
     await async_session.commit()
     return batch
