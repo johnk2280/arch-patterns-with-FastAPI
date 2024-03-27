@@ -7,7 +7,7 @@ from domain.models import allocate
 
 from domain.models import Batch
 from domain.models import OrderLine
-from domain.models import OutOfStockError
+from domain.exeptions import OutOfStockError
 
 TODAY = date.today()
 TOMORROW = TODAY + timedelta(days=1)

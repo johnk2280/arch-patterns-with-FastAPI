@@ -113,12 +113,12 @@ async def test_400_message_for_out_of_stock(
 
     repo = AsyncBatchRepo(async_session)
     await repo.add_many(
-            {
-                'reference': early_batch,
-                'sku': sku,
-                '_purchased_quantity': 10,
-                'eta': datetime.strptime('2011-01-01', '%Y-%m-%d')
-            },
+        {
+            'reference': early_batch,
+            'sku': sku,
+            '_purchased_quantity': 10,
+            'eta': datetime.strptime('2011-01-01', '%Y-%m-%d')
+        },
     )
     await async_session.commit()
 
@@ -126,6 +126,6 @@ async def test_400_message_for_out_of_stock(
     response = await async_client.post('/allocate', json=data)
 
     assert response.status_code == 413
-    # assert response.json() == {'reference': early_batch}
-
-
+    assert response.json() == {
+        'message': f'Артикула {sku} нет в наличии',
+    }
