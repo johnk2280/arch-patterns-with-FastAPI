@@ -20,7 +20,10 @@ async def test_return_allocations():
     )
     fake_session = FakeSession()
 
-    result = allocate_line(line, repo, fake_session)
+    result = await allocate_line(line, repo, fake_session)
+
+    assert result == batch
+    assert fake_session.committed
 
 
 

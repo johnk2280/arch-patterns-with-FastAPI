@@ -1,5 +1,6 @@
 from typing import Any
 from typing import Generic
+from typing import Sequence
 from typing import TypeVar
 
 from sqlalchemy.exc import NoResultFound
@@ -30,6 +31,9 @@ class FakeRepository(AbstractRepository[M], Generic[M]):
             return (await self._read(*items))[0]
         except IndexError:
             raise NoResultFound from None
+
+    async def get_many(self, *args: Any, **kwargs: Any) -> Sequence[M]:
+        return self._items
 
     async def _read(self, field: str, value: str | int) -> list[M]:
         return [el for el in self._items if getattr(el, field, None) == value]
