@@ -2,7 +2,9 @@ from datetime import datetime
 
 from domain import Batch
 from domain import OrderLine
+from service_layer.services import allocate_order_line
 from tests.fake_repository import FakeRepository
+from tests.fake_session import FakeSession
 
 
 async def test_return_allocations():
@@ -16,8 +18,9 @@ async def test_return_allocations():
             'eta': datetime.strptime('2011-01-02', '%Y-%m-%d')
         }
     )
+    fake_session = FakeSession()
 
-    result = allocation(line, repo, fake_session)
+    result = allocate_order_line(line, repo, fake_session)
 
 
 
