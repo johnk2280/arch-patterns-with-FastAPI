@@ -129,3 +129,18 @@ async def test_400_message_for_out_of_stock(
     assert response.json() == {
         'message': f'Артикула {sku} нет в наличии',
     }
+
+
+async def test_404_message_for_invalid_sku(
+    async_client: AsyncClient,
+):
+    sku, other_sku = random_sku(), random_sku('other')
+    data = {'order_id': random_order_id(), 'sku': sku, 'qty': 100}
+    response = await async_client.post('/allocate', json=data)
+
+    assert response.status_code == 404
+    # assert response.json() == {
+    #     'message': f'Артикула {sku} нет в наличии',
+    # }
+
+
