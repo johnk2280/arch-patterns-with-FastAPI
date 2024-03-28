@@ -5,11 +5,10 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from domain import OrderLine
-from domain.models import allocate
 from domain.models import Batch
 from infrastructure.storage.orm import get_async_session
 from infrastructure.storage.repositories import AsyncBatchRepo
-from service_layer.services import is_valid_sku
+from service_layer.services import allocate_line
 from .schema import BatchSchema
 from .schema import OrderLineCreateSchema
 
@@ -34,14 +33,8 @@ async def allocate_order_line(
     async_session: AsyncSession = Depends(get_async_session)
 ) -> Batch:
     repo = AsyncBatchRepo(async_session)
-    batches = await repo.get_many()
-    if not is_valid_sku(order_line.sku, batches):
-        from fastapi import HTTPException
-        raise HTTPException(
-            status_code=404,
-            detail=f'Недопустимый артикул: {order_line.sku}'
-        )
-
-    batch = allocate(OrderLine(**order_line.model_dump()), batches)
-    await async_session.commit()
-    return batch
+    return await allocate_line(
+        OrderLine(**order_line.model_dump()),
+        repo,
+        async_session,
+    )

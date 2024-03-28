@@ -2,7 +2,7 @@ from datetime import datetime
 
 from domain import Batch
 from domain import OrderLine
-from service_layer.services import allocate_order_line
+from service_layer.services import allocate_line
 from tests.fake_repository import FakeRepository
 from tests.fake_session import FakeSession
 
@@ -20,7 +20,7 @@ async def test_return_allocations():
     )
     fake_session = FakeSession()
 
-    result = allocate_order_line(line, repo, fake_session)
+    result = allocate_line(line, repo, fake_session)
 
 
 

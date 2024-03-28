@@ -15,7 +15,7 @@ class CommitterProtocol(Protocol):
     async def commit(self) -> None: ...
 
 
-async def allocate_order_line(
+async def allocate_line(
     line: OrderLine,
     repo: AbstractRepository[Batch],
     session: CommitterProtocol,
