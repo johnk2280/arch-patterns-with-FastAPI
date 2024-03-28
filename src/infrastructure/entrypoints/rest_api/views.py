@@ -39,7 +39,7 @@ async def allocate_order_line(
         from fastapi import HTTPException
         raise HTTPException(
             status_code=404,
-            detail=f'Недопустимый артикул: {order_line.sku}',
+            detail=f'Недопустимый артикул: {order_line.sku}'
         )
 
     batch = allocate(OrderLine(**order_line.model_dump()), batches)
