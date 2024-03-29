@@ -7,6 +7,9 @@ from domain import OrderLine
 from service_layer.ports import AbstractRepository
 
 
+
+
+
 def is_valid_sku(sku: str, batches: Sequence[Batch]) -> bool:
     return sku in {b.sku for b in batches}
 
@@ -31,4 +34,3 @@ async def allocate_line(
     batch = allocate(line, batches)
     await session.commit()
     return batch
-
