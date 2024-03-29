@@ -140,7 +140,7 @@ async def test_404_message_for_invalid_sku(
 
     assert response.status_code == 404
     assert response.json() == {
-        'detail': f'Недопустимый артикул: {sku}',
+        'message': f'Недопустимый артикул: {sku}',
     }
 
 

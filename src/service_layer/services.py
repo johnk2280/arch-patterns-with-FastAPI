@@ -4,6 +4,7 @@ from typing import Protocol
 from domain import allocate
 from domain import Batch
 from domain import OrderLine
+from service_layer.exceptions import InvalidSkuError
 from service_layer.ports import AbstractRepository
 
 
@@ -12,7 +13,8 @@ def is_valid_sku(sku: str, batches: Sequence[Batch]) -> bool:
 
 
 class CommitterProtocol(Protocol):
-    async def commit(self) -> None: ...
+    async def commit(self) -> None:
+        ...
 
 
 async def allocate_line(
@@ -22,13 +24,8 @@ async def allocate_line(
 ) -> Batch:
     batches = await repo.get_many()
     if not is_valid_sku(line.sku, batches):
-        from fastapi import HTTPException
-        raise HTTPException(
-            status_code=404,
-            detail=f'Недопустимый артикул: {line.sku}'
-        )
+        raise InvalidSkuError(str(line.sku)) from None
 
     batch = allocate(line, batches)
     await session.commit()
     return batch
-
