@@ -24,7 +24,7 @@ async def allocate_line(
 ) -> Batch:
     batches = await repo.get_many()
     if not is_valid_sku(line.sku, batches):
-        raise InvalidSkuError
+        raise InvalidSkuError(str(line.sku)) from None
 
     batch = allocate(line, batches)
     await session.commit()
