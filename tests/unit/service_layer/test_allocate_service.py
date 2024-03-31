@@ -43,6 +43,43 @@ async def test_prefers_current_stock_batches_to_shipments():
     assert shipment_batch.available_quantity == 100
 
 
+async def test_prefers_earlier_batches():
+    session = FakeSession()
+    repo = FakeRepository[Batch](Batch)
+    earliest = await repo.add(
+        {
+            'reference': 'in-stock-batch',
+            'sku': 'RETRO-CLOCK',
+            '_purchased_quantity': 100,
+            'eta': TODAY,
+        }
+    )
+    medium = await repo.add(
+        {
+            'reference': 'shipment-batch',
+            'sku': 'RETRO-CLOCK',
+            '_purchased_quantity': 100,
+            'eta': TOMORROW,
+        }
+    )
+    latest = await repo.add(
+        {
+            'reference': 'shipment-batch',
+            'sku': 'RETRO-CLOCK',
+            '_purchased_quantity': 100,
+            'eta': LATER,
+        }
+    )
+
+    line = OrderLine('oref', 'RETRO-CLOCK', 10)
+
+    await allocate_line(line, repo, session)
+
+    assert earliest.available_quantity == 90
+    assert medium.available_quantity == 100
+    assert latest.available_quantity == 100
+
+
 async def test_return_allocations():
     repo = FakeRepository[Batch](Batch)
     line = OrderLine('oref', 'RETRO-CLOCK', 10)
