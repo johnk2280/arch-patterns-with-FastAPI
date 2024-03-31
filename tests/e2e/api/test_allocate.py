@@ -136,6 +136,7 @@ async def test_404_message_for_invalid_sku(
 ):
     sku = random_sku()
     data = {'order_id': random_order_id(), 'sku': sku, 'qty': 100}
+
     response = await async_client.post('/allocate', json=data)
 
     assert response.status_code == 404
