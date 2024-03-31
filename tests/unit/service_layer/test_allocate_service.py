@@ -65,7 +65,7 @@ async def test_return_allocations():
 async def test_error_for_invalid_sku():
     repo = FakeRepository[Batch](Batch)
     line = OrderLine('oref', 'RED-CHAIR', 10)
-    batch = await repo.add(
+    await repo.add(
         {
             'reference': 'batch-1',
             'sku': 'RETRO-CLOCK',
