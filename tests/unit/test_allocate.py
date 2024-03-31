@@ -14,6 +14,7 @@ TOMORROW = TODAY + timedelta(days=1)
 LATER = TOMORROW + timedelta(days=10)
 
 
+# TODO: Переместить все тесты (модели доменной области) в тесты сервисного слоя
 def test_prefers_earlier_batches():
     earliest = Batch('in-stock-batch', 'RETRO-CLOCK', 100, TODAY)
     medium = Batch('shipment-batch', 'RETRO-CLOCK', 100, TOMORROW)
