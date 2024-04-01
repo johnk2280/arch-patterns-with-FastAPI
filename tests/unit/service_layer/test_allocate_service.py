@@ -6,6 +6,7 @@ import pytest
 
 from domain import Batch
 from domain import OrderLine
+from domain.exeptions import OutOfStockError
 from service_layer.exceptions import InvalidSkuError
 from service_layer.services import allocate_line
 from tests.fake_repository import FakeRepository
@@ -104,6 +105,26 @@ async def test_returns_allocated_batch_ref():
     allocation = await allocate_line(line, repo, session)
 
     assert allocation.reference == in_stock_batch.reference
+
+
+async def test_raises_out_of_stock_exception_if_cannot_allocate():
+    session = FakeSession()
+    repo = FakeRepository[Batch](Batch)
+    await repo.add(
+        {
+            'reference': 'in-stock-batch',
+            'sku': 'SMALL_FORK',
+            '_purchased_quantity': 25,
+            'eta': TODAY,
+        }
+    )
+    line = OrderLine('oref', 'SMALL_FORK', 25)
+
+    await allocate_line(line, repo, session)
+
+    with pytest.raises(OutOfStockError, match='SMALL_FORK'):
+        line_2 = OrderLine('order-02', 'SMALL_FORK', 25)
+        await allocate_line(line_2, repo, session)
 
 
 async def test_return_allocations():
