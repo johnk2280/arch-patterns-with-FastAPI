@@ -8,6 +8,7 @@ from domain import Batch
 from domain import OrderLine
 from domain.exeptions import OutOfStockError
 from service_layer.exceptions import InvalidSkuError
+from service_layer.services import add_batch
 from service_layer.services import allocate_line
 from tests.fake_repository import FakeRepository
 from tests.fake_session import FakeSession
@@ -20,21 +21,25 @@ LATER = TOMORROW + timedelta(days=10)
 async def test_prefers_current_stock_batches_to_shipments():
     session = FakeSession()
     repo = FakeRepository[Batch](Batch)
-    in_stock_batch = await repo.add(
+    in_stock_batch = await add_batch(
         {
             'reference': 'in-stock-batch',
             'sku': 'RETRO-CLOCK',
             '_purchased_quantity': 100,
             'eta': None,
-        }
+        },
+        repo,
+        session,
     )
-    shipment_batch = await repo.add(
+    shipment_batch = await add_batch(
         {
             'reference': 'shipment-batch',
             'sku': 'RETRO-CLOCK',
             '_purchased_quantity': 100,
             'eta': TOMORROW,
-        }
+        },
+        repo,
+        session,
     )
     line = OrderLine('oref', 'RETRO-CLOCK', 10)
 
@@ -47,29 +52,35 @@ async def test_prefers_current_stock_batches_to_shipments():
 async def test_prefers_earlier_batches():
     session = FakeSession()
     repo = FakeRepository[Batch](Batch)
-    earliest = await repo.add(
+    earliest = await add_batch(
         {
             'reference': 'in-stock-batch',
             'sku': 'RETRO-CLOCK',
             '_purchased_quantity': 100,
             'eta': TODAY,
-        }
+        },
+        repo,
+        session
     )
-    medium = await repo.add(
+    medium = await add_batch(
         {
             'reference': 'shipment-batch',
             'sku': 'RETRO-CLOCK',
             '_purchased_quantity': 100,
             'eta': TOMORROW,
-        }
+        },
+        repo,
+        session
     )
-    latest = await repo.add(
+    latest = await add_batch(
         {
             'reference': 'shipment-batch',
             'sku': 'RETRO-CLOCK',
             '_purchased_quantity': 100,
             'eta': LATER,
-        }
+        },
+        repo,
+        session
     )
 
     line = OrderLine('oref', 'RETRO-CLOCK', 10)
@@ -84,21 +95,25 @@ async def test_prefers_earlier_batches():
 async def test_returns_allocated_batch_ref():
     session = FakeSession()
     repo = FakeRepository[Batch](Batch)
-    in_stock_batch = await repo.add(
+    in_stock_batch = await add_batch(
         {
             'reference': 'in-stock-batch',
             'sku': 'RETRO-CLOCK',
             '_purchased_quantity': 100,
             'eta': None,
-        }
+        },
+        repo,
+        session,
     )
-    await repo.add(
+    await add_batch(
         {
             'reference': 'shipment-batch',
             'sku': 'RETRO-CLOCK',
             '_purchased_quantity': 100,
             'eta': TOMORROW,
-        }
+        },
+        repo,
+        session,
     )
     line = OrderLine('oref', 'RETRO-CLOCK', 10)
 
@@ -110,13 +125,15 @@ async def test_returns_allocated_batch_ref():
 async def test_raises_out_of_stock_exception_if_cannot_allocate():
     session = FakeSession()
     repo = FakeRepository[Batch](Batch)
-    await repo.add(
+    await add_batch(
         {
             'reference': 'in-stock-batch',
             'sku': 'SMALL_FORK',
             '_purchased_quantity': 25,
             'eta': TODAY,
-        }
+        },
+        repo,
+        session,
     )
     line = OrderLine('oref', 'SMALL_FORK', 25)
 
@@ -128,15 +145,18 @@ async def test_raises_out_of_stock_exception_if_cannot_allocate():
 
 
 async def test_return_allocations():
+    session = FakeSession()
     repo = FakeRepository[Batch](Batch)
     line = OrderLine('oref', 'RETRO-CLOCK', 10)
-    batch = await repo.add(
+    batch = await add_batch(
         {
             'reference': 'batch-1',
             'sku': 'RETRO-CLOCK',
             '_purchased_quantity': 10,
             'eta': datetime.strptime('2011-01-02', '%Y-%m-%d')
-        }
+        },
+        repo,
+        session,
     )
     fake_session = FakeSession()
 
@@ -147,15 +167,18 @@ async def test_return_allocations():
 
 
 async def test_error_for_invalid_sku():
+    session = FakeSession()
     repo = FakeRepository[Batch](Batch)
     line = OrderLine('oref', 'RED-CHAIR', 10)
-    await repo.add(
+    await add_batch(
         {
             'reference': 'batch-1',
             'sku': 'RETRO-CLOCK',
             '_purchased_quantity': 10,
             'eta': datetime.strptime('2011-01-02', '%Y-%m-%d')
-        }
+        },
+        repo,
+        session,
     )
     fake_session = FakeSession()
 

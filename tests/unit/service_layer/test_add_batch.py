@@ -20,4 +20,5 @@ async def test_add_batch():
     )
 
     assert batch is not None
+    assert batch.reference == 'in-stock-batch'
     assert session.committed
