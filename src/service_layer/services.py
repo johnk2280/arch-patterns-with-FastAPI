@@ -1,4 +1,6 @@
 from collections.abc import Sequence
+from datetime import datetime
+from typing import Any
 from typing import Protocol
 
 from domain import allocate
@@ -27,5 +29,15 @@ async def allocate_line(
         raise InvalidSkuError(str(line.sku)) from None
 
     batch = allocate(line, batches)
+    await session.commit()
+    return batch
+
+
+async def add_batch(
+    batch_data: dict[str, Any],
+    repo: AbstractRepository[Batch],
+    session: CommitterProtocol,
+) -> Batch:
+    batch = await repo.add(batch_data)
     await session.commit()
     return batch
