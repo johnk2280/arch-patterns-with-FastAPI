@@ -15,14 +15,6 @@ LATER = TOMORROW + timedelta(days=10)
 
 
 # TODO: Переместить все тесты (модели доменной области) в тесты сервисного слоя
-def test_returns_allocated_batch_ref():
-    in_stock_batch = Batch('in-stock-batch', 'RETRO-CLOCK', 100)
-    shipment_batch = Batch('shipment-batch', 'RETRO-CLOCK', 100, TOMORROW)
-    line = OrderLine('oref', 'RETRO-CLOCK', 10)
-
-    allocation = allocate(line, [in_stock_batch, shipment_batch])
-
-    assert allocation.reference == in_stock_batch.reference
 
 
 def test_raises_out_of_stock_exception_if_cannot_allocate():
