@@ -75,24 +75,24 @@ async def test_allocations_are_persisted(
     early_batch = random_batchref('1')
     later_batch = random_batchref('2')
 
-    repo = AsyncBatchRepo(async_session)
-    await repo.add_many(
-        [
-            {
-                'reference': later_batch,
-                'sku': sku,
-                '_purchased_quantity': 100,
-                'eta': datetime.strptime('2011-01-02', '%Y-%m-%d')
-            },
-            {
-                'reference': early_batch,
-                'sku': sku,
-                '_purchased_quantity': 100,
-                'eta': datetime.strptime('2011-01-01', '%Y-%m-%d')
-            },
-        ]
+    await async_client.post(
+        '/batches',
+        json={
+            'reference': later_batch,
+            'sku': sku,
+            '_purchased_quantity': 100,
+            'eta': '2011-01-02',
+        },
     )
-    await async_session.commit()
+    await async_client.post(
+        '/batches',
+        json={
+            'reference': early_batch,
+            'sku': sku,
+            '_purchased_quantity': 100,
+            'eta': '2011-01-01',
+        },
+    )
 
     data = {'order_id': random_order_id(), 'sku': sku, 'qty': 100}
     response = await async_client.post('/allocate', json=data)
