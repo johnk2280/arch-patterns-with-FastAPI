@@ -114,16 +114,15 @@ async def test_400_message_for_out_of_stock(
     sku, other_sku = random_sku(), random_sku('other')
     early_batch = random_batchref('1')
 
-    repo = AsyncBatchRepo(async_session)
-    await repo.add_many(
-        {
+    await async_client.post(
+        '/batches',
+        json={
             'reference': early_batch,
             'sku': sku,
             '_purchased_quantity': 10,
-            'eta': datetime.strptime('2011-01-01', '%Y-%m-%d')
+            'eta': '2011-01-01',
         },
     )
-    await async_session.commit()
 
     data = {'order_id': random_order_id(), 'sku': sku, 'qty': 100}
     response = await async_client.post('/allocate', json=data)
