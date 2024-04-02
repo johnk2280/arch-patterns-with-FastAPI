@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from pydantic import BaseModel
+from pydantic import Field
 
 
 class OrderLineCreateSchema(BaseModel):
@@ -12,7 +13,7 @@ class OrderLineCreateSchema(BaseModel):
 class BatchCreateSchema(BaseModel):
     reference: str
     sku: str
-    _purchased_quantity: int
+    purchased_quantity: int = Field(alias='_purchased_quantity')
     eta: datetime | None
 
 
