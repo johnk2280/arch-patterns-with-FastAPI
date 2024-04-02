@@ -32,16 +32,17 @@ async def get_batches(
 async def create_batches(
     batch: BatchCreateSchema,
     async_session: AsyncSession = Depends(get_async_session),
-):
+) -> Batch:
     repo = AsyncBatchRepo(async_session)
-    batch = await repo.add({
-        'reference': batch.reference,
-        'sku': batch.sku,
-        '_purchased_quantity': batch.purchased_quantity,
-        'eta': batch.eta,
-    })
+    batch = await repo.add(
+        {
+            'reference': batch.reference,
+            'sku': batch.sku,
+            '_purchased_quantity': batch.purchased_quantity,
+            'eta': batch.eta,
+        }
+    )
     return batch
-
 
 
 @router.post(

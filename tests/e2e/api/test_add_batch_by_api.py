@@ -16,3 +16,4 @@ async def test_api_add_batch(
     response = await async_client.post('/batches', json=data)
 
     assert response.status_code == 201
+    assert response.json()['reference'] == 'in-stock-batch'
