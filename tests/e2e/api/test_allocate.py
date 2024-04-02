@@ -32,30 +32,33 @@ async def test_api_returns_allocation(
     later_batch = random_batchref('2')
     other_batch = random_batchref('3')
 
-    repo = AsyncBatchRepo(async_session)
-    await repo.add_many(
-        [
-            {
-                'reference': later_batch,
-                'sku': sku,
-                '_purchased_quantity': 100,
-                'eta': datetime.strptime('2011-01-02', '%Y-%m-%d')
-            },
-            {
-                'reference': early_batch,
-                'sku': sku,
-                '_purchased_quantity': 100,
-                'eta': datetime.strptime('2011-01-01', '%Y-%m-%d')
-            },
-            {
-                'reference': other_batch,
-                'sku': other_sku,
-                '_purchased_quantity': 100,
-                'eta': None,
-            },
-        ]
+    await async_client.post(
+        '/batches',
+        json={
+            'reference': later_batch,
+            'sku': sku,
+            '_purchased_quantity': 100,
+            'eta': '2011-01-02'
+        },
     )
-    await async_session.commit()
+    await async_client.post(
+        '/batches',
+        json={
+            'reference': early_batch,
+            'sku': sku,
+            '_purchased_quantity': 100,
+            'eta': '2011-01-01'
+        }
+    )
+    await async_client.post(
+        '/batches',
+        json={
+            'reference': other_batch,
+            'sku': other_sku,
+            '_purchased_quantity': 100,
+            'eta': None,
+        },
+    )
 
     data = {'order_id': random_order_id(), 'sku': sku, 'qty': 3}
     response = await async_client.post('/allocate', json=data)
@@ -143,5 +146,3 @@ async def test_404_message_for_invalid_sku(
     assert response.json() == {
         'message': f'Недопустимый артикул: {sku}',
     }
-
-
