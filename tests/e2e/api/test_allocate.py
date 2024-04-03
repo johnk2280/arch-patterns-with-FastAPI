@@ -21,7 +21,6 @@ def random_order_id(name=""):
 
 
 async def test_api_returns_allocation(
-    async_session: AsyncSession,
     async_client: AsyncClient,
 ):
     sku, other_sku = random_sku(), random_sku('other')
@@ -65,7 +64,6 @@ async def test_api_returns_allocation(
 
 
 async def test_allocations_are_persisted(
-    async_session: AsyncSession,
     async_client: AsyncClient,
 ):
     sku, other_sku = random_sku(), random_sku('other')
@@ -105,7 +103,6 @@ async def test_allocations_are_persisted(
 
 
 async def test_400_message_for_out_of_stock(
-    async_session: AsyncSession,
     async_client: AsyncClient,
 ):
     sku, other_sku = random_sku(), random_sku('other')
