@@ -1,4 +1,4 @@
-from service_layer.ports.unit_of_work import AbstractUOW
+from service_layer.ports import AbstractUOW
 
 
 class BatchUOW(AbstractUOW):
