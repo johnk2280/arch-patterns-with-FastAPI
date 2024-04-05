@@ -4,6 +4,7 @@ from service_layer.ports import AbstractUOW
 
 
 class BatchUOW(AbstractUOW):
+
     async def __aenter__(self) -> Any:
         pass
 
