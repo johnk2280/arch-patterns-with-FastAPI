@@ -35,7 +35,7 @@ async def create_batches(
     async_session: AsyncSession = Depends(get_async_session),
 ) -> Batch:
     repo = AsyncBatchRepo(async_session)
-    batch = await add_batch(
+    return await add_batch(
         {
             'reference': batch.reference,
             'sku': batch.sku,
@@ -45,7 +45,6 @@ async def create_batches(
         repo,
         async_session,
     )
-    return batch
 
 
 @router.post(
