@@ -170,3 +170,5 @@ cython_debug/
 .secrets.*
 /static/
 /temp/
+
+.DS_Store

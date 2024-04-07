@@ -21,8 +21,7 @@ router = APIRouter(prefix='', tags=['batches'])
 async def get_batches(
     session: AsyncSession = Depends(get_async_session),
 ):
-    result = await session.execute(select(Batch))
-    return result.mappings().all()
+    return (await session.execute(select(Batch))).scalars().all()
 
 
 @router.post(
