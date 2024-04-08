@@ -91,7 +91,7 @@ def determine_actions(
     # Если в целевой папке имеется файл, который отсутствует в источнике
     for sha, filename in dest_hashes.items():
         if sha not in source_hashes:
-            yield 'DELETE', dest / filename, ''
+            yield 'DELETE', dest / filename, Path('')
 
 
 # def sync(source: str, dest: str) -> None:
