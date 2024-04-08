@@ -1,7 +1,6 @@
 from pathlib import Path
 from typing import Literal
 
-from pydantic import PostgresDsn
 from pydantic_settings import BaseSettings
 from pydantic_settings import SettingsConfigDict
 
@@ -29,7 +28,7 @@ class Settings(BaseSettings):
     TEST_DB_PASS: str
 
     @property
-    def database_url(self) -> PostgresDsn:
+    def database_url(self) -> str:
         if self.ENVIRONMENT == 'test':
             return (f'postgresql+asyncpg://'
                     f'{self.TEST_DB_USER}:{self.TEST_DB_PASS}@'

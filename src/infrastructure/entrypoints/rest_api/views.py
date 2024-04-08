@@ -1,3 +1,5 @@
+from collections.abc import Sequence
+
 from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import status
@@ -17,10 +19,14 @@ from .schema import OrderLineCreateSchema
 router = APIRouter(prefix='', tags=['batches'])
 
 
-@router.get('/batches')
+@router.get(
+    '/batches',
+    status_code=status.HTTP_200_OK,
+    response_model=BatchSchema,
+)
 async def get_batches(
     session: AsyncSession = Depends(get_async_session),
-):
+) -> Sequence[Batch]:
     return (await session.execute(select(Batch))).scalars().all()
 
 
