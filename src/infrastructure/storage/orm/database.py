@@ -14,7 +14,7 @@ engine = create_async_engine(
     echo=True,
     # pool_pre_ping=True,
 )
-Session = async_sessionmaker(
+async_session_maker = async_sessionmaker(
     engine,
     expire_on_commit=False,
     class_=AsyncSession,
@@ -22,5 +22,5 @@ Session = async_sessionmaker(
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
-    async with Session() as session:
+    async with async_session_maker() as session:
         yield session

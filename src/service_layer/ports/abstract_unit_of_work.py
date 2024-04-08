@@ -15,7 +15,7 @@ class AbstractUOW(ABC):
         pass
 
     @abstractmethod
-    async def __aexit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> Any:
+    async def __aexit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
         pass
 
     @abstractmethod
