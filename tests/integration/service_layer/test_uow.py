@@ -1,9 +1,6 @@
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from domain import Batch
 from domain import OrderLine
-from infrastructure.storage.orm import allocations
 from infrastructure.storage.repositories import AsyncBatchRepo
 from service_layer.uow import BatchUOW
 
