@@ -125,6 +125,8 @@ async def test_returns_allocated_batch_ref():
 async def test_raises_out_of_stock_exception_if_cannot_allocate():
     session = FakeSession()
     repo = FakeRepository[Batch](Batch)
+    uow = FakeUOW()
+    uow.batches = repo
     await add_batch(
         {
             'reference': 'in-stock-batch',
@@ -132,8 +134,7 @@ async def test_raises_out_of_stock_exception_if_cannot_allocate():
             '_purchased_quantity': 25,
             'eta': TODAY,
         },
-        repo,
-        session,
+        uow,
     )
     line = OrderLine('oref', 'SMALL_FORK', 25)
 
