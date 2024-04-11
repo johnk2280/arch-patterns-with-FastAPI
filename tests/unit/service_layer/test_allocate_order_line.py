@@ -12,6 +12,7 @@ from service_layer.services import add_batch
 from service_layer.services import allocate_line
 from tests.fake_repository import FakeRepository
 from tests.fake_session import FakeSession
+from tests.fake_unit_of_work import FakeUOW
 
 TODAY = date.today()
 TOMORROW = TODAY + timedelta(days=1)
@@ -21,6 +22,8 @@ LATER = TOMORROW + timedelta(days=10)
 async def test_prefers_current_stock_batches_to_shipments():
     session = FakeSession()
     repo = FakeRepository[Batch](Batch)
+    uow = FakeUOW()
+    uow.batches = repo
     in_stock_batch = await add_batch(
         {
             'reference': 'in-stock-batch',
@@ -28,8 +31,7 @@ async def test_prefers_current_stock_batches_to_shipments():
             '_purchased_quantity': 100,
             'eta': None,
         },
-        repo,
-        session,
+        uow
     )
     shipment_batch = await add_batch(
         {
@@ -38,8 +40,7 @@ async def test_prefers_current_stock_batches_to_shipments():
             '_purchased_quantity': 100,
             'eta': TOMORROW,
         },
-        repo,
-        session,
+        uow
     )
     line = OrderLine('oref', 'RETRO-CLOCK', 10)
 
