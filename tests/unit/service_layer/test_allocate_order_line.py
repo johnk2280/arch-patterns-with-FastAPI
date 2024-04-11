@@ -148,6 +148,8 @@ async def test_raises_out_of_stock_exception_if_cannot_allocate():
 async def test_return_allocations():
     session = FakeSession()
     repo = FakeRepository[Batch](Batch)
+    uow = FakeUOW()
+    uow.batches = repo
     line = OrderLine('oref', 'RETRO-CLOCK', 10)
     batch = await add_batch(
         {
@@ -156,8 +158,7 @@ async def test_return_allocations():
             '_purchased_quantity': 10,
             'eta': datetime.strptime('2011-01-02', '%Y-%m-%d')
         },
-        repo,
-        session,
+        uow,
     )
     fake_session = FakeSession()
 
