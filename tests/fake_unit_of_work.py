@@ -5,7 +5,7 @@ from service_layer.ports import AbstractUOW
 from tests.fake_repository import FakeRepository
 
 
-class FakeUnitOfWork(AbstractUOW):
+class FakeUOW(AbstractUOW):
     batches: FakeRepository[Batch]
 
     def __init__(self) -> None:

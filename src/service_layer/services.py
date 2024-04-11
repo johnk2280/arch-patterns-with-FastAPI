@@ -8,6 +8,7 @@ from domain import Batch
 from domain import OrderLine
 from service_layer.exceptions import InvalidSkuError
 from service_layer.ports import AbstractRepository
+from service_layer.ports import AbstractUOW
 
 
 def is_valid_sku(sku: str, batches: Sequence[Batch]) -> bool:
@@ -35,9 +36,10 @@ async def allocate_line(
 
 async def add_batch(
     batch_data: dict[str, Any],
-    repo: AbstractRepository[Batch],
-    session: CommitterProtocol,
+    uow: AbstractUOW,
 ) -> Batch:
-    batch = await repo.add(batch_data)
-    await session.commit()
+    async with uow:
+        batch = await uow.batches.add(batch_data)
+        await uow.commit()
+
     return batch

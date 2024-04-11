@@ -1,12 +1,13 @@
 from domain import Batch
 from service_layer.services import add_batch
 from tests.fake_repository import FakeRepository
-from tests.fake_session import FakeSession
+from tests.fake_unit_of_work import FakeUOW
 
 
 async def test_add_batch():
-    session = FakeSession()
     repo = FakeRepository[Batch](Batch)
+    uow = FakeUOW()
+    uow.batches = repo
 
     batch = await add_batch(
         {
@@ -15,10 +16,8 @@ async def test_add_batch():
             '_purchased_quantity': 100,
             'eta': None,
         },
-        repo,
-        session,
+        uow,
     )
 
     assert batch is not None
     assert batch.reference == 'in-stock-batch'
-    assert session.committed
