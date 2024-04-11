@@ -53,6 +53,8 @@ async def test_prefers_current_stock_batches_to_shipments():
 async def test_prefers_earlier_batches():
     session = FakeSession()
     repo = FakeRepository[Batch](Batch)
+    uow = FakeUOW()
+    uow.batches = repo
     earliest = await add_batch(
         {
             'reference': 'in-stock-batch',
@@ -60,8 +62,7 @@ async def test_prefers_earlier_batches():
             '_purchased_quantity': 100,
             'eta': TODAY,
         },
-        repo,
-        session
+        uow,
     )
     medium = await add_batch(
         {
@@ -70,8 +71,7 @@ async def test_prefers_earlier_batches():
             '_purchased_quantity': 100,
             'eta': TOMORROW,
         },
-        repo,
-        session
+        uow,
     )
     latest = await add_batch(
         {
@@ -80,8 +80,7 @@ async def test_prefers_earlier_batches():
             '_purchased_quantity': 100,
             'eta': LATER,
         },
-        repo,
-        session
+        uow,
     )
 
     line = OrderLine('oref', 'RETRO-CLOCK', 10)
