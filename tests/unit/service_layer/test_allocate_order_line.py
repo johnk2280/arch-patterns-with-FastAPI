@@ -146,7 +146,6 @@ async def test_raises_out_of_stock_exception_if_cannot_allocate():
 
 
 async def test_return_allocations():
-    session = FakeSession()
     repo = FakeRepository[Batch](Batch)
     uow = FakeUOW()
     uow.batches = repo
@@ -169,8 +168,9 @@ async def test_return_allocations():
 
 
 async def test_error_for_invalid_sku():
-    session = FakeSession()
     repo = FakeRepository[Batch](Batch)
+    uow = FakeUOW()
+    uow.batches = repo
     line = OrderLine('oref', 'RED-CHAIR', 10)
     await add_batch(
         {
@@ -179,8 +179,7 @@ async def test_error_for_invalid_sku():
             '_purchased_quantity': 10,
             'eta': datetime.strptime('2011-01-02', '%Y-%m-%d')
         },
-        repo,
-        session,
+        uow,
     )
     fake_session = FakeSession()
 
