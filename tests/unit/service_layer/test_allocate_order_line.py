@@ -95,6 +95,8 @@ async def test_prefers_earlier_batches():
 async def test_returns_allocated_batch_ref():
     session = FakeSession()
     repo = FakeRepository[Batch](Batch)
+    uow = FakeUOW()
+    uow.batches = repo
     in_stock_batch = await add_batch(
         {
             'reference': 'in-stock-batch',
@@ -102,8 +104,7 @@ async def test_returns_allocated_batch_ref():
             '_purchased_quantity': 100,
             'eta': None,
         },
-        repo,
-        session,
+        uow,
     )
     await add_batch(
         {
@@ -112,8 +113,7 @@ async def test_returns_allocated_batch_ref():
             '_purchased_quantity': 100,
             'eta': TOMORROW,
         },
-        repo,
-        session,
+        uow,
     )
     line = OrderLine('oref', 'RETRO-CLOCK', 10)
 
