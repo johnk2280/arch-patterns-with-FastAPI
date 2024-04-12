@@ -20,7 +20,6 @@ LATER = TOMORROW + timedelta(days=10)
 
 
 async def test_prefers_current_stock_batches_to_shipments():
-    session = FakeSession()
     repo = FakeRepository[Batch](Batch)
     uow = FakeUOW()
     uow.batches = repo
@@ -44,7 +43,7 @@ async def test_prefers_current_stock_batches_to_shipments():
     )
     line = OrderLine('oref', 'RETRO-CLOCK', 10)
 
-    await allocate_line(line, repo, session)
+    await allocate_line(line, uow)
 
     assert in_stock_batch.available_quantity == 90
     assert shipment_batch.available_quantity == 100

@@ -22,15 +22,16 @@ class CommitterProtocol(Protocol):
 
 async def allocate_line(
     line: OrderLine,
-    repo: AbstractRepository[Batch],
-    session: CommitterProtocol,
+    uow: AbstractUOW,
 ) -> Batch:
-    batches = await repo.get_many()
-    if not is_valid_sku(line.sku, batches):
-        raise InvalidSkuError(str(line.sku)) from None
+    async with uow:
+        batches = await uow.batches.get_many()
+        if not is_valid_sku(line.sku, batches):
+            raise InvalidSkuError(str(line.sku)) from None
 
-    batch = allocate(line, batches)
-    await session.commit()
+        batch = allocate(line, batches)
+        await uow.commit()
+
     return batch
 
 
