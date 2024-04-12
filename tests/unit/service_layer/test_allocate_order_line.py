@@ -11,7 +11,6 @@ from service_layer.exceptions import InvalidSkuError
 from service_layer.services import add_batch
 from service_layer.services import allocate_line
 from tests.fake_repository import FakeRepository
-from tests.fake_session import FakeSession
 from tests.fake_unit_of_work import FakeUOW
 
 TODAY = date.today()

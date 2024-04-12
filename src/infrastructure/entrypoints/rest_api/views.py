@@ -9,7 +9,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from domain import OrderLine
 from domain.models import Batch
 from infrastructure.storage.orm import get_async_session
-from infrastructure.storage.repositories import AsyncBatchRepo
 from service_layer.services import add_batch
 from service_layer.services import allocate_line
 from service_layer.uow import BatchUOW
