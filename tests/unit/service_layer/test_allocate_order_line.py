@@ -120,7 +120,6 @@ async def test_returns_allocated_batch_ref():
 
 
 async def test_raises_out_of_stock_exception_if_cannot_allocate():
-    session = FakeSession()
     repo = FakeRepository[Batch](Batch)
     uow = FakeUOW()
     uow.batches = repo
@@ -135,11 +134,11 @@ async def test_raises_out_of_stock_exception_if_cannot_allocate():
     )
     line = OrderLine('oref', 'SMALL_FORK', 25)
 
-    await allocate_line(line, repo, session)
+    await allocate_line(line, uow)
 
     with pytest.raises(OutOfStockError, match='SMALL_FORK'):
         line_2 = OrderLine('order-02', 'SMALL_FORK', 25)
-        await allocate_line(line_2, repo, session)
+        await allocate_line(line_2, uow)
 
 
 async def test_return_allocations():
