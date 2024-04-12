@@ -50,7 +50,6 @@ async def test_prefers_current_stock_batches_to_shipments():
 
 
 async def test_prefers_earlier_batches():
-    session = FakeSession()
     repo = FakeRepository[Batch](Batch)
     uow = FakeUOW()
     uow.batches = repo
@@ -84,7 +83,7 @@ async def test_prefers_earlier_batches():
 
     line = OrderLine('oref', 'RETRO-CLOCK', 10)
 
-    await allocate_line(line, repo, session)
+    await allocate_line(line, uow)
 
     assert earliest.available_quantity == 90
     assert medium.available_quantity == 100
