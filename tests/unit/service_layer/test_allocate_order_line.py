@@ -20,7 +20,6 @@ LATER = TOMORROW + timedelta(days=10)
 
 
 async def test_prefers_current_stock_batches_to_shipments():
-    session = FakeSession()
     repo = FakeRepository[Batch](Batch)
     uow = FakeUOW()
     uow.batches = repo
@@ -44,14 +43,13 @@ async def test_prefers_current_stock_batches_to_shipments():
     )
     line = OrderLine('oref', 'RETRO-CLOCK', 10)
 
-    await allocate_line(line, repo, session)
+    await allocate_line(line, uow)
 
     assert in_stock_batch.available_quantity == 90
     assert shipment_batch.available_quantity == 100
 
 
 async def test_prefers_earlier_batches():
-    session = FakeSession()
     repo = FakeRepository[Batch](Batch)
     uow = FakeUOW()
     uow.batches = repo
@@ -85,7 +83,7 @@ async def test_prefers_earlier_batches():
 
     line = OrderLine('oref', 'RETRO-CLOCK', 10)
 
-    await allocate_line(line, repo, session)
+    await allocate_line(line, uow)
 
     assert earliest.available_quantity == 90
     assert medium.available_quantity == 100
@@ -93,7 +91,6 @@ async def test_prefers_earlier_batches():
 
 
 async def test_returns_allocated_batch_ref():
-    session = FakeSession()
     repo = FakeRepository[Batch](Batch)
     uow = FakeUOW()
     uow.batches = repo
@@ -117,13 +114,12 @@ async def test_returns_allocated_batch_ref():
     )
     line = OrderLine('oref', 'RETRO-CLOCK', 10)
 
-    allocation = await allocate_line(line, repo, session)
+    allocation = await allocate_line(line, uow)
 
     assert allocation.reference == in_stock_batch.reference
 
 
 async def test_raises_out_of_stock_exception_if_cannot_allocate():
-    session = FakeSession()
     repo = FakeRepository[Batch](Batch)
     uow = FakeUOW()
     uow.batches = repo
@@ -138,11 +134,11 @@ async def test_raises_out_of_stock_exception_if_cannot_allocate():
     )
     line = OrderLine('oref', 'SMALL_FORK', 25)
 
-    await allocate_line(line, repo, session)
+    await allocate_line(line, uow)
 
     with pytest.raises(OutOfStockError, match='SMALL_FORK'):
         line_2 = OrderLine('order-02', 'SMALL_FORK', 25)
-        await allocate_line(line_2, repo, session)
+        await allocate_line(line_2, uow)
 
 
 async def test_return_allocations():
@@ -159,12 +155,10 @@ async def test_return_allocations():
         },
         uow,
     )
-    fake_session = FakeSession()
 
-    result = await allocate_line(line, repo, fake_session)
+    result = await allocate_line(line, uow)
 
     assert result == batch
-    assert fake_session.committed
 
 
 async def test_error_for_invalid_sku():
@@ -181,7 +175,6 @@ async def test_error_for_invalid_sku():
         },
         uow,
     )
-    fake_session = FakeSession()
 
     with pytest.raises(InvalidSkuError):
-        await allocate_line(line, repo, fake_session)
+        await allocate_line(line, uow)

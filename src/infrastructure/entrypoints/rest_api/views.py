@@ -56,13 +56,9 @@ async def create_batches(
     status_code=status.HTTP_201_CREATED,
     response_model=BatchSchema,
 )
-async def allocate_order_line(
-    order_line: OrderLineCreateSchema,
-    async_session: AsyncSession = Depends(get_async_session)
-) -> Batch:
-    repo = AsyncBatchRepo(async_session)
+async def allocate_order_line(order_line: OrderLineCreateSchema) -> Batch:
+    uow = BatchUOW()
     return await allocate_line(
         OrderLine(**order_line.model_dump()),
-        repo,
-        async_session,
+        uow
     )
