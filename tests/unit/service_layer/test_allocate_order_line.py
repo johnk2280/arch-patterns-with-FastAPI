@@ -175,7 +175,6 @@ async def test_error_for_invalid_sku():
         },
         uow,
     )
-    fake_session = FakeSession()
 
     with pytest.raises(InvalidSkuError):
-        await allocate_line(line, repo, fake_session)
+        await allocate_line(line, uow)
