@@ -1,5 +1,4 @@
 from collections.abc import Sequence
-from datetime import datetime
 from typing import Any
 from typing import Protocol
 
@@ -7,7 +6,6 @@ from domain import allocate
 from domain import Batch
 from domain import OrderLine
 from service_layer.exceptions import InvalidSkuError
-from service_layer.ports import AbstractRepository
 from service_layer.ports import AbstractUOW
 
 
