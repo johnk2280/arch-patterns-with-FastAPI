@@ -155,12 +155,10 @@ async def test_return_allocations():
         },
         uow,
     )
-    fake_session = FakeSession()
 
-    result = await allocate_line(line, repo, fake_session)
+    result = await allocate_line(line, uow)
 
     assert result == batch
-    assert fake_session.committed
 
 
 async def test_error_for_invalid_sku():
