@@ -91,7 +91,6 @@ async def test_prefers_earlier_batches():
 
 
 async def test_returns_allocated_batch_ref():
-    session = FakeSession()
     repo = FakeRepository[Batch](Batch)
     uow = FakeUOW()
     uow.batches = repo
@@ -115,7 +114,7 @@ async def test_returns_allocated_batch_ref():
     )
     line = OrderLine('oref', 'RETRO-CLOCK', 10)
 
-    allocation = await allocate_line(line, repo, session)
+    allocation = await allocate_line(line, uow)
 
     assert allocation.reference == in_stock_batch.reference
 
