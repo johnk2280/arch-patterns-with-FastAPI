@@ -18,10 +18,7 @@ class CommitterProtocol(Protocol):
         ...
 
 
-async def allocate_line(
-    line: OrderLine,
-    uow: AbstractUOW,
-) -> Batch:
+async def allocate_line(line: OrderLine, uow: AbstractUOW) -> Batch:
     async with uow:
         batches = await uow.batches.get_many()
         if not is_valid_sku(line.sku, batches):
@@ -33,10 +30,7 @@ async def allocate_line(
     return batch
 
 
-async def add_batch(
-    batch_data: dict[str, Any],
-    uow: AbstractUOW,
-) -> Batch:
+async def add_batch(batch_data: dict[str, Any], uow: AbstractUOW) -> Batch:
     async with uow:
         batch = await uow.batches.add(batch_data)
         await uow.commit()
