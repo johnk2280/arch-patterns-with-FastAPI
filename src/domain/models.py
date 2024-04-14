@@ -97,6 +97,10 @@ class Batch(DomainModel):
         return self.sku == line.sku and self.available_quantity >= line.qty
 
 
+class Product(DomainModel):
+    pass
+
+
 def make_batch_and_line(
     sku: str,
     batch_qty: int,
