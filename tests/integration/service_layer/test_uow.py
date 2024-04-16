@@ -27,5 +27,6 @@ async def test_uow_can_retrieve_a_batch_allocate_to_it(
         await uow.commit()
     
     expected = await repo.get({'id': batch.id})
+
     assert expected._allocations == {line}
     assert expected.available_quantity == 90
