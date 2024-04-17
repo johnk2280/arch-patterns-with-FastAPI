@@ -46,7 +46,7 @@ async def create_batches(
             '_purchased_quantity': batch.purchased_quantity,
             'eta': batch.eta,
         },
-        uow
+        uow,
     )
 
 
@@ -59,5 +59,5 @@ async def allocate_order_line(order_line: OrderLineCreateSchema) -> Batch:
     uow = BatchUOW()
     return await allocate_line(
         OrderLine(**order_line.model_dump()),
-        uow
+        uow,
     )
