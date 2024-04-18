@@ -33,7 +33,7 @@ async def test_api_returns_allocation(
             'reference': later_batch,
             'sku': sku,
             '_purchased_quantity': 100,
-            'eta': '2011-01-02'
+            'eta': '2011-01-02',
         },
     )
     await async_client.post(
