@@ -43,7 +43,7 @@ async def test_api_returns_allocation(
             'sku': sku,
             '_purchased_quantity': 100,
             'eta': '2011-01-01',
-        }
+        },
     )
     await async_client.post(
         '/batches',
