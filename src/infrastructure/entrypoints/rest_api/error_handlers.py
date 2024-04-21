@@ -14,7 +14,7 @@ async def handle_no_result_found(
         status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
         content={
             'message': str(exc),
-        }
+        },
     )
 
 
