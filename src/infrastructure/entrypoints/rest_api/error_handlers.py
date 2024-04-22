@@ -26,5 +26,5 @@ async def handle_invalid_sku(
         status_code=status.HTTP_404_NOT_FOUND,
         content={
             'message': f'Недопустимый артикул: {str(exc)}',
-        }
+        },
     )
