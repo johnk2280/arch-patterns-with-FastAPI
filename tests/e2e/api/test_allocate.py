@@ -65,7 +65,7 @@ async def test_api_returns_allocation(
 async def test_allocations_are_persisted(
     async_client: AsyncClient,
 ):
-    sku, other_sku = random_sku(), random_sku('other')
+    sku = random_sku()
     early_batch = random_batchref('1')
     later_batch = random_batchref('2')
 
