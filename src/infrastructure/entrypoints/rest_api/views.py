@@ -57,6 +57,7 @@ async def create_batches(
 )
 async def allocate_order_line(order_line: OrderLineCreateSchema) -> Batch:
     uow = BatchUOW()
+
     return await allocate_line(
         OrderLine(**order_line.model_dump()),
         uow,
