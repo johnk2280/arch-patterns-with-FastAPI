@@ -106,7 +106,6 @@ async def test_400_message_for_out_of_stock(
 ):
     sku = random_sku()
     early_batch = random_batchref('1')
-
     await async_client.post(
         '/batches',
         json={
