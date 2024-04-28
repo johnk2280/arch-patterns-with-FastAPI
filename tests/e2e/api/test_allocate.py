@@ -87,8 +87,8 @@ async def test_allocations_are_persisted(
             'eta': '2011-01-01',
         },
     )
-
     data = {'order_id': random_order_id(), 'sku': sku, 'qty': 100}
+
     response = await async_client.post('/allocate', json=data)
 
     assert response.status_code == 201
