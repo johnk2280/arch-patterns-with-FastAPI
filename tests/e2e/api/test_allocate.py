@@ -54,8 +54,8 @@ async def test_api_returns_allocation(
             'eta': None,
         },
     )
-
     data = {'order_id': random_order_id(), 'sku': sku, 'qty': 3}
+
     response = await async_client.post('/allocate', json=data)
 
     assert response.status_code == 201
