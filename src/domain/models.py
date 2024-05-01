@@ -98,7 +98,22 @@ class Batch(DomainModel):
 
 
 class Product(DomainModel):
-    pass
+
+    def __int__(self, sku: str, batches: list[Batch], version: int) -> None:
+        self.sku = sku
+        self.batches = batches
+        self.version = version
+
+    def allocate(self, line: OrderLine) -> Batch:
+        try:
+            batch = next(
+                batch for batch in sorted(self.batches)
+                if batch.can_allocate(line)
+            )
+            batch.allocate(line)
+            return batch
+        except StopIteration:
+            raise OutOfStockError(f'Артикула {line.sku} нет в наличии')
 
 
 def make_batch_and_line(
