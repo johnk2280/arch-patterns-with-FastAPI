@@ -43,6 +43,13 @@ allocations = Table(
     Column('batch_id', ForeignKey('batches.id')),
 )
 
+products = Table(
+    'products',
+    mapper_registry.metadata,
+    Column('sku', String(255), primary_key=True),
+    Column('version', Integer, nullable=False),
+)
+
 
 def start_mappers() -> None:
     """
