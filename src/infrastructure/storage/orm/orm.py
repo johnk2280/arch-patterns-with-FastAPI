@@ -11,6 +11,7 @@ from sqlalchemy.orm import relationship
 
 from domain import Batch
 from domain import OrderLine
+from domain.models import Product
 
 metadata = MetaData()
 
@@ -61,7 +62,7 @@ def start_mappers() -> None:
         OrderLine,
         order_lines,
     )
-    mapper_registry.map_imperatively(
+    batch_mapper: Mapper[Batch] = mapper_registry.map_imperatively(
         Batch,
         batches,
         properties={
@@ -71,4 +72,13 @@ def start_mappers() -> None:
                 collection_class=set,
             ),
         },
+    )
+    mapper_registry.map_imperatively(
+        Product,
+        products,
+        properties={
+            'batches': relationship(
+                batch_mapper,
+            )
+        }
     )
