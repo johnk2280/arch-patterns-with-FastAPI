@@ -79,6 +79,8 @@ def start_mappers() -> None:
         properties={
             'batches': relationship(
                 batch_mapper,
+                secondary=batches,
+                collection_class=list,
             )
         }
     )
