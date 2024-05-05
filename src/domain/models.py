@@ -12,7 +12,6 @@ class DomainModel:
 
 @dataclass(unsafe_hash=True)
 class OrderLine(DomainModel):
-
     order_id: str
     sku: str
     qty: int
