@@ -1,5 +1,8 @@
 from httpx import AsyncClient
+from sqlalchemy import insert
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from domain.models import Product
 
 
 async def test_api_add_batch(
@@ -12,6 +15,13 @@ async def test_api_add_batch(
         '_purchased_quantity': 100,
         'eta': None,
     }
+    await async_session.execute(
+        insert(Product)
+        .values(
+            sku=data['sku'],
+        ),
+    )
+    await async_session.commit()
 
     response = await async_client.post('/batches', json=data)
 
