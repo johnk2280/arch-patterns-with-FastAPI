@@ -41,6 +41,7 @@ async def test_api_returns_allocation(
         ),
     )
     await async_session.commit()
+    await async_session.close()
 
     await async_client.post(
         '/batches',
@@ -78,11 +79,22 @@ async def test_api_returns_allocation(
 
 
 async def test_allocations_are_persisted(
+    async_session: AsyncSession,
     async_client: AsyncClient,
 ):
     sku = random_sku()
     early_batch = random_batchref('1')
     later_batch = random_batchref('2')
+    await async_session.execute(
+        insert(Product)
+        .values(
+            [
+                dict(sku=sku),
+            ],
+        ),
+    )
+    await async_session.commit()
+    await async_session.close()
 
     await async_client.post(
         '/batches',

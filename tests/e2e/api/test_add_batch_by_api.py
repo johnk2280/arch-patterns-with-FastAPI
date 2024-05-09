@@ -22,6 +22,7 @@ async def test_api_add_batch(
         ),
     )
     await async_session.commit()
+    await async_session.close()
 
     response = await async_client.post('/batches', json=data)
 
