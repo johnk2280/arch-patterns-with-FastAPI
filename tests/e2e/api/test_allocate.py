@@ -1,6 +1,10 @@
 import uuid
 
 from httpx import AsyncClient
+from sqlalchemy import insert
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from domain.models import Product
 
 
 def random_suffix():
@@ -20,12 +24,24 @@ def random_order_id(name=""):
 
 
 async def test_api_returns_allocation(
+    async_session: AsyncSession,
     async_client: AsyncClient,
 ):
     sku, other_sku = random_sku(), random_sku('other')
     early_batch = random_batchref('1')
     later_batch = random_batchref('2')
     other_batch = random_batchref('3')
+    await async_session.execute(
+        insert(Product)
+        .values(
+            [
+                dict(sku=sku),
+                dict(sku=other_sku),
+            ],
+        ),
+    )
+    await async_session.commit()
+    await async_session.close()
 
     await async_client.post(
         '/batches',
@@ -63,11 +79,22 @@ async def test_api_returns_allocation(
 
 
 async def test_allocations_are_persisted(
+    async_session: AsyncSession,
     async_client: AsyncClient,
 ):
     sku = random_sku()
     early_batch = random_batchref('1')
     later_batch = random_batchref('2')
+    await async_session.execute(
+        insert(Product)
+        .values(
+            [
+                dict(sku=sku),
+            ],
+        ),
+    )
+    await async_session.commit()
+    await async_session.close()
 
     await async_client.post(
         '/batches',
@@ -102,10 +129,21 @@ async def test_allocations_are_persisted(
 
 
 async def test_400_message_for_out_of_stock(
+    async_session: AsyncSession,
     async_client: AsyncClient,
 ):
     sku = random_sku()
     early_batch = random_batchref('1')
+    await async_session.execute(
+        insert(Product)
+        .values(
+            [
+                dict(sku=sku),
+            ],
+        ),
+    )
+    await async_session.commit()
+    await async_session.close()
     await async_client.post(
         '/batches',
         json={
