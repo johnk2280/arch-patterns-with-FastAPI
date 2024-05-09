@@ -31,7 +31,7 @@ batches = Table(
     mapper_registry.metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('reference', String(255)),
-    Column('sku', String(255)),
+    Column('sku', ForeignKey('products.sku')),
     Column('eta', Date, nullable=True),
     Column('_purchased_quantity', Integer, nullable=False),
 )
@@ -48,7 +48,7 @@ products = Table(
     'products',
     mapper_registry.metadata,
     Column('sku', String(255), primary_key=True),
-    Column('version', Integer, nullable=False),
+    Column('version', Integer, nullable=False, server_default='1'),
 )
 
 
@@ -76,11 +76,5 @@ def start_mappers() -> None:
     mapper_registry.map_imperatively(
         Product,
         products,
-        properties={
-            'batches': relationship(
-                batch_mapper,
-                secondary=batches,
-                collection_class=list,
-            )
-        }
+        properties={'batches': relationship(batch_mapper)},
     )
