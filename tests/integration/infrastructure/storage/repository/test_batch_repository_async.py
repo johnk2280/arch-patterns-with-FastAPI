@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from domain.models import Batch
 from domain.models import OrderLine
+from domain.models import Product
 from infrastructure.storage.orm import allocations
 from infrastructure.storage.repositories import AsyncBatchRepo
 
@@ -16,6 +17,16 @@ async def test_async_batch_repository_can_save_a_batch(
         'sku': 'RUSTY-SOAPDISH',
         '_purchased_quantity': 100,
     }
+    await async_session.execute(
+        insert(Product)
+        .values(
+            [
+                dict(sku='RUSTY-SOAPDISH'),
+            ],
+        ),
+    )
+    await async_session.commit()
+    await async_session.close()
     repo = AsyncBatchRepo(async_session)
 
     res = await repo.add(batch_data)
