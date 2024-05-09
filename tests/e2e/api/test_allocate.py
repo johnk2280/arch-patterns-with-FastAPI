@@ -129,10 +129,21 @@ async def test_allocations_are_persisted(
 
 
 async def test_400_message_for_out_of_stock(
+    async_session: AsyncSession,
     async_client: AsyncClient,
 ):
     sku = random_sku()
     early_batch = random_batchref('1')
+    await async_session.execute(
+        insert(Product)
+        .values(
+            [
+                dict(sku=sku),
+            ],
+        ),
+    )
+    await async_session.commit()
+    await async_session.close()
     await async_client.post(
         '/batches',
         json={
