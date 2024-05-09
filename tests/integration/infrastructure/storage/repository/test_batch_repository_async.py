@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from domain.models import Batch
 from domain.models import OrderLine
+from domain.models import Product
 from infrastructure.storage.orm import allocations
 from infrastructure.storage.repositories import AsyncBatchRepo
 
@@ -16,6 +17,16 @@ async def test_async_batch_repository_can_save_a_batch(
         'sku': 'RUSTY-SOAPDISH',
         '_purchased_quantity': 100,
     }
+    await async_session.execute(
+        insert(Product)
+        .values(
+            [
+                dict(sku='RUSTY-SOAPDISH'),
+            ],
+        ),
+    )
+    await async_session.commit()
+    await async_session.close()
     repo = AsyncBatchRepo(async_session)
 
     res = await repo.add(batch_data)
@@ -27,6 +38,7 @@ async def test_async_batch_repository_can_save_a_batch(
     assert rows == [Batch(**batch_data)]
 
 
+# TODO: пофиксить все тесты
 async def test_async_batch_repository_can_save_a_batch_collection(
     async_session: AsyncSession,
 ):
@@ -104,7 +116,12 @@ async def test_async_batch_repository_can_retrieve_a_batch_with_allocation(
     assert retrieved.sku == expected.sku
     assert retrieved._purchased_quantity == expected._purchased_quantity
     assert retrieved._allocations == {
-        OrderLine(order_id='order-1', sku='RED-CHAIR', qty=12, id=order_line.id),
+        OrderLine(
+            order_id='order-1',
+            sku='RED-CHAIR',
+            qty=12,
+            id=order_line.id
+        ),
     }
 
 

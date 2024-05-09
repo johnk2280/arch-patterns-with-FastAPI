@@ -78,3 +78,4 @@ class AsyncBatchRepo(AsyncSQLARepository[Batch]):
     model_class = Batch
     relationships = ('_allocations',)
 
+# TODO: добавить репозиторий продуктов
