@@ -54,6 +54,17 @@ async def test_async_batch_repository_can_save_a_batch_collection(
             '_purchased_quantity': 20,
         },
     ]
+    await async_session.execute(
+        insert(Product)
+        .values(
+            [
+                dict(sku='RUSTY-SOAPDISH'),
+                dict(sku='RED-CHAIR'),
+            ],
+        ),
+    )
+    await async_session.commit()
+    await async_session.close()
     repo = AsyncBatchRepo(async_session)
 
     res = await repo.add_many(batch_data)
@@ -69,6 +80,15 @@ async def test_async_batch_repository_can_save_a_batch_collection(
 async def test_async_batch_repository_can_retrieve_a_batch_with_allocation(
     async_session: AsyncSession,
 ):
+    await async_session.execute(
+        insert(Product)
+        .values(
+            [
+                dict(sku='RED-CHAIR'),
+                dict(sku='GENERIC-SOFA'),
+            ],
+        ),
+    )
     order_line = (await async_session.execute(
         insert(OrderLine)
         .values(
@@ -107,6 +127,7 @@ async def test_async_batch_repository_can_retrieve_a_batch_with_allocation(
             ],
         )
     )
+
     expected = Batch('batch-1', 'GENERIC-SOFA', 100)
     repo = AsyncBatchRepo(async_session)
 
@@ -128,6 +149,15 @@ async def test_async_batch_repository_can_retrieve_a_batch_with_allocation(
 async def test_async_batch_repository_can_retrieve_batches_with_allocations(
     async_session: AsyncSession,
 ):
+    await async_session.execute(
+        insert(Product)
+        .values(
+            [
+                dict(sku='RED-CHAIR'),
+                dict(sku='GENERIC-SOFA'),
+            ],
+        ),
+    )
     order_line = (await async_session.execute(
         insert(OrderLine)
         .values(
