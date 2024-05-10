@@ -65,6 +65,7 @@ async def test_async_batch_repository_can_save_a_batch_collection(
     assert rows == [Batch(**data) for data in batch_data]
 
 
+#  TODO: Заменить явные вставки Product на вызов AsyncProductRepo
 async def test_async_batch_repository_can_retrieve_a_batch_with_allocation(
     async_session: AsyncSession,
 ):
