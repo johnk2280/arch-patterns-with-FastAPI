@@ -54,6 +54,17 @@ async def test_async_batch_repository_can_save_a_batch_collection(
             '_purchased_quantity': 20,
         },
     ]
+    await async_session.execute(
+        insert(Product)
+        .values(
+            [
+                dict(sku='RUSTY-SOAPDISH'),
+                dict(sku='RED-CHAIR'),
+            ],
+        ),
+    )
+    await async_session.commit()
+    await async_session.close()
     repo = AsyncBatchRepo(async_session)
 
     res = await repo.add_many(batch_data)
