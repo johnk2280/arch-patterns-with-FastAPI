@@ -1,6 +1,8 @@
+from sqlalchemy import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from domain import OrderLine
+from domain.models import Product
 from infrastructure.storage.repositories import AsyncBatchRepo
 from service_layer.uow import BatchUOW
 
@@ -8,6 +10,14 @@ from service_layer.uow import BatchUOW
 async def test_uow_can_retrieve_a_batch_allocate_to_it(
     async_session: AsyncSession,
 ):
+    await async_session.execute(
+        insert(Product)
+        .values(
+            [
+                dict(sku='HIPSTER-WORKBENCH'),
+            ],
+        ),
+    )
     repo = AsyncBatchRepo(async_session)
     await repo.add(
             {
