@@ -13,6 +13,7 @@ from sqlalchemy.orm import selectinload
 
 from domain import Batch
 from domain import DomainModel
+from domain.models import Product
 from service_layer.ports import AbstractRepository
 
 M = TypeVar("M", bound=DomainModel)
@@ -78,4 +79,8 @@ class AsyncBatchRepo(AsyncSQLARepository[Batch]):
     model_class = Batch
     relationships = ('_allocations',)
 
-# TODO: добавить репозиторий продуктов
+
+class AsyncProductRepo(AsyncSQLARepository):
+    model_class = Product
+    relationships = ('batches',)
+

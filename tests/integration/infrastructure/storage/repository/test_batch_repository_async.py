@@ -38,7 +38,6 @@ async def test_async_batch_repository_can_save_a_batch(
     assert rows == [Batch(**batch_data)]
 
 
-# TODO: пофиксить все тесты
 async def test_async_batch_repository_can_save_a_batch_collection(
     async_session: AsyncSession,
 ):
