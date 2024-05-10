@@ -149,6 +149,15 @@ async def test_async_batch_repository_can_retrieve_a_batch_with_allocation(
 async def test_async_batch_repository_can_retrieve_batches_with_allocations(
     async_session: AsyncSession,
 ):
+    await async_session.execute(
+        insert(Product)
+        .values(
+            [
+                dict(sku='RED-CHAIR'),
+                dict(sku='GENERIC-SOFA'),
+            ],
+        ),
+    )
     order_line = (await async_session.execute(
         insert(OrderLine)
         .values(
