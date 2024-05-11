@@ -69,15 +69,13 @@ async def test_async_batch_repository_can_save_a_batch_collection(
 async def test_async_batch_repository_can_retrieve_a_batch_with_allocation(
     async_session: AsyncSession,
 ):
-    await async_session.execute(
-        insert(Product)
-        .values(
+    product_repo = AsyncProductRepo(async_session)
+    await product_repo.add_many(
             [
                 dict(sku='RED-CHAIR'),
                 dict(sku='GENERIC-SOFA'),
             ],
-        ),
-    )
+        )
     order_line = (await async_session.execute(
         insert(OrderLine)
         .values(
