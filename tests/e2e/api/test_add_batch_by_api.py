@@ -3,6 +3,7 @@ from sqlalchemy import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from domain.models import Product
+from infrastructure.storage.repositories import AsyncProductRepo
 
 
 async def test_api_add_batch(
@@ -15,9 +16,9 @@ async def test_api_add_batch(
         '_purchased_quantity': 100,
         'eta': None,
     }
-    await async_session.execute(
-        insert(Product)
-        .values(
+    product_repo = AsyncProductRepo(async_session)
+    await product_repo.add(
+        dict(
             sku=data['sku'],
         ),
     )

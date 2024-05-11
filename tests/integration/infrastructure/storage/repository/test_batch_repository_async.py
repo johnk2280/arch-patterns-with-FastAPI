@@ -4,10 +4,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from domain.models import Batch
 from domain.models import OrderLine
-from domain.models import Product
 from infrastructure.storage.orm import allocations
 from infrastructure.storage.repositories import AsyncBatchRepo
-from infrastructure.storage.repositories.sqla_repository import AsyncProductRepo
+from infrastructure.storage.repositories import AsyncProductRepo
 
 
 async def test_async_batch_repository_can_save_a_batch(
@@ -65,19 +64,16 @@ async def test_async_batch_repository_can_save_a_batch_collection(
     assert rows == [Batch(**data) for data in batch_data]
 
 
-#  TODO: Заменить явные вставки Product на вызов AsyncProductRepo
 async def test_async_batch_repository_can_retrieve_a_batch_with_allocation(
     async_session: AsyncSession,
 ):
-    await async_session.execute(
-        insert(Product)
-        .values(
+    product_repo = AsyncProductRepo(async_session)
+    await product_repo.add_many(
             [
                 dict(sku='RED-CHAIR'),
                 dict(sku='GENERIC-SOFA'),
             ],
-        ),
-    )
+        )
     order_line = (await async_session.execute(
         insert(OrderLine)
         .values(
@@ -138,15 +134,13 @@ async def test_async_batch_repository_can_retrieve_a_batch_with_allocation(
 async def test_async_batch_repository_can_retrieve_batches_with_allocations(
     async_session: AsyncSession,
 ):
-    await async_session.execute(
-        insert(Product)
-        .values(
+    product_repo = AsyncProductRepo(async_session)
+    await product_repo.add_many(
             [
                 dict(sku='RED-CHAIR'),
                 dict(sku='GENERIC-SOFA'),
             ],
-        ),
-    )
+        )
     order_line = (await async_session.execute(
         insert(OrderLine)
         .values(

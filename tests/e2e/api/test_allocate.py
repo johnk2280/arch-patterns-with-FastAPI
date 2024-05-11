@@ -5,6 +5,7 @@ from sqlalchemy import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from domain.models import Product
+from infrastructure.storage.repositories import AsyncProductRepo
 
 
 def random_suffix():
@@ -31,15 +32,13 @@ async def test_api_returns_allocation(
     early_batch = random_batchref('1')
     later_batch = random_batchref('2')
     other_batch = random_batchref('3')
-    await async_session.execute(
-        insert(Product)
-        .values(
+    product_repo = AsyncProductRepo(async_session)
+    await product_repo.add_many(
             [
                 dict(sku=sku),
                 dict(sku=other_sku),
             ],
-        ),
-    )
+        )
     await async_session.commit()
     await async_session.close()
 
@@ -85,14 +84,12 @@ async def test_allocations_are_persisted(
     sku = random_sku()
     early_batch = random_batchref('1')
     later_batch = random_batchref('2')
-    await async_session.execute(
-        insert(Product)
-        .values(
+    product_repo = AsyncProductRepo(async_session)
+    await product_repo.add_many(
             [
                 dict(sku=sku),
             ],
-        ),
-    )
+        )
     await async_session.commit()
     await async_session.close()
 
@@ -134,14 +131,12 @@ async def test_400_message_for_out_of_stock(
 ):
     sku = random_sku()
     early_batch = random_batchref('1')
-    await async_session.execute(
-        insert(Product)
-        .values(
+    product_repo = AsyncProductRepo(async_session)
+    await product_repo.add_many(
             [
                 dict(sku=sku),
             ],
-        ),
-    )
+        )
     await async_session.commit()
     await async_session.close()
     await async_client.post(
