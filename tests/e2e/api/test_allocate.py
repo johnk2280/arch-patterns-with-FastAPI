@@ -84,14 +84,12 @@ async def test_allocations_are_persisted(
     sku = random_sku()
     early_batch = random_batchref('1')
     later_batch = random_batchref('2')
-    await async_session.execute(
-        insert(Product)
-        .values(
+    product_repo = AsyncProductRepo(async_session)
+    await product_repo.add_many(
             [
                 dict(sku=sku),
             ],
-        ),
-    )
+        )
     await async_session.commit()
     await async_session.close()
 
