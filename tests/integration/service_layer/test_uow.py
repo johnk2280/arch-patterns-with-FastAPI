@@ -1,8 +1,6 @@
-from sqlalchemy import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from domain import OrderLine
-from domain.models import Product
 from infrastructure.storage.repositories import AsyncBatchRepo
 from infrastructure.storage.repositories.sqla_repository import AsyncProductRepo
 from service_layer.uow import BatchUOW
