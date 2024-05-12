@@ -1,8 +1,6 @@
 from httpx import AsyncClient
-from sqlalchemy import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from domain.models import Product
 from infrastructure.storage.repositories import AsyncProductRepo
 
 
