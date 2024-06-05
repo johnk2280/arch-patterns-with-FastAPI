@@ -75,7 +75,6 @@ class AsyncSQLARepository(AbstractRepository[M], Generic[M]):
 
 
 class AsyncBatchRepo(AsyncSQLARepository[Batch]):
-
     model_class = Batch
     relationships = ('_allocations',)
 
