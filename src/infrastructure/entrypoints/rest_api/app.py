@@ -23,7 +23,6 @@ def create(routers: Iterable[APIRouter]) -> FastAPI:
     application.exception_handler(InvalidSkuError)(handle_invalid_sku)
 
     start_mappers()
-
     return application
 
 
