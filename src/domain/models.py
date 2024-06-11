@@ -129,7 +129,7 @@ def make_batch_and_line(
 def allocate(line: OrderLine, batches: Sequence[Batch]) -> Batch:
     try:
         batch = next(
-            batch for batch in sorted(batches) if batch.can_allocate(line)
+            batch for batch in sorted(batches) if batch.can_allocate(line),
         )
         batch.allocate(line)
         return batch
