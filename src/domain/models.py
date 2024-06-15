@@ -132,6 +132,7 @@ def allocate(line: OrderLine, batches: Sequence[Batch]) -> Batch:
             batch for batch in sorted(batches) if batch.can_allocate(line),
         )
         batch.allocate(line)
+
         return batch
     except StopIteration:
         raise OutOfStockError(f'Артикула {line.sku} нет в наличии')
