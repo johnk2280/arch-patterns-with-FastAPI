@@ -14,6 +14,7 @@ async def test_api_add_batch(
         '_purchased_quantity': 100,
         'eta': None,
     }
+
     product_repo = AsyncProductRepo(async_session)
     await product_repo.add(
         dict(
