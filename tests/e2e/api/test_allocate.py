@@ -130,11 +130,7 @@ async def test_400_message_for_out_of_stock(
     sku = random_sku()
     early_batch = random_batchref('1')
     product_repo = AsyncProductRepo(async_session)
-    await product_repo.add_many(
-        [
-            dict(sku=sku),
-        ],
-    )
+    await product_repo.add_many([dict(sku=sku)])
     await async_session.commit()
     await async_session.close()
     await async_client.post(
@@ -160,6 +156,7 @@ async def test_404_message_for_invalid_sku(
     async_client: AsyncClient,
 ):
     sku = random_sku()
+
     data = {'order_id': random_order_id(), 'sku': sku, 'qty': 100}
 
     response = await async_client.post('/allocate', json=data)
