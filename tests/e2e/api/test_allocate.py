@@ -142,6 +142,7 @@ async def test_400_message_for_out_of_stock(
             'eta': '2011-01-01',
         },
     )
+
     data = {'order_id': random_order_id(), 'sku': sku, 'qty': 100}
 
     response = await async_client.post('/allocate', json=data)
