@@ -119,6 +119,7 @@ def make_batch_and_line(
     batch_qty: int,
     line_qty: int,
 ) -> tuple[Batch, OrderLine]:
+
     return (
         Batch('batch-001', sku, batch_qty, eta=datetime.date.today()),
         OrderLine('order-123', sku, line_qty),
