@@ -109,6 +109,7 @@ class Product(DomainModel):
                 if batch.can_allocate(line)
             )
             batch.allocate(line)
+
             return batch
         except StopIteration:
             raise OutOfStockError(f'Артикула {line.sku} нет в наличии')
