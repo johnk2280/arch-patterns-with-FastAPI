@@ -16,6 +16,7 @@ async def test_api_add_batch(
     }
 
     product_repo = AsyncProductRepo(async_session)
+
     await product_repo.add(
         dict(
             sku=data['sku'],
