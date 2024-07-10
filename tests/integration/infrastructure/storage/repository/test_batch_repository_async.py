@@ -141,6 +141,7 @@ async def test_async_batch_repository_can_retrieve_batches_with_allocations(
     async_session: AsyncSession,
 ):
     product_repo = AsyncProductRepo(async_session)
+
     await product_repo.add_many(
             [
                 dict(sku='RED-CHAIR'),
