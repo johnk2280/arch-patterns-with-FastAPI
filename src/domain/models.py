@@ -133,7 +133,6 @@ def allocate(line: OrderLine, batches: Sequence[Batch]) -> Batch:
         batch = next(
             batch for batch in sorted(batches) if batch.can_allocate(line),
         )
-
         batch.allocate(line)
 
         return batch
