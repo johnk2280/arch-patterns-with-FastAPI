@@ -103,6 +103,7 @@ class Product(DomainModel):
         self.version = version
 
     def allocate(self, line: OrderLine) -> Batch:
+
         try:
             batch = next(
                 batch for batch in sorted(self.batches)
