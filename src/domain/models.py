@@ -109,6 +109,7 @@ class Product(DomainModel):
                 batch for batch in sorted(self.batches)
                 if batch.can_allocate(line)
             )
+
             batch.allocate(line)
 
             return batch
