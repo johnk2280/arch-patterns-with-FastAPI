@@ -135,6 +135,7 @@ async def test_400_message_for_out_of_stock(
     product_repo = AsyncProductRepo(async_session)
 
     await product_repo.add_many([dict(sku=sku)])
+
     await async_session.commit()
     await async_session.close()
     await async_client.post(
