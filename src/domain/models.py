@@ -113,6 +113,7 @@ class Product(DomainModel):
             batch.allocate(line)
 
             return batch
+
         except StopIteration:
             raise OutOfStockError(f'Артикула {line.sku} нет в наличии')
 
