@@ -49,9 +49,7 @@ async def test_async_batch_repository_can_save_a_batch_collection(
         },
     ]
     product_repo = AsyncProductRepo(async_session)
-
     batch_repo = AsyncBatchRepo(async_session)
-
     await product_repo.add_many(
         [
             dict(sku='RUSTY-SOAPDISH'),
@@ -60,7 +58,6 @@ async def test_async_batch_repository_can_save_a_batch_collection(
     )
 
     res = await batch_repo.add_many(batch_data)
-
     rows = (await async_session.execute(select(Batch))).scalars().all()
 
     assert len(res) == 2
