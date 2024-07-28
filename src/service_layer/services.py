@@ -20,6 +20,7 @@ class CommitterProtocol(Protocol):
 
 async def allocate_line(line: OrderLine, uow: AbstractUOW) -> Batch:
     async with uow:
+    
         batches = await uow.batches.get_many()
         if not is_valid_sku(line.sku, batches):
             raise InvalidSkuError(str(line.sku)) from None
