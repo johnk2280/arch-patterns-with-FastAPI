@@ -31,6 +31,7 @@ async def test_api_returns_allocation(
     later_batch = random_batchref('2')
     other_batch = random_batchref('3')
     product_repo = AsyncProductRepo(async_session)
+
     await product_repo.add_many(
         [
             dict(sku=sku),
