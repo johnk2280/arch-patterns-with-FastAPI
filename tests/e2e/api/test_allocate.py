@@ -173,6 +173,7 @@ async def test_404_message_for_invalid_sku(
     response = await async_client.post('/allocate', json=data)
 
     assert response.status_code == 404
+
     assert response.json() == {
         'message': f'Недопустимый артикул: {sku}',
     }
