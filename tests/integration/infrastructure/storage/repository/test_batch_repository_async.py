@@ -64,6 +64,7 @@ async def test_async_batch_repository_can_save_a_batch_collection(
     assert len(res) == 2
 
     assert len(rows) == 2
+
     assert res == rows
     assert rows == [Batch(**data) for data in batch_data]
 
