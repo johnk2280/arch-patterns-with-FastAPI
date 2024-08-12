@@ -30,6 +30,7 @@ async def test_async_batch_repository_can_save_a_batch(
     assert res.reference == batch_data['reference']
 
     assert len(rows) == 1
+
     assert rows == [Batch(**batch_data)]
 
 
