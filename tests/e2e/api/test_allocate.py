@@ -120,6 +120,7 @@ async def test_allocations_are_persisted(
     assert response.json() == {'reference': early_batch}
 
     data_2 = {'order_id': random_order_id(), 'sku': sku, 'qty': 10}
+
     response_2 = await async_client.post('/allocate', json=data_2)
 
     assert response_2.status_code == 201
