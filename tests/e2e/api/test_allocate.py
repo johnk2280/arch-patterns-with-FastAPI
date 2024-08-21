@@ -39,6 +39,7 @@ async def test_api_returns_allocation(
         ],
     )
     await async_session.commit()
+
     await async_session.close()
 
     await async_client.post(
