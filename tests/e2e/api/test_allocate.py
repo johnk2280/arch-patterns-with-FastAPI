@@ -89,7 +89,6 @@ async def test_allocations_are_persisted(
     later_batch = random_batchref('2')
 
     product_repo = AsyncProductRepo(async_session)
-
     await product_repo.add_many(
         [
             dict(sku=sku),
