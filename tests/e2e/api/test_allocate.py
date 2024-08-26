@@ -83,7 +83,6 @@ async def test_allocations_are_persisted(
     async_client: AsyncClient,
 ):
     sku = random_sku()
-
     early_batch = random_batchref('1')
 
     later_batch = random_batchref('2')
