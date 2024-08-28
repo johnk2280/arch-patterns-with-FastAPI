@@ -74,7 +74,6 @@ async def test_api_returns_allocation(
     response = await async_client.post('/allocate', json=data)
 
     assert response.status_code == 201
-
     assert response.json() == {'reference': early_batch}
 
 
