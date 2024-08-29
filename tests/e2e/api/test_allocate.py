@@ -93,7 +93,6 @@ async def test_allocations_are_persisted(
     )
     await async_session.commit()
     await async_session.close()
-
     await async_client.post(
         '/batches',
         json={
