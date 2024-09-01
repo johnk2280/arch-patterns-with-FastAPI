@@ -155,7 +155,6 @@ async def test_400_message_for_out_of_stock(
     response = await async_client.post('/allocate', json=data)
 
     assert response.status_code == 413
-
     assert response.json() == {
         'message': f'Артикула {sku} нет в наличии',
     }
