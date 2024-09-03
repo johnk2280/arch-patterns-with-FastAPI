@@ -131,7 +131,6 @@ async def test_async_batch_repository_can_retrieve_a_batch_with_allocation(
     retrieved = await repo.get({'reference': 'batch-1'})
 
     assert retrieved == expected
-
     assert retrieved.sku == expected.sku
 
     assert retrieved._purchased_quantity == expected._purchased_quantity
