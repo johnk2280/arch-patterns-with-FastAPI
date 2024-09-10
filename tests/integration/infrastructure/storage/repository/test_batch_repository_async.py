@@ -28,7 +28,6 @@ async def test_async_batch_repository_can_save_a_batch(
     rows = (await async_session.execute(select(Batch))).scalars().all()
 
     assert res.reference == batch_data['reference']
-
     assert len(rows) == 1
     assert rows == [Batch(**batch_data)]
 
