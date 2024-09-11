@@ -18,7 +18,6 @@ async def test_async_batch_repository_can_save_a_batch(
         '_purchased_quantity': 100,
     }
     product_repo = AsyncProductRepo(async_session)
-
     batch_repo = AsyncBatchRepo(async_session)
 
     await product_repo.add(dict(sku='RUSTY-SOAPDISH'))
