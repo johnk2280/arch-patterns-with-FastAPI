@@ -131,7 +131,6 @@ async def test_400_message_for_out_of_stock(
     async_client: AsyncClient,
 ):
     sku = random_sku()
-
     early_batch = random_batchref('1')
 
     product_repo = AsyncProductRepo(async_session)
