@@ -74,7 +74,6 @@ async def test_async_batch_repository_can_retrieve_a_batch_with_allocation(
                 dict(sku='GENERIC-SOFA'),
             ],
         )
-
     order_line = (await async_session.execute(
         insert(OrderLine)
         .values(
