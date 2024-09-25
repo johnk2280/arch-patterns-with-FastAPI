@@ -100,7 +100,6 @@ async def test_async_batch_repository_can_retrieve_a_batch_with_allocation(
         )
         .returning(Batch),
     )).scalar()
-
     await async_session.execute(
         insert(allocations)
         .values(
