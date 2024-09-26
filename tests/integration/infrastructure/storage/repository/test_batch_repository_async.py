@@ -111,7 +111,6 @@ async def test_async_batch_repository_can_retrieve_a_batch_with_allocation(
             ],
         )
     )
-
     expected = Batch('batch-1', 'GENERIC-SOFA', 100)
 
     repo = AsyncBatchRepo(async_session)
