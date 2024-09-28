@@ -7,7 +7,6 @@ from domain.models import OrderLine
 async def test_order_line_mapper_can_load_lines_async(
     async_session: AsyncSession,
 ):
-
     expected = [
         OrderLine('order-1', 'RED-CHAIR', 12),
         OrderLine('order-2', 'RED-TABLE', 13),
