@@ -25,7 +25,6 @@ async def test_uow_can_retrieve_a_batch_allocate_to_it(
                 },
             )
     await async_session.commit()
-    
     uow = BatchUOW()
     async with uow:
         batch = await uow.batches.get({'reference': 'batch-1'})
