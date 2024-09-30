@@ -31,7 +31,6 @@ async def test_uow_can_retrieve_a_batch_allocate_to_it(
         line = OrderLine('o1', 'HIPSTER-WORKBENCH', 10)
         batch.allocate(line)
         await uow.commit()
-    
     expected = await repo.get({'id': batch.id})
 
     assert expected._allocations == {line}
