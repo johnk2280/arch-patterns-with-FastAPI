@@ -178,7 +178,6 @@ async def test_async_batch_repository_can_retrieve_batches_with_allocations(
     )
     repo = AsyncBatchRepo(async_session)
     batches = await repo.get_many()
-
     expected = Batch('batch-1', 'GENERIC-SOFA', 100)
     expected._allocations.add(order_line)
 
