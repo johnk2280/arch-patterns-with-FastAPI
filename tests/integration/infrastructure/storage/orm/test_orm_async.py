@@ -28,7 +28,6 @@ async def test_order_line_mapper_can_save_lines(
     new_line = OrderLine('order-1', 'RED-CHAIR', 12)
     async_session.add(new_line)
     await async_session.commit()
-
     rows = (await async_session.execute(select(OrderLine))).scalars().all()
 
     assert len(rows) == 1
