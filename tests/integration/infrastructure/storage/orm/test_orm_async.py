@@ -17,7 +17,6 @@ async def test_order_line_mapper_can_load_lines_async(
     rows = (
         await async_session.execute(select(OrderLine))
     ).scalars().all()
-
     assert rows == expected
 
 
