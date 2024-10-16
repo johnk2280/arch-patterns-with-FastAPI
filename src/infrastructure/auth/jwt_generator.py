@@ -1,3 +1,4 @@
+import base64
 from datetime import datetime
 from datetime import UTC
 from typing import Any
@@ -25,4 +26,6 @@ def generate_jwt(payload: dict[str, Any]) -> str:
 
 
 if __name__ == '__main__':
-    print(generate_jwt(payload))
+    token = generate_jwt(payload)
+    print(token)
+    print(base64.decodebytes(token.encode()))
