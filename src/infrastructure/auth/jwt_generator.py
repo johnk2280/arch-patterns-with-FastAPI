@@ -1,6 +1,4 @@
 import base64
-from datetime import datetime
-from datetime import UTC
 from typing import Any
 
 import jwt
@@ -13,7 +11,6 @@ settings = get_settings()
 
 
 def generate_jwt(payload: dict[str, Any]) -> str:
-    now = datetime.now(UTC)
     private_key_text = (
             settings.BASE_DIR / 'src' / 'infrastructure' / 'auth'
             / 'product_service_private_key.pem'
