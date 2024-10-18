@@ -23,6 +23,7 @@ def generate_jwt(payload: dict[str, Any]) -> str:
 
 
 if __name__ == '__main__':
+
     token = generate_jwt(payload)
     print(token)
     print(base64.decodebytes(token.encode()))
