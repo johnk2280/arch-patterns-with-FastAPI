@@ -13,3 +13,4 @@ def check_jwt(token: str) -> dict[str, Any]:
             / 'product_service_public_key.pem'
     ).read_text()
     public_key = load_pem_x509_certificate(public_key_text.encode())
+    return
