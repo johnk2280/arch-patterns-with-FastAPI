@@ -4,6 +4,7 @@ from cryptography.x509 import load_pem_x509_certificate
 
 from config import get_settings
 
+
 settings = get_settings()
 
 
