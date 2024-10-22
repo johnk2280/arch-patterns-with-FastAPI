@@ -13,5 +13,6 @@ def check_jwt(token: str) -> dict[str, Any]:
             settings.BASE_DIR / 'src' / 'infrastructure' / 'auth'
             / 'product_service_public_key.pem'
     ).read_text()
+
     public_key = load_pem_x509_certificate(public_key_text.encode())
     return
