@@ -9,6 +9,7 @@ settings = get_settings()
 
 
 def check_jwt(token: str) -> dict[str, Any]:
+
     public_key_text = (
             settings.BASE_DIR / 'src' / 'infrastructure' / 'auth'
             / 'product_service_public_key.pem'
