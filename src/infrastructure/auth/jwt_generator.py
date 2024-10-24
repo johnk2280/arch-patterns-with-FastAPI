@@ -10,7 +10,7 @@ from infrastructure.auth.jwt_test import payload
 settings = get_settings()
 
 
-def generate_jwt(payload: dict[str, Any]) -> str:
+def generate_jwt(payload_data: dict[str, Any]) -> str:
     private_key_text = (
             settings.BASE_DIR / 'src' / 'infrastructure' / 'auth'
             / 'product_service_private_key.pem'
@@ -19,7 +19,7 @@ def generate_jwt(payload: dict[str, Any]) -> str:
         private_key_text.encode(),
         password=None,
     )
-    return jwt.encode(payload=payload, key=private_key, algorithm='RS256')
+    return jwt.encode(payload=payload_data, key=private_key, algorithm='RS256')
 
 
 if __name__ == '__main__':
