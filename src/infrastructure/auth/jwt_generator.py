@@ -11,6 +11,7 @@ settings = get_settings()
 
 
 def generate_jwt(payload_data: dict[str, Any]) -> str:
+
     private_key_text = (
             settings.BASE_DIR / 'src' / 'infrastructure' / 'auth'
             / 'product_service_private_key.pem'
