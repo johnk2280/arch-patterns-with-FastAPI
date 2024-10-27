@@ -20,6 +20,7 @@ def generate_jwt(payload_data: dict[str, Any]) -> str:
         private_key_text.encode(),
         password=None,
     )
+
     return jwt.encode(payload=payload_data, key=private_key, algorithm='RS256')
 
 
