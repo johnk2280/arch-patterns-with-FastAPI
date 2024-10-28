@@ -16,6 +16,7 @@ def generate_jwt(payload_data: dict[str, Any]) -> str:
             settings.BASE_DIR / 'src' / 'infrastructure' / 'auth'
             / 'product_service_private_key.pem'
     ).read_text()
+
     private_key = serialization.load_pem_private_key(
         private_key_text.encode(),
         password=None,
