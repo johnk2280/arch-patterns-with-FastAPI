@@ -1,0 +1,7 @@
+[project]
+name = "arch-patterns-with-fastapi"
+version = "0.1.0"
+description = "Architecture Patterns with Python"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = []
