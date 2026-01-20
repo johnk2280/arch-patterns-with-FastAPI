@@ -1,2 +1,0 @@
-class InvalidSkuError(Exception):
-    pass
